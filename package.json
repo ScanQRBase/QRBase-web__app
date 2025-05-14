@@ -1,27 +1,56 @@
 {
-  "name": "qrbase-web__app",
+  "name": "provider-demo",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && rm -rf .next/cache",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev",
+    "deploy": "npm run pages:build && wrangler pages deploy --branch=main"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.2"
+    "@cloudflare/next-on-pages": "^1.13.8",
+    "@coinbase/onchainkit": "^0.38.10",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@moralisweb3/common-evm-utils": "^2.27.2",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/lab": "^6.0.0-beta.28",
+    "@mui/material": "^6.4.5",
+    "@rainbow-me/rainbowkit": "^2.2.4",
+    "@react-spring/web": "^9.7.5",
+    "@tanstack/react-query": "^5",
+    "axios": "^1.7.9",
+    "crypto-browserify": "^3.12.1",
+    "framer-motion": "^12.11.0",
+    "lucide-react": "^0.510.0",
+    "moralis": "^2.27.2",
+    "next": "14.2.15",
+    "next-pwa": "^5.6.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.5.0",
+    "viem": "^2.23.5",
+    "wagmi": "^2.14.12",
+    "wrangler": "^3.114.0"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.2",
-    "@eslint/eslintrc": "^3"
+    "@types/react": "18.3.12",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
+    "javascript-obfuscator": "^4.1.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "5.7.2",
+    "vercel": "^41.2.2",
+    "webpack-obfuscator": "^3.5.1"
+  },
+  "overrides": {
+    "string.prototype.trim": "^1.2.6"
   }
 }
