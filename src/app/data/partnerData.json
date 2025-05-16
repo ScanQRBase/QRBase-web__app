@@ -1,0 +1,537 @@
+[
+  {
+    "id": "0x20429F731096e359910921994A267d32ef576720",
+    "pool": "0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/$SCAN/Split-9.png?updatedAt=1746620862098&ik-s=2fb7fece1624c42494e8067aeb7641960c1abc41",
+    "title": "Scan",
+    "reward": 1000,
+    "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+    "logo": "https://ik.imagekit.io/cafu/$SCAN/scan.png?updatedAt=1746620925756&ik-s=83f8422add9570195a66cd510d3f1c5e884a50d1",
+    "round": "Round 1",
+    "link": "https://zora.co/coin/base:0x20429f731096e359910921994a267d32ef576720",
+    "availbility": "Zora",
+    "MILESTONES": [
+      2000,
+      10000,
+      20000,
+      40000,
+      60000,
+      80000,
+      100000,
+      150000,
+      200000
+    ],
+    "MIN_TOKEN_BALANCE": 100000,
+    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+    "timelineItems": [
+      {
+        "title": "$2K",
+        "value": 2000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$10K",
+        "value": 10000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$20K",
+        "value": 20000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$40K",
+        "value": 40000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$60K",
+        "value": 60000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$80K",
+        "value": 80000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$100K",
+        "value": 100000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$150K",
+        "value": 150000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$200K",
+        "value": 200000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "Round 2",
+        "value": 250000,
+        "description": ""
+      }
+    ],
+    "PRIMARY_COLOR": "#0052FF",
+    "BACKGROUND": "#EFF5FF",
+    "GRAY_LIGHT": "#D1D5DB",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "GRAY_TEXT": "#6B7280",
+    "GRADIENT_START": "#0052FF",
+    "GRADIENT_END": "#3B82F6",
+    "website_link": "https://x.com/ScanQRBase",
+    "telegram_link": "https://t.me/ScanQRBase",
+    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
+    "zora_link": "https://zora.co/@scanqrbase",
+    "x_link": "https://x.com/ScanQRBase"
+  },
+  {
+    "id": "0xF73978B3A7D1d4974abAE11f696c1b4408c027A0",
+    "pool": "0xfAB2F613D2b4c43AE304860f759575359EaC0566",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/ENB/Split-9.png?updatedAt=1746528194508&ik-s=2db1c8260f23125d4bda5cfe95eaa8445d080269",
+    "title": "ENB",
+    "reward": 1000,
+    "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+    "logo": "https://ik.imagekit.io/cafu/ENB/enb.png?updatedAt=1746551235631&ik-s=371566323a97f1e5e86ef3136f13136fdc5deb4e",
+    "round": "Round 1",
+    "link": "https://dexscreener.com/base/0xF73978B3A7D1d4974abAE11f696c1b4408c027A0",
+    "availbility": "Dex",
+    "MILESTONES": [
+      60000,
+      80000,
+      100000,
+      150000,
+      200000,
+      300000,
+      400000,
+      500000,
+      600000
+    ],
+    "MIN_TOKEN_BALANCE": 150000,
+    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+    "timelineItems": [
+      {
+        "title": "$60K",
+        "value": 60000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$80K",
+        "value": 80000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$100K",
+        "value": 100000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$150K",
+        "value": 150000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$200K",
+        "value": 200000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$300K",
+        "value": 300000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$400K",
+        "value": 400000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$500K",
+        "value": 500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$600K",
+        "value": 600000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "Round 2",
+        "value": 1000000,
+        "description": ""
+      }
+    ],
+    "PRIMARY_COLOR": "#3D0DFC",
+    "BACKGROUND": "#4612EE1A",
+    "GRAY_LIGHT": "#D1D5DB",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "GRAY_TEXT": "#6B7280",
+    "GRADIENT_START": "#4612EE",
+    "GRADIENT_END": "#E3566E",
+    "website_link": "https://x.com/ScanQRBase",
+    "telegram_link": "https://t.me/ScanQRBase",
+    "zora_link": "https://zora.co/@scanqrbase",
+    "x_link": "https://x.com/ScanQRBase"
+  },
+  {
+    "id": "0x0C5142BC58f9A61AB8C3D2085DD2F4e550c5cE0B",
+    "pool": "0x403B1ecaC8d7AC35Dbfb8Efae59F440a6F3BEB84",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/RUSSELL/Split-9.png?updatedAt=1746619207952&ik-s=e00b5a0aa3d10c464f5af5923e3188cab2f71edd",
+    "title": "RUSSELL",
+    "reward": 1000,
+    "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+    "logo": "https://ik.imagekit.io/cafu/Frame%2018.png?updatedAt=1746453306993&ik-s=77db646274504e1acd4f97b0d66392b496697cb3",
+    "round": "Round 1",
+    "link": "https://dexscreener.com/base/0x0C5142BC58f9A61AB8C3D2085DD2F4e550c5cE0B",
+    "availbility": "Dex",
+    "MILESTONES": [
+      1000000,
+      1500000,
+      2000000,
+      2500000,
+      3000000,
+      3500000,
+      4000000,
+      4500000,
+      5000000
+    ],
+    "MIN_TOKEN_BALANCE": 200000,
+    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+    "timelineItems": [
+      {
+        "title": "$1M",
+        "value": 1000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$1.5M",
+        "value": 1500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2M",
+        "value": 2000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2.5M",
+        "value": 2500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3M",
+        "value": 3000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3.5M",
+        "value": 3500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$4M",
+        "value": 4000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$4.5M",
+        "value": 4500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$5M",
+        "value": 5000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "Round 2",
+        "value": 6000000,
+        "description": ""
+      }
+    ],
+    "PRIMARY_COLOR": "#0052FF",
+    "BACKGROUND": "#EFF5FF",
+    "GRAY_LIGHT": "#D1D5DB",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "GRAY_TEXT": "#6B7280",
+    "GRADIENT_START": "#0052FF",
+    "GRADIENT_END": "#3B82F6",
+    "website_link": "https://x.com/ScanQRBase",
+    "telegram_link": "https://t.me/ScanQRBase",
+    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
+    "x_link": "https://x.com/ScanQRBase"
+  },
+  {
+    "id": "0x40e30c0b2AE8678e867f09885A71bd01DB5A72D7",
+    "pool": "0x92051AefA1617CDd2807B7384044f1F253420905",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/Onboard/Split-9.png?updatedAt=1746550756989&ik-s=e072032478d6c6a54291b0ea2d7ebdb4b03beb45",
+    "title": "Onboard",
+    "reward": 1000,
+    "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+    "logo": "https://ik.imagekit.io/cafu/Onboard/onboard.png?updatedAt=1746551072325&ik-s=f42d78c98b00a3ae2e482513ed9222294b20603a",
+    "round": "Round 1",
+    "link": "https://dexscreener.com/base/0x92051aefa1617cdd2807b7384044f1f253420905",
+    "availbility": "Dex",
+    "MILESTONES": [
+      2000,
+      10000,
+      20000,
+      40000,
+      60000,
+      80000,
+      100000,
+      150000,
+      200000
+    ],
+    "MIN_TOKEN_BALANCE": 150000,
+    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+    "timelineItems": [
+      {
+        "title": "$2K",
+        "value": 2000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$10K",
+        "value": 10000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$20K",
+        "value": 20000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$40K",
+        "value": 40000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$60K",
+        "value": 60000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$80K",
+        "value": 80000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$100K",
+        "value": 100000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$150K",
+        "value": 150000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$200K",
+        "value": 200000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "Round 2",
+        "value": 250000,
+        "description": ""
+      }
+    ],
+    "PRIMARY_COLOR": "#0052FF",
+    "BACKGROUND": "#EFF5FF",
+    "GRAY_LIGHT": "#D1D5DB",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "GRAY_TEXT": "#6B7280",
+    "GRADIENT_START": "#0052FF",
+    "GRADIENT_END": "#3B82F6",
+    "telegram_link": "https://t.me/ScanQRBase",
+    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
+    "zora_link": "https://zora.co/@scanqrbase",
+    "x_link": "https://x.com/ScanQRBase"
+  },
+  {
+    "id": "0x20DD04c17AFD5c9a8b3f2cdacaa8Ee7907385BEF",
+    "pool": "0x4cd15f2BC9533Bf6faC4ae33C649f138CB601935",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/terfer/Split-9.png?updatedAt=1742545224358&ik-s=47c7a832b138a173a3ee7f3e64959f76c38cc9c8",
+    "title": "Native",
+    "reward": 1000,
+    "seoCard": "https://ik.imagekit.io/cafu/image%20(2).png?updatedAt=1746453307022&ik-s=1827becae84a3408cb1ba2100e264aadbcd40c0e",
+    "logo": "https://ik.imagekit.io/cafu/image%20(2).png?updatedAt=1746453307022&ik-s=1827becae84a3408cb1ba2100e264aadbcd40c0e",
+    "round": "Round 1",
+    "link": "https://dexscreener.com/base/0x20DD04c17AFD5c9a8b3f2cdacaa8Ee7907385BEF",
+    "availbility": "Dex",
+    "MILESTONES": [
+      2000000,
+      2200000,
+      2400000,
+      2600000,
+      2800000,
+      3000000,
+      3200000,
+      3400000,
+      3600000
+    ],
+    "MIN_TOKEN_BALANCE": 150000,
+    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+    "timelineItems": [
+      {
+        "title": "$2M",
+        "value": 2000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2.2M",
+        "value": 2200000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2.4M",
+        "value": 2400000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2.6M",
+        "value": 2600000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2.8M",
+        "value": 2800000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3M",
+        "value": 3000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3.2M",
+        "value": 3200000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3.4M",
+        "value": 3400000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3.6M",
+        "value": 3600000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "Round 2",
+        "value": 3800000,
+        "description": ""
+      }
+    ],
+    "PRIMARY_COLOR": "#0052FF",
+    "BACKGROUND": "#EFF5FF",
+    "GRAY_LIGHT": "#D1D5DB",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "GRAY_TEXT": "#6B7280",
+    "GRADIENT_START": "#0052FF",
+    "GRADIENT_END": "#3B82F6",
+    "website_link": "https://x.com/ScanQRBase",
+    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
+    "zora_link": "https://zora.co/@scanqrbase",
+    "x_link": "https://x.com/ScanQRBase"
+  },
+  {
+    "id": "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
+    "pool": "0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/terfer/Split-9.png?updatedAt=1742545224358&ik-s=47c7a832b138a173a3ee7f3e64959f76c38cc9c8",
+    "title": "DEGEN",
+    "reward": 1000,
+    "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+    "logo": "https://ik.imagekit.io/cafu/image%2021.png?updatedAt=1746453307015&ik-s=f47e5101bc8289387b427f67fbeeff594cea9483",
+    "round": "Round 1",
+    "link": "https://dexscreener.com/base/0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
+    "availbility": "Dex",
+    "MILESTONES": [
+      60000000,
+      61000000,
+      62000000,
+      63000000,
+      64000000,
+      65000000,
+      66000000,
+      67000000,
+      68000000
+    ],
+    "MIN_TOKEN_BALANCE": 150000,
+    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+    "timelineItems": [
+      {
+        "title": "$60M",
+        "value": 60000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$61M",
+        "value": 61000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$62M",
+        "value": 62000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$63M",
+        "value": 63000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$64M",
+        "value": 64000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$65M",
+        "value": 65000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$66M",
+        "value": 66000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$67M",
+        "value": 67000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$68M",
+        "value": 68000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "Round 2",
+        "value": 69000000,
+        "description": ""
+      }
+    ],
+    "PRIMARY_COLOR": "#0052FF",
+    "BACKGROUND": "#EFF5FF",
+    "GRAY_LIGHT": "#D1D5DB",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "GRAY_TEXT": "#6B7280",
+    "GRADIENT_START": "#0052FF",
+    "GRADIENT_END": "#3B82F6",
+    "website_link": "https://x.com/ScanQRBase",
+    "telegram_link": "https://t.me/ScanQRBase",
+    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
+    "zora_link": "https://zora.co/@scanqrbase"
+  }
+]
