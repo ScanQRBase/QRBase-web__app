@@ -10,18 +10,35 @@ export async function generateStaticParams() {
   }));
 }
 
+
 export async function generateMetadata({ params }: { params: { address: string } }) {
   const address = params.address;
   const partner = partnerData.find((p) => p.id === address);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'qrbase.xyz';
+
+  const config = {
+    API_KEY_CLOUD: process.env.NEXT_PUBLIC_API_KEY ?? "",
+    SHARE_SEO_ENDPOINT: `${baseUrl}/api/shareImage`,
+  };
+
+  const response = await fetch(config.SHARE_SEO_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "api-key": config.API_KEY_CLOUD,
+    },
+    body: JSON.stringify({ pool: partner?.pool }),
+  });
+
+  const data = await response.json();
 
   if (!partner) {
     return { title: 'Not Found', description: 'Partner not found' };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://beta.qrbase.xyz';
   const title = `QRBase -$${partner.title.toUpperCase()}`;
   const description = `QRBase a gamified project where each time $${partner.title.toUpperCase()} hits a new MKT CAP`;
-  const imageUrl = partner.seoCard.startsWith('http') ? partner.seoCard : `${baseUrl}${partner.seoCard}`;
+  const imageUrl = data;
 
   return {
     title,
