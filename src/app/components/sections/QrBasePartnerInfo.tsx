@@ -73,13 +73,19 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
             fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
             fontWeight: 700,
             fontStretch: 'condensed',
-            display:"flex",
-            justifyContent:"space-between",
-            alignItems:"center"
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
           }}
         >
-          <span className='text-3xl'>$SCAN to <span className="leading-relaxed" style={{ color: partnerData.PRIMARY_COLOR }}>Win!</span>
-          </span>
+          <div style={{display:'flex' , alignItems:'center'}}> <img
+            src={partnerData.partnerLogo}
+            alt="Logo"
+            width={38}
+            height={38}
+          />
+          <span style={{fontWeight:'bold' , marginLeft:'6px'}}>{partnerData.title.toUpperCase()}</span></div>
+         
           <Tooltip title={`Share`}>
 
             <div onClick={() => setModalOpen(true)} className="relative group" style={{ border: '1px solid #D0E1FF', borderRadius: '50%', width: '30px', height: "30px", position: 'relative', cursor: 'pointer' }}>
@@ -115,13 +121,13 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
               </a>
             </Tooltip>
           )}
-           {partnerData.warpcast_link && (
+          {partnerData.warpcast_link && (
             <Tooltip title={`Warpcast`}>
-            <a href={partnerData.warpcast_link} target="_blank" rel="noopener noreferrer" className="relative group" style={{border:'1px solid #D0E1FF' , borderRadius:'50%' , width:'30px' , height:"30px",position:'relative'}}>
-              <WarpcastIcon  size={20} color={partnerData.PRIMARY_COLOR} style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} />
-            </a>
+              <a href={partnerData.warpcast_link} target="_blank" rel="noopener noreferrer" className="relative group" style={{ border: '1px solid #D0E1FF', borderRadius: '50%', width: '30px', height: "30px", position: 'relative' }}>
+                <WarpcastIcon size={20} color={partnerData.PRIMARY_COLOR} style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} />
+              </a>
             </Tooltip>
-          )} 
+          )}
           {partnerData.zora_link && (
             <Tooltip title={`Zora`}>
               <a href={partnerData.zora_link} target="_blank" rel="noopener noreferrer" className="relative group" style={{ border: '1px solid #D0E1FF', borderRadius: '50%', width: '30px', height: "30px", position: 'relative' }}>

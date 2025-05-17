@@ -182,8 +182,8 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
         >
           <div style={{display:'flex' , justifyContent:'space-between' , alignItems:'center'}}>
             <div style={{display:'flex'}}>
-          {partnerData.round} Progress:{' '}
-          <span style={{ color: partnerData.PRIMARY_COLOR }}>
+          {partnerData.round} Progress: {' '}
+          <span style={{ color: partnerData.PRIMARY_COLOR,marginLeft:'6px' }}>
             {((lastReached + 1) / (timelineItems.length - 1) * 100) > 100 ? 100 : ((lastReached + 1) / (timelineItems.length - 1) * 100).toFixed(1)}%
             
           </span>
