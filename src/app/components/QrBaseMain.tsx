@@ -28,6 +28,9 @@ const config = {
   WORKER_PROXY_URL: "/api/proxyFullImages",
   CHAIN_ID: "0x2105",
   RPC_URL: process.env.NEXT_PUBLIC_RPC_URL,
+  MORALIS_API_KEY: process.env.NEXT_PUBLIC_MORALIS_API_KEY ?? "",
+  MORALIS_API_BASE_URL: "https://deep-index.moralis.io/api/v2.2",
+
 };
 
 // Initialize Viem public client
@@ -131,13 +134,15 @@ export default function QrBaseMain({ partnerData }: any) {
   };
 
   useEffect(() => {
-    const was = prevIsSuccess.current;
-    const is = isSuccess;
-    prevIsSuccess.current = is;
+    // const was = prevIsSuccess.current;
+   
+    // const is = isSuccess;
+    // prevIsSuccess.current = is;
+    // console.log(was , )
 
-    // Block the case of true ➝ false
-    const blocked = was === true && is === false;
-    if (blocked) return;
+    // // Block the case of true ➝ false
+    // const blocked = was === true && is === false;
+    // if (blocked) return;
 
     async function fetchUserBalance() {
       try {
@@ -149,6 +154,22 @@ export default function QrBaseMain({ partnerData }: any) {
           return;
         }
 
+           // Fetch token data from Moralis API
+      const balanceUrl = `${config.MORALIS_API_BASE_URL}/wallets/${address}/tokens?chain=0x2105`;
+      const response = await fetch(balanceUrl, {
+        headers: {
+          'X-API-Key': config.MORALIS_API_KEY, // Ensure API key is in config
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const tokens = data.result || [];
+
+
         const isDualToken = partnerData?.title !== "Scan";
         const scanTokenId = scanData[0].id.toLowerCase();
         const partnerTokenId = partnerData?.id?.toLowerCase();
@@ -158,25 +179,16 @@ export default function QrBaseMain({ partnerData }: any) {
         const coinDisplay: CoinDisplay[] = [];
 
         for (const tokenAddress of tokenAddresses) {
-          // Fetch balance
-          const balance = await client.readContract({
-            address: tokenAddress as `0x${string}`,
-            abi: erc20Abi,
-            functionName: 'balanceOf',
-            args: [address],
-          });
-
-          const decimals = await client.readContract({
-            address: tokenAddress as `0x${string}`,
-            abi: erc20Abi,
-            functionName: 'decimals',
-          });
-
-          const normalizedBalance = Number(balance) / Math.pow(10, decimals);
-          balances[tokenAddress] = normalizedBalance;
-
+          // Trouver le résultat correspondant à l'adresse du token
+          const result = tokens.find((r : any) => r.token_address.toLowerCase() === tokenAddress.toLowerCase());
+          if (!result) continue;
+        
+          const balance = result.balance_formatted;
+        
+          balances[tokenAddress] = balance;
+        
           const logo = tokenAddress === scanTokenId ? scanLogo : partnerData.logo;
-          coinDisplay.push({ balance: normalizedBalance, logo });
+          coinDisplay.push({ balance, logo });
         }
 
         const scanBal = balances[scanTokenId] ?? 0;
