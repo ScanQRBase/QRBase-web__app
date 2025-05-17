@@ -175,15 +175,14 @@ export default function QrBaseMain({ partnerData }: any) {
         const partnerTokenId = partnerData?.id?.toLowerCase();
         const tokenAddresses = isDualToken ? [scanTokenId, partnerTokenId] : [scanTokenId];
 
-        const balances: Record<string, number> = {};
+        const balances: Record<string, string> = {};
         const coinDisplay: CoinDisplay[] = [];
-
         for (const tokenAddress of tokenAddresses) {
-          // Trouver le résultat correspondant à l'adresse du token
+
           const result = tokens.find((r : any) => r.token_address.toLowerCase() === tokenAddress.toLowerCase());
-          if (!result) continue;
+
         
-          const balance = result.balance_formatted;
+          const balance = result && result?.balance_formatted ? result.balance_formatted : '0' ;
         
           balances[tokenAddress] = balance;
         
@@ -192,14 +191,14 @@ export default function QrBaseMain({ partnerData }: any) {
         }
 
         const scanBal = balances[scanTokenId] ?? 0;
-        setScanBalance(scanBal);
+        setScanBalance(parseFloat(scanBal));
         setCoinsBoughtDisplay(coinDisplay);
 
-        let hasEnough = scanBal >= scanData[0]?.MIN_TOKEN_BALANCE;
+        let hasEnough = parseFloat(scanBal) >= scanData[0]?.MIN_TOKEN_BALANCE;
 
         if (isDualToken) {
           const partnerBal = balances[partnerTokenId] ?? 0;
-          setPartnerBalance(partnerBal);
+          setPartnerBalance(parseFloat(partnerBal));
           hasEnough = hasEnough && partnerBal >= (partnerData?.MIN_TOKEN_BALANCE ?? 0);
         }
 
