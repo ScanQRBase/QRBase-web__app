@@ -1,28 +1,45 @@
 import { useEffect, useRef, useState } from "react";
 import addImg from "@/src/app/images/svg/add.svg";
 
-
 import partnerData from "@/src/app/data/partnerData.json";
-
+import { MaxMarketCap } from "@/src/app/types"
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
+import { CircularProgress } from "@mui/material";
+
+
 
 function moveFirstItemToMiddle(partnerData: any) {
     if (partnerData.length <= 1) return partnerData;
 
-    const firstItem = partnerData[0];
+     const firstItem = partnerData[0];
     const rest = partnerData.slice(1);
     const middleIndex = Math.floor((rest.length + 1) / 2);
 
     return [...rest.slice(0, middleIndex), firstItem, ...rest.slice(middleIndex)];
+
+    // const firstItem = partnerData[0];
+    // const secondItem = partnerData[1]
+    // const rest = partnerData.slice(2);
+    // const middleIndex = Math.floor((rest.length + 1) / 2);
+
+    // return [secondItem, firstItem, ...rest];
+
+
+    
 }
 
-export default function QrBasePartnerList() {
+export default function QrBasePartnerList({ allMarketCap }: any) {
     const router = useRouter();
     const params = useParams();
     const address = params?.address ?? "";
     const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
+    const [maxMarket, setMaxMarket] = useState<MaxMarketCap[]>([]);
+    
+    
+    useEffect(() => {
+        setMaxMarket(allMarketCap)
+    }, [allMarketCap])
     const scrollRef = useRef<HTMLDivElement>(null);
     const [activeCard, setActiveCard] = useState(partnerData[0]?.id || "");
     const [reorderedData, setReorderedData] = useState(
@@ -33,18 +50,40 @@ export default function QrBasePartnerList() {
         if (address) setActiveCard(address as string);
     }, []);
 
+
+    function findMilestoneIndex(marketsCap: any, MILESTONES: any, pool: string) {
+        // Find the item in array1 that matches the given poolType
+        const item = marketsCap.find((obj: any) => obj.pool === pool);
+
+
+
+        if (!item || !Array.isArray(MILESTONES)) {
+            return 0; // or handle error appropriately
+        }
+
+        const maxCap = parseFloat(item.maxMarketCap);
+
+        // Apply the formula
+        const milestoneIndex = Math.max(
+            0,
+            MILESTONES.filter((cap: any) => maxCap >= cap).length
+        );
+
+        return milestoneIndex;
+    }
+
     useEffect(() => {
-        // Ensure that activeCard exists and the reference to it is valid
         if (activeCard && cardRefs.current[activeCard]) {
             cardRefs.current[activeCard]?.scrollIntoView({
                 behavior: "smooth",
-                block: "center",  
-                inline: "center", 
+                block: "center",
+                inline: "center",
             });
         }
-    }, [activeCard]); 
+    }, [activeCard]);
 
-    const handleCardClick = (id: string) => {
+    const handleCardClick = (id: string, isTBA: boolean) => {
+        if (isTBA) return;
         setActiveCard(id);
         router.push(`/base/${id}`, { scroll: false });
     };
@@ -54,7 +93,6 @@ export default function QrBasePartnerList() {
         logo: card.logo,
     }));
 
-    // Horizontal scroll with mouse wheel
     useEffect(() => {
         const container = scrollRef.current;
         if (!container) return;
@@ -71,7 +109,6 @@ export default function QrBasePartnerList() {
         };
     }, []);
 
-    // Click and drag to scroll
     useEffect(() => {
         const container = scrollRef.current;
         if (!container) return;
@@ -130,6 +167,9 @@ export default function QrBasePartnerList() {
                 >
                     {cardData.map((card: any, index: any) => {
                         const isActive = activeCard === card.id;
+                        const isTBA = card.title === "TBA";
+                        const isBaseEveryone = card.title === "Base is for everyone";
+
                         return (
                             <div
                                 key={index}
@@ -146,10 +186,11 @@ export default function QrBasePartnerList() {
                                         ? "linear-gradient(90deg, #0052FE, #42C5F7)"
                                         : "#F3F4F6",
                                     boxSizing: "border-box",
-                                    cursor: "pointer",
+                                    cursor: isTBA ? "not-allowed" : "pointer",
+                                    opacity: isTBA ? 0.2 : 1,
                                     flexShrink: 0,
                                 }}
-                                onClick={() => handleCardClick(card.id)}
+                                onClick={() => handleCardClick(card.id, isTBA)}
                             >
                                 <div
                                     style={{
@@ -174,15 +215,26 @@ export default function QrBasePartnerList() {
                                         />
                                     </div>
                                     <div style={{ display: "flex", flexDirection: "column" }}>
-                                        <span
-                                            style={{
-                                                fontSize: "12px",
-                                                fontWeight: 600,
-                                                color: "#000",
-                                            }}
-                                        >
-                                            {card.title}
-                                        </span>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <span
+                                                style={{
+                                                    fontSize: "12px",
+                                                    fontWeight: 600,
+                                                    color: "#000",
+                                                }}
+                                            >
+                                                {isBaseEveryone ? "Base" : card.title}
+
+
+                                            </span>
+                                            {!isTBA && maxMarket && maxMarket.length > 0 ? (
+                                                <span style={{ color: "#00C566", fontSize: "11px" }}>
+                                                    {findMilestoneIndex(allMarketCap, card.MILESTONES, card.pool)}/9
+                                                </span>
+                                            ) : (
+                                                <CircularProgress size={12} />
+                                            )}
+                                        </div>
                                         <span style={{ fontSize: "11px" }}>
                                             <span style={{ color: "#00C566" }}>${card.reward}</span>{" "}
                                             in rewards
@@ -206,9 +258,8 @@ export default function QrBasePartnerList() {
                             cursor: "pointer",
                             flexShrink: 0,
                         }}
-                        onClick={() => alert("Apply For Listing")}
+                        onClick={() => window.open("https://listing.qrbase.xyz/submit-application", "_blank")}
                     >
-
                         <div
                             style={{
                                 width: "100%",
@@ -220,24 +271,26 @@ export default function QrBasePartnerList() {
                                 gap: "8px",
                                 padding: "0 12px",
                                 boxSizing: "border-box",
-
                             }}
                         >
                             <div style={{
-                                background: '#fff', borderRadius: "50%", width: '32px', height: '32px', border: '1px dotted #0052FF', placeItems: 'center', alignContent: 'center'
+                                background: '#fff',
+                                borderRadius: "50%",
+                                width: '32px',
+                                height: '32px',
+                                border: '1px dotted #0052FF',
+                                placeItems: 'center',
+                                alignContent: 'center'
                             }}>
                                 <Image
                                     src={addImg}
                                     alt="Logo"
                                     width={20}
                                     height={20}
-
                                 />
                             </div>
                             <div style={{ display: "flex", flexDirection: "column" }}>
-                                <span
-                                    style={{ fontSize: "12px", fontWeight: 600, color: "#0052FF" }}
-                                >
+                                <span style={{ fontSize: "12px", fontWeight: 600, color: "#0052FF" }}>
                                     TOKEN
                                 </span>
                                 <span style={{ fontSize: "11px" }}>
@@ -247,20 +300,22 @@ export default function QrBasePartnerList() {
                         </div>
                     </div>
                 </div>
-            </div> <style jsx global>{`
-        .dragging {
-  cursor: grabbing !important;
-}
+            </div>
 
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
+            <style jsx global>{`
+                .dragging {
+                    cursor: grabbing !important;
+                }
 
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+                .scrollbar-hide::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .scrollbar-hide {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+            `}</style>
         </header>
     );
 }
