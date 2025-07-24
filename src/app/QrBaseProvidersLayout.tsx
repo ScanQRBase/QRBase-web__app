@@ -1,5 +1,6 @@
 'use client';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
+import { MiniKitProvider } from '@coinbase/onchainkit/minikit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { base } from 'viem/chains';
@@ -15,7 +16,7 @@ function QrBaseProviders({ children }: Props) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider
+        <MiniKitProvider
           apiKey={NEXT_PUBLIC_ONCHAINKIT_API_KEY}
           chain={base as any}
           config={{ appearance: { theme: 'base' , mode: 'light'} , wallet: { 
@@ -27,7 +28,7 @@ function QrBaseProviders({ children }: Props) {
           
         >
           {children}
-        </OnchainKitProvider>
+        </MiniKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
