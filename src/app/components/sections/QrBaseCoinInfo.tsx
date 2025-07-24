@@ -121,12 +121,12 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
         <div className="flex justify-between items-start mb-6">
           <div className="coinInfoPrice flex flex-col items-start" style={{ background: partnerData.BACKGROUND }}>
             <a
-              href={`${DEXSCREENER_URL}${partnerData.id}`}
+              href={`${DEXSCREENER_URL}${partnerData.pool}`}
               className="flex cursor-pointer items-center text-[0.85rem]"
               target="_blank"
               rel="noreferrer"
             >
-              <p className="leading-relaxed text-[0.65rem]">${partnerData.title.toUpperCase()} Price</p>
+              <p className="leading-relaxed text-[0.65rem]">${partnerData.title == 'Base is for everyone' ? 'Base' : partnerData.title.toUpperCase()} Price</p>
               <div className="relative w-fit ms-1">
                 <div className="h-[8px] w-[8px] rounded-full" style={{ backgroundColor: partnerData.PRIMARY_COLOR }}></div>
                 <div
@@ -147,7 +147,7 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
           </div>
           <div className="coinInfoPrice flex flex-col items-start" style={{ background: partnerData.BACKGROUND }}>
             <a
-              href={`${DEXSCREENER_URL}${partnerData.id}`}
+              href={`${DEXSCREENER_URL}${partnerData.pool}`}
               className="flex cursor-pointer items-center text-[0.85rem]"
               target="_blank"
               rel="noreferrer"
@@ -161,7 +161,7 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
               <p className={`text-lg font-bold text-[0.85rem]`} style={{ color: partnerData.PRIMARY_COLOR }}>
                 <animated.span style={{ color: partnerData.PRIMARY_COLOR }}>
                   {springVolumeUsd?.number
-                    ? springVolumeUsd?.number.to((val: any) => `${formatLargeValue(val)}`)
+                    ? springVolumeUsd?.number.to((val: any) => `$${formatLargeValue(val)}`)
                     : '--'}
                 </animated.span>
               </p>
