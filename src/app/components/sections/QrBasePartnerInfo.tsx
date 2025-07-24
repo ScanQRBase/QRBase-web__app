@@ -50,7 +50,10 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
 
 
   const formatLargeValue = (value: number) => {
-    if (value >= 1_000_000) {
+    if (value >= 1_000_000_000) {
+      const num = Math.round(value / 100_000_000) / 10;
+      return `${Number.isInteger(num) ? num.toFixed(0) : num}B`;
+    } else if (value >= 1_000_000) {
       const num = Math.round(value / 100_000) / 10;
       return `${Number.isInteger(num) ? num.toFixed(0) : num}M`;
     } else {
@@ -59,10 +62,6 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
     }
   };
 
-
-  const content = partnerData.prizes;
-
-  const contentSecond = `QRBase a gamified project where each time $SCAN hits a new MKT CAP, we reveal a new QR piece for qualified holders.`;
 
   return (
     <div className="zoraClass flex flex-col justify-center border-gray-200 border-b p-4 py-8 pb-12 md:w-1/3 md:border-r md:border-b-0 md:py-22 lg:border-r lg:p-6 lg:pb-22 md:pt-8" style={{ marginTop: '50px' }}>
@@ -84,7 +83,7 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
             width={38}
             height={38}
           />
-          <span style={{fontWeight:'bold' , marginLeft:'6px'}}>{partnerData.title.toUpperCase()}</span></div>
+          <span style={{fontWeight:'bold' , marginLeft:'6px' , fontSize : partnerData.title =='Base is for everyone' ? '18px' : ''}}>{partnerData.title.toUpperCase()}</span></div>
          
           <Tooltip title={`Share`}>
 
@@ -93,7 +92,7 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
             </div>
           </Tooltip>
         </h2>
-        <p className="text-[0.75rem] leading-relaxed" dangerouslySetInnerHTML={{ __html: contentSecond }} />
+        <p className="text-[0.75rem] leading-relaxed" dangerouslySetInnerHTML={{ __html: partnerData.description }} />
 
         {/* ✅ Social Media Links */}
         <div className="flex flex-wrap gap-3 items-center relative" style={{ marginBottom: '20px' }}>
@@ -179,7 +178,7 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
                     {formatLargeValue(scanData.MIN_TOKEN_BALANCE)} $SCAN
                   </span>
                 </div>
-                {partnerData.title !== 'Scan' && (
+                {partnerData.title !== 'SCAN' && (
                   <div className="flex items-center space-x-2">
                     <StatusIcon status={getStatus(partnerBalance, partnerData.MIN_TOKEN_BALANCE)} />
                     <span className="font-bold">
@@ -218,7 +217,7 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
 
           <div className="flex flex-col space-y-1">
             {/* ✅ Updated Content with New Text */}
-            <p className="text-[0.75rem] leading-relaxed mt-2" dangerouslySetInnerHTML={{ __html: content }} />
+            <p className="text-[0.75rem] leading-relaxed mt-2" dangerouslySetInnerHTML={{ __html: partnerData.prizes }} />
           </div>
         </div>
 
