@@ -19,6 +19,11 @@ export interface PieceState {
   reached?: boolean;
 }
 
+export interface MaxMarketCap {
+  pool: string;
+  maxMarketCap: string;
+}
+
 export interface CoinDisplay  {
   balance: number | null;
   logo: string | null;
