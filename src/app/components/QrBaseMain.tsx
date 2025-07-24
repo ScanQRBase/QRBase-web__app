@@ -3,9 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { QrBaseProvider } from "./provider/QrBaseProvider";
 import { QrBaseBanner } from './sections/QrBaseBanner';
-import { createPublicClient, http } from 'viem';
-import { base } from 'viem/chains';
-import { erc20Abi } from 'viem';
 import { lockedImages, unlockedImages } from "@/src/app/types/imageAssets";
 import scanData from '@/src/app/data/partnerData.json';
 import QrBaseFooter from './sections/QrBaseFooter';
@@ -15,14 +12,21 @@ import QrBaseCoinInfo from './sections/QrBaseCoinInfo';
 import QrBaseNavbar from './sections/QrBaseNavbar';
 import QrBasePartnerList from './sections/QrBasePartnerList';
 import { useAccount } from "wagmi";
-import {PieceState , CoinDisplay , TokenData } from "@/src/app/types"
-import { decryptObject , decryptObjectFullImage } from "@/src/app/utils/encrypt_decrypt"
+import { PieceState, CoinDisplay, TokenData } from "@/src/app/types"
+import { decryptObject, decryptObjectFullImage, encryptObject } from "@/src/app/utils/encrypt_decrypt"
+import Confetti from 'react-confetti-boom';
+
+
+
+
+
 
 
 // Config for environment variables
 const config = {
   API_KEY_CLOUD: process.env.NEXT_PUBLIC_API_KEY ?? "",
   COIN_INFO_ENDPOINT: "/api/coinInfo",
+  ALL_MARKET_CAP_ENDPOINT: "/api/getAllMaxMarketCap",
   POLL_INTERVAL: 5000,
   API_COIN_SECRET: process.env.NEXT_PUBLIC_RPC_URL,
   WORKER_PROXY_URL: "/api/proxyFullImages",
@@ -33,11 +37,7 @@ const config = {
 
 };
 
-// Initialize Viem public client
-const client = createPublicClient({
-  chain: base as any,
-  transport: http(config.RPC_URL),
-});
+
 
 
 export default function QrBaseMain({ partnerData }: any) {
@@ -54,8 +54,10 @@ export default function QrBaseMain({ partnerData }: any) {
   const [coinsBoughtDisplay, setCoinsBoughtDisplay] = useState<CoinDisplay[]>([]);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const prevIsSuccess = useRef<boolean | null>(null);
-  const isPoolReset = useRef<boolean>(false); 
-  const isBalanceFetched = useRef<boolean>(false); 
+  const isPoolReset = useRef<boolean>(false);
+  const isBalanceFetched = useRef<boolean>(false);
+  const [allMarketCap, setAllMarketCap] = useState([])
+
 
   useEffect(() => {
     setCoinInfo(null);
@@ -68,15 +70,15 @@ export default function QrBaseMain({ partnerData }: any) {
     setIsLoading(false);
     setIsSuccess(false);
     setScanLogo(scanData[0].logo);
-    isPoolReset.current = true; 
+    isPoolReset.current = true;
     isBalanceFetched.current = false;
   }, [partnerData.pool]);
 
-  const fetchPrice = useCallback(
+ const fetchPrice = useCallback(
     async (isManualFetch: boolean = false) => {
       if (isManualFetch) setIsLoading(true);
       try {
-        const response = await fetch(config.COIN_INFO_ENDPOINT, {
+        const coinInforesponse = await fetch(config.COIN_INFO_ENDPOINT, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -85,18 +87,23 @@ export default function QrBaseMain({ partnerData }: any) {
           body: JSON.stringify({ pool: partnerData.pool, id: partnerData.id }),
         });
 
-        if (!response.ok) {
+        if (!coinInforesponse.ok) {
           console.error("Failed to fetch coin info");
           return;
         }
 
-        const data = await response.json();
-        const decryptData = decryptObject(data);
+        const coinInfoData = await coinInforesponse.json();
+        const decryptCoinInfoData = decryptObject(coinInfoData);
         setCoinInfo({
-          priceInUsd: decryptData.lastPrice,
-          volumeUsd: decryptData.volumeUsd,
-          maxMarketCap: decryptData.maxMarketCap,
+          priceInUsd: decryptCoinInfoData.lastPrice,
+          volumeUsd: decryptCoinInfoData.volumeUsd,
+          maxMarketCap: decryptCoinInfoData.maxMarketCap,
         });
+
+
+
+
+
       } catch (error) {
         console.error("Fetch coin info error:", error);
       } finally {
@@ -127,6 +134,30 @@ export default function QrBaseMain({ partnerData }: any) {
 
   useEffect(() => {
     setOwnedNFTCount(unlockedPieces + 1);
+    async function fetchTotalPiece() {
+
+      try {
+        const maxMarketCapresponse = await fetch(config.ALL_MARKET_CAP_ENDPOINT, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "api-key": config.API_KEY_CLOUD,
+          },
+        });
+
+        if (!maxMarketCapresponse.ok) {
+          console.error("Failed to fetch coin info");
+          return;
+        }
+
+        const maxMarketCapData = await maxMarketCapresponse.json();
+        const decryptMaxMarketCapDataData = decryptObject(maxMarketCapData);
+        setAllMarketCap(decryptMaxMarketCapDataData)
+      } catch (e) {
+        console.error("Error fetching token balances:", e);
+      }
+    }
+    fetchTotalPiece()
   }, [unlockedPieces]);
 
   const onSuccess = () => {
@@ -135,7 +166,7 @@ export default function QrBaseMain({ partnerData }: any) {
 
   useEffect(() => {
     // const was = prevIsSuccess.current;
-   
+
     // const is = isSuccess;
     // prevIsSuccess.current = is;
     // console.log(was , )
@@ -150,42 +181,44 @@ export default function QrBaseMain({ partnerData }: any) {
           setHasEnoughScan(null);
           setScanBalance(null);
           setPartnerBalance(null);
+
           isBalanceFetched.current = true; // Mark balance fetch as complete
           return;
         }
 
-           // Fetch token data from Moralis API
-      const balanceUrl = `${config.MORALIS_API_BASE_URL}/wallets/${address}/tokens?chain=0x2105`;
-      const response = await fetch(balanceUrl, {
-        headers: {
-          'X-API-Key': config.MORALIS_API_KEY, // Ensure API key is in config
-        },
-      });
+        // Fetch token data from Moralis API
+        const balanceUrl = `${config.MORALIS_API_BASE_URL}/wallets/${address}/tokens?chain=0x2105`;
+        const response = await fetch(balanceUrl, {
+          headers: {
+            'X-API-Key': config.MORALIS_API_KEY, // Ensure API key is in config
+          },
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-      const data = await response.json();
-      const tokens = data.result || [];
+        const data = await response.json();
+        const tokens = data.result || [];
 
 
-        const isDualToken = partnerData?.title !== "Scan";
+        const isDualToken = partnerData?.title !== "SCAN";
         const scanTokenId = scanData[0].id.toLowerCase();
         const partnerTokenId = partnerData?.id?.toLowerCase();
         const tokenAddresses = isDualToken ? [scanTokenId, partnerTokenId] : [scanTokenId];
 
         const balances: Record<string, string> = {};
         const coinDisplay: CoinDisplay[] = [];
+
         for (const tokenAddress of tokenAddresses) {
 
-          const result = tokens.find((r : any) => r.token_address.toLowerCase() === tokenAddress.toLowerCase());
+          const result = tokens.find((r: any) => r.token_address.toLowerCase() === tokenAddress.toLowerCase());
 
-        
-          const balance = result && result?.balance_formatted ? result.balance_formatted : '0' ;
-        
+
+          const balance = result && result?.balance_formatted ? result.balance_formatted : '0';
+
           balances[tokenAddress] = balance;
-        
+
           const logo = tokenAddress === scanTokenId ? scanLogo : partnerData.logo;
           coinDisplay.push({ balance, logo });
         }
@@ -204,13 +237,15 @@ export default function QrBaseMain({ partnerData }: any) {
 
         setHasEnoughScan(hasEnough);
         setIsSuccess(false);
-        isBalanceFetched.current = true; 
+        isBalanceFetched.current = true;
+
+
       } catch (e) {
         console.error("Error fetching token balances:", e);
         setHasEnoughScan(false);
         setScanBalance(null);
         setPartnerBalance(null);
-        isBalanceFetched.current = true; 
+        isBalanceFetched.current = true;
       }
     }
 
@@ -263,24 +298,31 @@ export default function QrBaseMain({ partnerData }: any) {
       const index = placementOrder[i];
       updatedPieces[index] = hasEnoughScan && fullImages[i]
         ? {
-            image: fullImages[i],
-            reached: true,
-          }
+          image: fullImages[i],
+          reached: true,
+        }
         : {
-            image: filteredUnlockedImages[0]?.images[index]?.src || "",
-            link: partnerData.link,
-            pulse: true,
-          };
+          image: filteredUnlockedImages[0]?.images[index]?.src || "",
+          link: partnerData.link,
+          pulse: true,
+        };
     }
     setPiecesState(updatedPieces);
   }, [fullImages, unlockedPieces, hasEnoughScan, partnerData.pool]);
 
+
   return (
     <QrBaseProvider>
+
+      {ownedNFTCount === 9 && hasEnoughScan  && <> <Confetti style={{ zIndex: 51 }} mode="fall" particleCount={500} colors={[partnerData.PRIMARY_COLOR, partnerData.GRADIENT_END, partnerData.GRADIENT_START, partnerData.GRAY_LIGHT]} />
+        <Confetti style={{ zIndex: 51 }} mode="boom" effectInterval={10000} particleCount={100} colors={[partnerData.PRIMARY_COLOR, partnerData.GRADIENT_END, partnerData.GRADIENT_START, partnerData.GRAY_LIGHT]} effectCount={2} /></>}
+
       <div className="relative flex h-full max-h-screen max-w-full flex-col font-sansMono">
         <QrBaseBanner />
         <QrBaseNavbar coinsBoughtDisplay={coinsBoughtDisplay} />
-        <QrBasePartnerList />
+
+
+        <QrBasePartnerList allMarketCap={allMarketCap} />
         <main className="mx-auto flex max-w-7xl grow flex-col">
           <div className="flex grow flex-col md:flex-row containQrBase">
             <div className="flex grow flex-col md:flex-row ">
@@ -290,6 +332,7 @@ export default function QrBaseMain({ partnerData }: any) {
                 partnerData={partnerData}
                 scanData={scanData[0]}
               />
+
               <QrBaseQrcodeItems partnerData={partnerData} piecesState={piecesState} />
               <QrBaseCoinInfo
                 coinInfo={coinInfo}
@@ -309,6 +352,9 @@ export default function QrBaseMain({ partnerData }: any) {
             onSuccess={onSuccess}
           />
         </main>
+
+
+
       </div>
     </QrBaseProvider>
   );
