@@ -17,6 +17,7 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const [preview, setPreview] = useState('');
+  const [shareNumber , setShareNumber] = useState(1)
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const shareTextTwitter = `Checkout $${partnerData?.title} on @ScanQRBase`;
   const shareTextWarpcast = `Checkout $${partnerData?.title} on @scanqrbase.eth`;
@@ -27,18 +28,25 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
 
   const encodedLink = encodeURIComponent(currentUrl);
 
-  const twitterUrl = `https://x.com/intent/post?text=${encodedTextTwitter}%0A%0A${encodedLink}`;
-  const warpcastUrl = `https://warpcast.com/~/compose?text=${encodedTextWarpcast}&embeds[]=${encodedLink}`;
 
+
+function extractNumberBeforeWebp(url:string) {
+    const decodedURL = decodeURIComponent(url); // converts %20 to space
+
+  const match = decodedURL.match(/(\d+)\.webp/i);
+  return match ? parseFloat(match[1]) : Math.floor(Math.random() * 1000);
+}
 
   useEffect(() => {
     if (!isOpen) return;
     setIsLoading(true)
-    fetch(`https://api.microlink.io/?url=${encodeURIComponent(currentUrl)}`)
+    fetch(`https://api.microlink.io/?url=${encodedLink}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success") {
           const image = data.data.image?.url as string
+          const imageNumber = extractNumberBeforeWebp(image)
+          setShareNumber(imageNumber)
           setPreview(
             data.data.image?.url,
           );
@@ -47,6 +55,11 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
       })
       .catch(() => setPreview(''));
   }, [isOpen, currentUrl]);
+
+
+
+    const twitterUrl = `https://x.com/intent/post?text=${encodedTextTwitter}%0A%0A${encodedLink}?ref=twitter_${shareNumber}`;
+  const warpcastUrl = `https://farcaster.xyz/~/compose?text=${encodedTextWarpcast}&embeds[]=${encodedLink}`;
   
 
   const handleCopy = () => {
@@ -57,7 +70,7 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
 
   return (
     <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center" style={{ marginTop: 0 }}>
-      <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md relative border-4 md:max-w-lg lg:max-w-xl">
+      <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md relative border-4 m-5 md:m-0 md:max-w-lg lg:max-w-xl">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">Share</h2>
@@ -67,9 +80,9 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
         </div>
 
         {/* SEO Card */}
-        <div className="rounded-lg mb-6" style={{ width: 'max-content', placeSelf: 'center' }}>
+        <div className="rounded-lg mb-6" style={{ placeSelf: 'center' }}>
           {isLoading ? (
-            <div className="flex justify-center items-center h-48 w-full">
+            <div className="flex justify-center items-center w-full">
               {/* Simple CSS spinner */}
               <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-gray-900"></div>
             </div>
@@ -78,11 +91,11 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
               <img
                 src={preview}
                 alt="SEO Card"
-                className="w-full h-48 object-contain rounded-md"
+                className="w-full object-contain rounded-md"
                 style={{ borderRadius: "10px" }}
               />
             ) : (
-              <div className="w-full h-48 flex justify-center items-center bg-gray-100 rounded-md text-gray-400">
+              <div className="w-full flex justify-center items-center bg-gray-100 rounded-md text-gray-400">
                 No preview available
               </div>
             )
