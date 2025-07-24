@@ -2,9 +2,10 @@
   {
     "id": "0x20429F731096e359910921994A267d32ef576720",
     "pool": "0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9",
-    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/$SCAN/Split-9.png?updatedAt=1746620862098&ik-s=2fb7fece1624c42494e8067aeb7641960c1abc41",
-    "title": "Scan",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/$SCAN/webp/Split-9.webp?updatedAt=1753121128317&ik-s=fd55d9e6c279641ca5dfc76965670cd629827b00",
+    "title": "SCAN",
     "reward": 1000,
+    "description": "A growing network connects communities through interactive QR. Each time $SCAN hits a new Mkt cap, we reveal a blurred piece for qualified holders.",
     "partnerLogo": "https://ik.imagekit.io/cafu/$SCAN/Qrbase.png?updatedAt=1747422493584&ik-s=08510af1cf1369e72f3892940bb5fc3a334293c9",
     "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
     "logo": "https://ik.imagekit.io/cafu/$SCAN/scan.png?updatedAt=1746620925756&ik-s=83f8422add9570195a66cd510d3f1c5e884a50d1",
@@ -83,19 +84,20 @@
     "BLACK": "#000000",
     "GRAY_TEXT": "#6B7280",
     "GRADIENT_START": "#0052FF",
-    "GRADIENT_END": "#3B82F6",
-    "website_link": "https://x.com/ScanQRBase",
+    "GRADIENT_END": "#4DD9F5",
+    "website_link": "",
     "telegram_link": "https://t.me/ScanQRBase",
-    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
+    "warpcast_link": "https://warpcast.com/~/channel/qrbase",
     "zora_link": "https://zora.co/@scanqrbase",
     "x_link": "https://x.com/ScanQRBase"
   },
   {
     "id": "0xF73978B3A7D1d4974abAE11f696c1b4408c027A0",
     "pool": "0xfAB2F613D2b4c43AE304860f759575359EaC0566",
-    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/ENB/Split-9.png?updatedAt=1746528194508&ik-s=2db1c8260f23125d4bda5cfe95eaa8445d080269",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/ENB/webp/Split-9.webp?updatedAt=1747900701439&ik-s=a8eacf29532b828650695ad73b664b79495b9430",
     "title": "ENB",
     "reward": 1000,
+    "description": "A community-driven project on @base, using gamified tasks to onboard users and support long-term growth.",
     "partnerLogo": "https://ik.imagekit.io/cafu/ENB/Qr%20x%20ENB.png?updatedAt=1747422530546&ik-s=5c3f3e9a6aaf220ca596ae55f20885e2a356bd17",
     "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
     "logo": "https://ik.imagekit.io/cafu/ENB/enb.png?updatedAt=1746551235631&ik-s=371566323a97f1e5e86ef3136f13136fdc5deb4e",
@@ -113,7 +115,7 @@
       500000,
       600000
     ],
-    "MIN_TOKEN_BALANCE": 150000,
+    "MIN_TOKEN_BALANCE": 100000,
     "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
     "timelineItems": [
       {
@@ -175,17 +177,110 @@
     "GRAY_TEXT": "#6B7280",
     "GRADIENT_START": "#4612EE",
     "GRADIENT_END": "#E3566E",
-    "website_link": "https://x.com/ScanQRBase",
-    "telegram_link": "https://t.me/ScanQRBase",
-    "zora_link": "https://zora.co/@scanqrbase",
-    "x_link": "https://x.com/ScanQRBase"
+    "website_link": "",
+    "telegram_link": "https://x.com/EverybNeedsBase",
+    "zora_link": "https://zora.co/@enb",
+    "x_link": "https://x.com/EverybNeedsBase",
+    "warpcast_link": "https://warpcast.com/~/channel/enb"
+  },
+    {
+    "id": "0x290f057A2C59b95D8027aa4Abf31782676502071",
+    "pool": "0x76c0106bBa123E9b32770b2b34B6d13bf4CfA933",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/$Cliza/webp/Split-9.webp?updatedAt=1747900277847&ik-s=662963d5c031e3a50a569fbe40de0d08d27f389c",
+    "title": "CLIZA",
+    "reward": 1000,
+    "description": "CLIZA is a coin launchpad on Base that gives real ownership of its protocol to the coin creators and $CLIZA holders.",
+    "partnerLogo": "https://ik.imagekit.io/cafu/$Cliza/Qr%20X%20Cliza.png?updatedAt=1747422589335&ik-s=095b923290608dbc25683a0d3cfc637d7807aa9e",
+    "seoCard": "https://ik.imagekit.io/cafu/$Cliza/profile.jpg?updatedAt=1747417363353&ik-s=215bc68d883dfcb01c33a25fe1dabcb3b97ec2cb",
+    "logo": "https://ik.imagekit.io/cafu/$Cliza/profile.jpg?updatedAt=1747417363353&ik-s=215bc68d883dfcb01c33a25fe1dabcb3b97ec2cb",
+    "round": "Round 1",
+    "link": "https://dexscreener.com/base/0x76c0106bba123e9b32770b2b34b6d13bf4cfa933",
+    "availbility": "Dex",
+    "MILESTONES": [
+      500000,
+      1000000,
+      1500000,
+      2000000,
+      2500000,
+      3000000,
+      3500000,
+      4000000,
+      4500000
+    ],
+    "MIN_TOKEN_BALANCE": 10000,
+    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+    "timelineItems": [
+      {
+        "title": "$500K",
+        "value": 500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$1M",
+        "value": 1000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$1.5M",
+        "value": 1500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2M",
+        "value": 2000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$2.5M",
+        "value": 2500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3M",
+        "value": 3000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$3.5M",
+        "value": 3500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$4M",
+        "value": 4000000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "$4.5M",
+        "value": 4500000,
+        "description": "MKT Cap"
+      },
+      {
+        "title": "Round 2",
+        "value": 5000000,
+        "description": ""
+      }
+    ],
+    "PRIMARY_COLOR": "#3D0DFC",
+    "BACKGROUND": "#4612EE1A",
+    "GRAY_LIGHT": "#D1D5DB",
+    "WHITE": "#FFFFFF",
+    "BLACK": "#000000",
+    "GRAY_TEXT": "#6B7280",
+    "GRADIENT_START": "#4612EE",
+    "GRADIENT_END": "#E3566E",
+    "website_link": "https://cliza.ai/",
+    "telegram_link": "https://t.me/cliza_ai",
+    "zora_link": "",
+    "x_link": "https://x.com/ClizaSystems"
   },
   {
     "id": "0x0C5142BC58f9A61AB8C3D2085DD2F4e550c5cE0B",
-    "pool": "0x403B1ecaC8d7AC35Dbfb8Efae59F440a6F3BEB84",
-    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/RUSSELL/Split-9.png?updatedAt=1746619207952&ik-s=e00b5a0aa3d10c464f5af5923e3188cab2f71edd",
+    "pool": "0xEA8B7ED6170E0ea3703DdE6B496B065A8eCECd7B",
+    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/RUSSELL/webp/Split-9.webp?updatedAt=1747900498473&ik-s=b09c6ca6bef9b3d9a6939c470e2784026ca666d7",
     "title": "RUSSELL",
     "reward": 1000,
+    "description": "The Goodest Boy on @Base 💙 CEO of Coinbase Brian Armstrong's Dog. kita Inu 🐾  A Walk into Forever 💍",
     "partnerLogo": "https://ik.imagekit.io/cafu/RUSSELL/Qr%20X%20Russell.png?updatedAt=1747421644867&ik-s=f5edaad4b7fc898fc3fa75c59e9aa9ecf617caf4",
     "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
     "logo": "https://ik.imagekit.io/cafu/RUSSELL/russell.jpg?updatedAt=1747424066856&ik-s=7bb94cd84be938eb6dc500bb04a72f38775fa732",
@@ -203,7 +298,7 @@
       4500000,
       5000000
     ],
-    "MIN_TOKEN_BALANCE": 200000,
+    "MIN_TOKEN_BALANCE": 10000,
     "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
     "timelineItems": [
       {
@@ -265,189 +360,206 @@
     "GRAY_TEXT": "#6B7280",
     "GRADIENT_START": "#0052FF",
     "GRADIENT_END": "#3B82F6",
-    "website_link": "https://x.com/ScanQRBase",
-    "telegram_link": "https://t.me/ScanQRBase",
-    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
-    "x_link": "https://x.com/ScanQRBase"
+    "website_link": "https://www.russell.meme/",
+    "telegram_link": "https://t.me/russelldog",
+    "warpcast_link": "",
+    "x_link": "https://x.com/russelldogcto"
   },
   {
-    "id": "0x290f057A2C59b95D8027aa4Abf31782676502071",
-    "pool": "0x76c0106bBa123E9b32770b2b34B6d13bf4CfA933",
-    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/$Cliza/Split-9.png?updatedAt=1747415985385&ik-s=5a20f1f91c12f9765b35cceeb1c70450c57e3fb1",
-    "title": "CLIZA",
-    "reward": 1000,
-    "partnerLogo": "https://ik.imagekit.io/cafu/$Cliza/Qr%20X%20Cliza.png?updatedAt=1747422589335&ik-s=095b923290608dbc25683a0d3cfc637d7807aa9e",
-    "seoCard": "https://ik.imagekit.io/cafu/$Cliza/profile.jpg?updatedAt=1747417363353&ik-s=215bc68d883dfcb01c33a25fe1dabcb3b97ec2cb",
-    "logo": "https://ik.imagekit.io/cafu/$Cliza/profile.jpg?updatedAt=1747417363353&ik-s=215bc68d883dfcb01c33a25fe1dabcb3b97ec2cb",
-    "round": "Round 1",
-    "link": "https://dexscreener.com/base/0x76c0106bba123e9b32770b2b34b6d13bf4cfa933",
-    "availbility": "Dex",
-    "MILESTONES": [
-      700000,
-      1000000,
-      1500000,
-      2000000,
-      2500000,
-      3000000,
-      3500000,
-      4000000,
-      4500000
-    ],
-    "MIN_TOKEN_BALANCE": 200000,
-    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
-    "timelineItems": [
-      {
-        "title": "$700K",
-        "value": 700000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$1M",
-        "value": 1000000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$1.5M",
-        "value": 1500000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$2M",
-        "value": 2000000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$2.5M",
-        "value": 2500000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$3M",
-        "value": 3000000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$3.5M",
-        "value": 3500000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$4M",
-        "value": 4000000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$4.5M",
-        "value": 4500000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "Round 2",
-        "value": 5000000,
-        "description": ""
-      }
-    ],
-    "PRIMARY_COLOR": "#3D0DFC",
-    "BACKGROUND": "#4612EE1A",
-    "GRAY_LIGHT": "#D1D5DB",
-    "WHITE": "#FFFFFF",
-    "BLACK": "#000000",
-    "GRAY_TEXT": "#6B7280",
-    "GRADIENT_START": "#4612EE",
-    "GRADIENT_END": "#E3566E",
-    "website_link": "https://x.com/ScanQRBase",
-    "telegram_link": "https://t.me/ScanQRBase",
-    "zora_link": "https://zora.co/@scanqrbase",
-    "x_link": "https://x.com/ScanQRBase"
-  },
-  {
-    "id": "0x40e30c0b2AE8678e867f09885A71bd01DB5A72D7",
-    "pool": "0x92051AefA1617CDd2807B7384044f1F253420905",
-    "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/Onboard/Split-9.png?updatedAt=1746550756989&ik-s=e072032478d6c6a54291b0ea2d7ebdb4b03beb45",
-    "title": "Onboard",
-    "reward": 1000,
-    "partnerLogo": "https://ik.imagekit.io/cafu/Onboard/QR%20X%20Onboard.png?updatedAt=1747422620697&ik-s=acf408ec50ecba28264885af7a90b736e05f1454",
-    "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
-    "logo": "https://ik.imagekit.io/cafu/Onboard/onboard.png?updatedAt=1746551072325&ik-s=f42d78c98b00a3ae2e482513ed9222294b20603a",
-    "round": "Round 1",
-    "link": "https://dexscreener.com/base/0x92051aefa1617cdd2807b7384044f1f253420905",
-    "availbility": "Dex",
-    "MILESTONES": [
-      2000,
-      10000,
-      20000,
-      40000,
-      60000,
-      80000,
-      100000,
-      150000,
-      200000
-    ],
-    "MIN_TOKEN_BALANCE": 150000,
-    "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
-    "timelineItems": [
-      {
-        "title": "$2K",
-        "value": 2000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$10K",
-        "value": 10000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$20K",
-        "value": 20000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$40K",
-        "value": 40000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$60K",
-        "value": 60000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$80K",
-        "value": 80000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$100K",
-        "value": 100000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$150K",
-        "value": 150000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "$200K",
-        "value": 200000,
-        "description": "MKT Cap"
-      },
-      {
-        "title": "Round 2",
-        "value": 250000,
-        "description": ""
-      }
-    ],
-    "PRIMARY_COLOR": "#0052FF",
-    "BACKGROUND": "#EFF5FF",
-    "GRAY_LIGHT": "#D1D5DB",
-    "WHITE": "#FFFFFF",
-    "BLACK": "#000000",
-    "GRAY_TEXT": "#6B7280",
-    "GRADIENT_START": "#0052FF",
-    "GRADIENT_END": "#3B82F6",
-    "telegram_link": "https://t.me/ScanQRBase",
-    "warpcast_link": "https://warpcast.com/scanqrbase.eth",
-    "zora_link": "https://zora.co/@scanqrbase",
-    "x_link": "https://x.com/ScanQRBase"
-  }
+  "id": "0x6921B130D297cc43754afba22e5EAc0FBf8Db75b",
+  "pool": "0xADE9BcD4b968EE26Bed102dd43A55f6A8c2416df",
+  "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/DOGINME/webp/Split-9.webp?updatedAt=1753091058103&ik-s=1d7e5e8406d67d739f54eba7552801635abc4817",
+  "title": "DOGINME",
+  "reward": 1000,
+  "description": "Doginme is representative of the community's collective efforts to embrace and embolden the dog in them.",
+  "partnerLogo": "https://ik.imagekit.io/cafu/DOGINME/Qr%20x%20Doginme.png?updatedAt=1753113648059&ik-s=bea8aca7c842fd48deb07840a6d4c4cbd54026d9",
+  "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+  "logo": "https://ik.imagekit.io/cafu/DOGINME/Doginme.png?updatedAt=1753091266955&ik-s=14029ccc45fb7b8f842d83f4cdcec1a21b8e41e8",
+  "round": "Round 1",
+  "link": "https://dexscreener.com/base/0xade9bcd4b968ee26bed102dd43a55f6a8c2416df",
+  "availbility": "Dex",
+  "MILESTONES": [
+    40000000,
+    45000000,
+    50000000,
+    55000000,
+    60000000,
+    65000000,
+    70000000,
+    75000000,
+    80000000
+  ],
+  "MIN_TOKEN_BALANCE": 10000,
+  "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+  "timelineItems": [
+    {
+      "title": "$40M",
+      "value": 40000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$45M",
+      "value": 45000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$50M",
+      "value": 50000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$55M",
+      "value": 55000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$60M",
+      "value": 60000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$65M",
+      "value": 65000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$70M",
+      "value": 70000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$75M",
+      "value": 75000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "$80M",
+      "value": 80000000,
+      "description": "MKT Cap"
+    },
+    {
+      "title": "Round 2",
+      "value": 85000000,
+      "description": ""
+    }
+  ],
+  "PRIMARY_COLOR": "#0052FF",
+  "BACKGROUND": "#EFF5FF",
+  "GRAY_LIGHT": "#D1D5DB",
+  "WHITE": "#FFFFFF",
+  "BLACK": "#000000",
+  "GRAY_TEXT": "#6B7280",
+  "GRADIENT_START": "#0052FF",
+  "GRADIENT_END": "#3B82F6",
+  "website_link": "https://dogin.meme/",
+  "telegram_link": "https://t.me/doginmediscussion",
+  "warpcast_link": "https://farcaster.xyz/doginme",
+  "x_link": "https://x.com/doginmeonbase"
+},
+{
+  "id": "0xD769d56f479E9E72a77bB1523e866A33098Feec5",
+  "pool": "0x06D7874037E622d6eF42294Cf32EB259806Cb1C6",
+  "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/BASE%20IS%20FOR%20EVERYONE/webp/Split-9.webp?updatedAt=1753186441362&ik-s=da14d6415114d0d275006cc7d07b84389fc5084e",
+  "title": "Base is for everyone",
+  "reward": 1000,
+  "description": "Base's first Zora coin, coined by @base, is a new standard for open, onchain culture—built for everyone.",
+  "partnerLogo": "https://ik.imagekit.io/cafu/BASE%20IS%20FOR%20EVERYONE/Qr%20x%20base%20is%20for%20everyone.png?updatedAt=1753187137388&ik-s=6a436df98c85c69bcae83ea581b544df4e276269",
+  "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+  "logo": "https://ik.imagekit.io/cafu/BASE%20IS%20FOR%20EVERYONE/logo.png?updatedAt=1753187214504&ik-s=38ce543a4704050572a7ffac885936a62625d8ab",
+  "round": "Round 1",
+  "link": "https://dexscreener.com/base/0x06d7874037e622d6ef42294cf32eb259806cb1c6",
+  "availbility": "Dex",
+  "MILESTONES": [
+    6000000,
+    7000000,
+    8000000,
+    9000000,
+    10000000,
+    11000000,
+    12000000,
+    13000000,
+    14000000
+  ],
+  "MIN_TOKEN_BALANCE": 1000,
+  "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+  "timelineItems": [
+    { "title": "$6M", "value": 6000000, "description": "MKT Cap" },
+    { "title": "$7M", "value": 7000000, "description": "MKT Cap" },
+    { "title": "$8M", "value": 8000000, "description": "MKT Cap" },
+    { "title": "$9M", "value": 9000000, "description": "MKT Cap" },
+    { "title": "$10M", "value": 10000000, "description": "MKT Cap" },
+    { "title": "$11M", "value": 11000000, "description": "MKT Cap" },
+    { "title": "$12M", "value": 12000000, "description": "MKT Cap" },
+    { "title": "$13M", "value": 13000000, "description": "MKT Cap" },
+    { "title": "$14M", "value": 14000000, "description": "MKT Cap" },
+    { "title": "Round 2", "value": 85000000, "description": "" }
+  ],
+  "PRIMARY_COLOR": "#0052FF",
+  "BACKGROUND": "#EFF5FF",
+  "GRAY_LIGHT": "#D1D5DB",
+  "WHITE": "#FFFFFF",
+  "BLACK": "#000000",
+  "GRAY_TEXT": "#6B7280",
+  "GRADIENT_START": "#0052FF",
+  "GRADIENT_END": "#3B82F6",
+  "website_link": "",
+  "telegram_link": "",
+  "warpcast_link": "",
+  "x_link": "https://x.com/base/status/1912584945127813533",
+  "zora_link": "https://zora.co/coin/base:0xd769d56f479e9e72a77bb1523e866a33098feec5?referrer=0x9652721d02b9db43f4311102820158abb4ecc95b"
+},
+
+
+{
+  "id": "0x3ec2156D4c0A9CBdAB4a016633b7BcF6a8d68Ea2",
+  "pool": "0x5116773e18A9C7bB03EBB961b38678E45E238923",
+  "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/DRB/webp/Split-9.webp?updatedAt=1753274273788&ik-s=eb32e210ea8545935d78b1a58388dacf7457c056",
+  "title": "DRB",
+  "reward": 1000,
+  "description": "$DRB, Debt Relief Bot, is Grok's first token deployed with the help of Bankr, a helpful AI companion.",
+  "partnerLogo": "https://ik.imagekit.io/cafu/DRB/Qr%20x%20DRB.png?updatedAt=1753274665010&ik-s=8d5d63743bf89777db1a5d0166882e3c1151119f",
+  "seoCard": "https://ik.imagekit.io/cafu/$SCAN/seoCard.png?updatedAt=1747174485958&ik-s=011f27b9b09dc7f3a7da6e56ed376730205d5111",
+  "logo": "https://ik.imagekit.io/cafu/DRB/drb.jpg?updatedAt=1753274729916&ik-s=e144defd52a2a2ec3694b0a264525dfbf6056ebc",
+  "round": "Round 1",
+  "link": "https://dexscreener.com/base/0x5116773e18a9c7bb03ebb961b38678e45e238923",
+  "availbility": "Dex",
+  "MILESTONES": [
+    6000000,
+    7000000,
+    8000000,
+    9000000,
+    10000000,
+    11000000,
+    12000000,
+    13000000,
+    14000000
+  ],
+  "MIN_TOKEN_BALANCE": 10000,
+  "prizes": "🥇 1st Scan: $500<br />🥈 2nd Scan: $300<br />🥉 3rd Scan: $200",
+  "timelineItems": [
+    { "title": "$6M", "value": 6000000, "description": "MKT Cap" },
+    { "title": "$7M", "value": 7000000, "description": "MKT Cap" },
+    { "title": "$8M", "value": 8000000, "description": "MKT Cap" },
+    { "title": "$9M", "value": 9000000, "description": "MKT Cap" },
+    { "title": "$10M", "value": 10000000, "description": "MKT Cap" },
+    { "title": "$11M", "value": 11000000, "description": "MKT Cap" },
+    { "title": "$12M", "value": 12000000, "description": "MKT Cap" },
+    { "title": "$13M", "value": 13000000, "description": "MKT Cap" },
+    { "title": "$14M", "value": 14000000, "description": "MKT Cap" },
+    { "title": "Round 2", "value": 85000000, "description": "" }
+  ],
+  "PRIMARY_COLOR": "#0052FF",
+  "BACKGROUND": "#EFF5FF",
+  "GRAY_LIGHT": "#D1D5DB",
+  "WHITE": "#FFFFFF",
+  "BLACK": "#000000",
+  "GRAY_TEXT": "#6B7280",
+  "GRADIENT_START": "#0052FF",
+  "GRADIENT_END": "#555555",
+  "website_link": "https://linktr.ee/DRBtaskforce",
+  "telegram_link": "",
+  "warpcast_link": "",
+  "x_link": "https://x.com/i/communities/1900383544889",
+  "zora_link": ""
+}
 ]
