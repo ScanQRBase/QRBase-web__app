@@ -6,7 +6,10 @@ import {  QrBaseQrcodeItemsProps  } from "@/src/app/types";
 export default function QrBaseQrcodeItems({ partnerData, piecesState }: QrBaseQrcodeItemsProps) {
 
   const formatLargeValue = (value: number) => {
-    if (value >= 1_000_000) {
+    if (value >= 1_000_000_000) {
+      const num = Math.round(value / 100_000_000) / 10;
+      return `${Number.isInteger(num) ? num.toFixed(0) : num}B`;
+    } else if (value >= 1_000_000) {
       const num = Math.round(value / 100_000) / 10;
       return `${Number.isInteger(num) ? num.toFixed(0) : num}M`;
     } else {
@@ -25,7 +28,7 @@ export default function QrBaseQrcodeItems({ partnerData, piecesState }: QrBaseQr
             <FaTrophy style={{ color: partnerData.PRIMARY_COLOR }} className="text-3xl mb-1" />
             <p className="text-lg font-bold text-gray-800">{partnerData.round} Prize: ${partnerData.reward}</p>
           </div>
-          <div className="qrCube relative w-[440px] h-[440px] border-2 border-gray-300 rounded-lg grid grid-cols-3 grid-rows-3 gap-1">
+          <div className="qrCube relative w-[440px] h-[440px] border-2 border-gray-300 rounded-lg grid grid-cols-3 grid-rows-3">
             {piecesState.map((piece, index) => (
               <div
                 key={index}
@@ -70,7 +73,7 @@ export default function QrBaseQrcodeItems({ partnerData, piecesState }: QrBaseQr
                               Unlock at
                             </p>
                             <p className="font-bold text-[10px] mt-1">
-                              {formatLargeValue(reversedMilestones[index])} MKT CAP
+                              ${formatLargeValue(reversedMilestones[index])} MKT CAP
                             </p>
                           </div>
                         </div>
