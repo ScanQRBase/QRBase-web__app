@@ -18,7 +18,7 @@ export default function Footer({
   onSuccess:() => void;
 }) {
   const { pulseColor, balanceStatus } = useMemo(() => {
-    const isDualToken = partnerData?.title !== 'Scan';
+    const isDualToken = partnerData?.title !== 'SCAN';
     const partnerTitle = partnerData?.title.toUpperCase();
  
     let statusText = '';
