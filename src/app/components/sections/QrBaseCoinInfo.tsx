@@ -16,11 +16,11 @@ import { useSpring, animated } from '@react-spring/web';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import InfoIcon from '@/src/app/images/svg/utils/InfoIcon';
-import { QrBaseCoinInfoProps } from '@/src/app/types'; 
+import { QrBaseCoinInfoProps } from '@/src/app/types';
 
 
 
-export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, partnerData, isLoading }: QrBaseCoinInfoProps) {
+export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, partnerData, isLoading, isCompleted }: QrBaseCoinInfoProps) {
   const timelineItems = partnerData.timelineItems
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const lastReachedIndex = timelineItems.findIndex((item: any) => marketCap < item.value);
@@ -180,17 +180,17 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
             marginBottom: '20px',
           }}
         >
-          <div style={{display:'flex' , justifyContent:'space-between' , alignItems:'center'}}>
-            <div style={{display:'flex'}}>
-          {partnerData.round} Progress: {' '}
-          <span style={{ color: partnerData.PRIMARY_COLOR,marginLeft:'6px' }}>
-            {((lastReached + 1) / (timelineItems.length - 1) * 100) > 100 ? 100 : ((lastReached + 1) / (timelineItems.length - 1) * 100).toFixed(1)}%
-            
-          </span>
-          </div>
-          <Tooltip title="Progress" placement="top">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex' }}>
+              {partnerData.round} Progress: {' '}
+              <span style={{ color: partnerData.PRIMARY_COLOR, marginLeft: '6px' }}>
+                {((lastReached + 1) / (timelineItems.length - 1) * 100) > 100 ? 100 : ((lastReached + 1) / (timelineItems.length - 1) * 100).toFixed(1)}%
+
+              </span>
+            </div>
+            <Tooltip title="Progress" placement="top">
               <span>
-              <InfoIcon size={20} color={partnerData.PRIMARY_COLOR} style={{ objectFit: 'none' , cursor:'pointer' }} />
+                <InfoIcon size={20} color={partnerData.PRIMARY_COLOR} style={{ objectFit: 'none', cursor: 'pointer' }} />
               </span>
             </Tooltip>
           </div>
@@ -318,20 +318,22 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
                     <TimelineConnector
                       sx={{
                         height: 24,
-                        backgroundColor: isSecondToLast ? partnerData.PRIMARY_COLOR : partnerData.GRAY_LIGHT,
+                        backgroundColor: isCompleted ? partnerData.PRIMARY_COLOR : partnerData.GRAY_LIGHT,
                         borderRadius: 15,
                         color: isSecondToLast ? partnerData.WHITE : partnerData.BLACK,
                         display: isSecondToLast ? 'flex' : 'none',
-                        fontSize: 12,
+                        fontSize: 10,
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: 'bold',
+                        opacity: isCompleted ? 1 : 0.5
+
                       }}
                     >
                       {isSecondToLast && (
                         <Image src={gift} alt="Gift" width={20} height={20} style={{ objectFit: 'none', margin: '0 2px 2px 0' }} />
                       )}
-                      {isSecondToLast ? 'Claim Prize' : 'Coming Soon'}
+                      {partnerData.isClaimed ? 'Prize Claimed' : 'Scan QR'}
                     </TimelineConnector>
                   )}
                 </TimelineItem>

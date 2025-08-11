@@ -1,9 +1,10 @@
 import Image from "next/image"; // Use Next.js Image
 import { FaTrophy } from "react-icons/fa";
-import {  QrBaseQrcodeItemsProps  } from "@/src/app/types";
+import scan from '@/src/app/images/svg/scan.svg';
+import { QrBaseQrcodeItemsProps } from "@/src/app/types";
 
 
-export default function QrBaseQrcodeItems({ partnerData, piecesState }: QrBaseQrcodeItemsProps) {
+export default function QrBaseQrcodeItems({ partnerData, piecesState, isCompleted }: QrBaseQrcodeItemsProps) {
 
   const formatLargeValue = (value: number) => {
     if (value >= 1_000_000_000) {
@@ -26,8 +27,14 @@ export default function QrBaseQrcodeItems({ partnerData, piecesState }: QrBaseQr
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center mb-4">
             <FaTrophy style={{ color: partnerData.PRIMARY_COLOR }} className="text-3xl mb-1" />
-            <p className="text-lg font-bold text-gray-800">{partnerData.round} Prize: ${partnerData.reward}</p>
-          </div>
+            <p className="text-lg font-bold text-gray-800">
+              {partnerData.round}{" "}
+              {isCompleted ? (
+                <span style={{ color: partnerData.PRIMARY_COLOR }}>is Claimed!</span>
+              ) : (
+                `Prize:$${partnerData.reward}`
+              )}
+            </p>          </div>
           <div className="qrCube relative w-[440px] h-[440px] border-2 border-gray-300 rounded-lg grid grid-cols-3 grid-rows-3">
             {piecesState.map((piece, index) => (
               <div
@@ -52,7 +59,7 @@ export default function QrBaseQrcodeItems({ partnerData, piecesState }: QrBaseQr
                             <br />
                             Required
 
-                          
+
                           </p>
                         </div>
                       </div>
@@ -86,6 +93,19 @@ export default function QrBaseQrcodeItems({ partnerData, piecesState }: QrBaseQr
               </div>
             ))}
           </div>
+          {isCompleted && <div className="flex flex items-center mt-4">
+            <Image
+              src={scan}
+              alt="logo"
+              width={20}
+              height={20}
+              style={{
+                objectFit: 'cover',
+                marginLeft: "2px"
+              }}
+            />
+            <p className="text-lg font-bold text-gray-800">SCAN to see winners</p>
+          </div>}
         </div>
       </div>
       <style jsx>{`
