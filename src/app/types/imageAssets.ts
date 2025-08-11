@@ -111,6 +111,43 @@ import unlockedImg11_9 from '@/src/app/images/unlockedQr/0x5116773e18A9C7bB03EBB
 
 
 
+import unlockedImg12_1 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-1.webp';
+import unlockedImg12_2 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-2.webp';
+import unlockedImg12_3 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-3.webp';
+import unlockedImg12_4 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-4.webp';
+import unlockedImg12_5 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-5.webp';
+import unlockedImg12_6 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-6.webp';
+import unlockedImg12_7 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-7.webp';
+import unlockedImg12_8 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-8.webp';
+import unlockedImg12_9 from '@/src/app/images/unlockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-9.webp';
+
+
+
+
+
+import unlockedImg13_1 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-1.webp';
+import unlockedImg13_2 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-2.webp';
+import unlockedImg13_3 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-3.webp';
+import unlockedImg13_4 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-4.webp';
+import unlockedImg13_5 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-5.webp';
+import unlockedImg13_6 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-6.webp';
+import unlockedImg13_7 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-7.webp';
+import unlockedImg13_8 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-8.webp';
+import unlockedImg13_9 from '@/src/app/images/unlockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-9.webp';
+
+
+import unlockedImg14_1 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-1.webp';
+import unlockedImg14_2 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-2.webp';
+import unlockedImg14_3 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-3.webp';
+import unlockedImg14_4 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-4.webp';
+import unlockedImg14_5 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-5.webp';
+import unlockedImg14_6 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-6.webp';
+import unlockedImg14_7 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-7.webp';
+import unlockedImg14_8 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-8.webp';
+import unlockedImg14_9 from '@/src/app/images/unlockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-9.webp';
+
+
+
 
 // ID: 0x2a0f...
 import img1_1 from '@/src/app/images/lockedQr/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/Split-1.webp';
@@ -224,6 +261,54 @@ import img11_8 from '@/src/app/images/lockedQr/0x5116773e18A9C7bB03EBB961b38678E
 import img11_9 from '@/src/app/images/lockedQr/0x5116773e18A9C7bB03EBB961b38678E45E238923/Split-9.webp';
 
 
+
+
+import img12_1 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-1.webp';
+import img12_2 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-2.webp';
+import img12_3 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-3.webp';
+import img12_4 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-4.webp';
+import img12_5 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-5.webp';
+import img12_6 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-6.webp';
+import img12_7 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-7.webp';
+import img12_8 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-8.webp';
+import img12_9 from '@/src/app/images/lockedQr/0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA/Split-9.webp';
+
+
+
+import img13_1 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-1.webp';
+import img13_2 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-2.webp';
+import img13_3 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-3.webp';
+import img13_4 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-4.webp';
+import img13_5 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-5.webp';
+import img13_6 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-6.webp';
+import img13_7 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-7.webp';
+import img13_8 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-8.webp';
+import img13_9 from '@/src/app/images/lockedQr/0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3/Split-9.webp';
+
+
+
+import img14_1 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-1.webp';
+import img14_2 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-2.webp';
+import img14_3 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-3.webp';
+import img14_4 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-4.webp';
+import img14_5 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-5.webp';
+import img14_6 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-6.webp';
+import img14_7 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-7.webp';
+import img14_8 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-8.webp';
+import img14_9 from '@/src/app/images/lockedQr/0x16905890A1D02b6F824387419319Bf4188B961b0/Split-9.webp';
+
+
+
+import clearR1_1 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-1.webp';
+import clearR1_2 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-2.webp';
+import clearR1_3 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-3.webp';
+import clearR1_4 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-4.webp';
+import clearR1_5 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-5.webp';
+import clearR1_6 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-6.webp';
+import clearR1_7 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-7.webp';
+import clearR1_8 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-8.webp';
+import clearR1_9 from '@/src/app/images/clear/0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9/round1/Split-9.webp';
+
 // More imports for other IDs as necessary
 
 export const unlockedImages = [
@@ -237,6 +322,9 @@ export const unlockedImages = [
   { id: '0xADE9BcD4b968EE26Bed102dd43A55f6A8c2416df', images: [unlockedImg9_1, unlockedImg9_2, unlockedImg9_3, unlockedImg9_4, unlockedImg9_5, unlockedImg9_6, unlockedImg9_7, unlockedImg9_8, unlockedImg9_9] },
   { id: '0x06D7874037E622d6eF42294Cf32EB259806Cb1C6', images: [unlockedImg10_1, unlockedImg10_2, unlockedImg10_3, unlockedImg10_4, unlockedImg10_5, unlockedImg10_6, unlockedImg10_7, unlockedImg10_8, unlockedImg10_9] },
   { id: '0x5116773e18A9C7bB03EBB961b38678E45E238923', images: [unlockedImg11_1, unlockedImg11_2, unlockedImg11_3, unlockedImg11_4, unlockedImg11_5, unlockedImg11_6, unlockedImg11_7, unlockedImg11_8, unlockedImg11_9] },
+  { id: '0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA', images: [unlockedImg12_1, unlockedImg12_2, unlockedImg12_3, unlockedImg12_4, unlockedImg12_5, unlockedImg12_6, unlockedImg12_7, unlockedImg12_8, unlockedImg12_9] },
+  { id: '0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3', images: [unlockedImg13_1, unlockedImg13_2, unlockedImg13_3, unlockedImg13_4, unlockedImg13_5, unlockedImg13_6, unlockedImg13_7, unlockedImg13_8, unlockedImg13_9] },
+{ id: '0x16905890A1D02b6F824387419319Bf4188B961b0', images: [unlockedImg14_1, unlockedImg14_2, unlockedImg14_3, unlockedImg14_4, unlockedImg14_5, unlockedImg14_6, unlockedImg14_7, unlockedImg14_8, unlockedImg14_9] },
 
 
 
@@ -259,7 +347,22 @@ export const lockedImages = [
   { id: '0xADE9BcD4b968EE26Bed102dd43A55f6A8c2416df', images: [img9_1, img9_2, img9_3, img9_4, img9_5, img9_6, img9_7, img9_8, img9_9] },
   { id: '0x06D7874037E622d6eF42294Cf32EB259806Cb1C6', images: [img10_1, img10_2, img10_3, img10_4, img10_5, img10_6, img10_7, img10_8, img10_9] },
   { id: '0x5116773e18A9C7bB03EBB961b38678E45E238923', images: [img11_1, img11_2, img11_3, img11_4, img11_5, img11_6, img11_7, img11_8, img11_9] },
+  { id: '0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA', images: [img12_1, img12_2, img12_3, img12_4, img12_5, img12_6, img12_7, img12_8, img12_9] },
+  { id: '0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3', images: [img13_1, img13_2, img13_3, img13_4, img13_5, img13_6, img13_7, img13_8, img13_9] },
+  { id: '0x16905890A1D02b6F824387419319Bf4188B961b0', images: [img14_1, img14_2, img14_3, img14_4, img14_5, img14_6, img14_7, img14_8, img14_9] },
+
+
 
 
 ];
+
+
+
+
+export const clearImages = [
+  { id: '0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9', images: [clearR1_1, clearR1_2, clearR1_3, clearR1_4, clearR1_5, clearR1_6, clearR1_7, clearR1_8, clearR1_9] },
+
+
+];
+
 
