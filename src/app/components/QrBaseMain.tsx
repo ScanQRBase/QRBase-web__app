@@ -318,7 +318,7 @@ export default function QrBaseMain({ partnerData }: any) {
         <Confetti style={{ zIndex: 51 }} mode="boom" effectInterval={10000} particleCount={100} colors={[partnerData.PRIMARY_COLOR, partnerData.GRADIENT_END, partnerData.GRADIENT_START, partnerData.GRAY_LIGHT]} effectCount={2} /></>}
 
       <div className="relative flex h-full max-h-screen max-w-full flex-col font-sansMono">
-        <QrBaseBanner />
+        <QrBaseBanner round={partnerData.round} isCompleted={ownedNFTCount === 9} />
         <QrBaseNavbar coinsBoughtDisplay={coinsBoughtDisplay} />
 
 
@@ -333,13 +333,14 @@ export default function QrBaseMain({ partnerData }: any) {
                 scanData={scanData[0]}
               />
 
-              <QrBaseQrcodeItems partnerData={partnerData} piecesState={piecesState} />
+              <QrBaseQrcodeItems partnerData={partnerData} piecesState={piecesState} isCompleted={partnerData.isClaimed} />
               <QrBaseCoinInfo
                 coinInfo={coinInfo}
                 marketCap={marketCap}
                 maxMarketCap={coinInfo?.maxMarketCap}
                 partnerData={partnerData}
                 isLoading={isLoading}
+                isCompleted={partnerData.isClaimed}
               />
             </div>
           </div>
