@@ -1,4 +1,5 @@
 export const runtime = "edge";
+
 export default async function handler(req: Request){
   try {
     const apiKey = req.headers.get('api-key');
@@ -7,7 +8,6 @@ export default async function handler(req: Request){
     const apiFullImages =  process.env.NEXT_PUBLIC_API_SHARE_IMAGE as string;
     const body = await req.text();  // Read the stream
   const { pool } = JSON.parse(body);  // Parse the body as JSON and extract 'pool'
-
     if (!apiKey || apiKey !== apiKeyCloud) {
       return new Response(JSON.stringify({ message: 'Unauthorized' }), {
         status: 401,
@@ -19,6 +19,7 @@ export default async function handler(req: Request){
         },
       });
     }
+
 
     if (!pool) {
       return new Response(
@@ -44,9 +45,11 @@ export default async function handler(req: Request){
   method: "POST",
   headers: { "Content-Type": "application/json" ,"Cache-Control": "no-cache", "api-key":  apiKeyWorker },
   body: JSON.stringify(requestBody),
+  next: { revalidate: 5 },
 
 });
  const workerData = await workerResponse.json();
+
 
  return new Response(JSON.stringify(workerData.images), {
    status: 200,
