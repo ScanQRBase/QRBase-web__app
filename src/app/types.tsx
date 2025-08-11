@@ -1,4 +1,4 @@
-import type { ReactNode , CSSProperties } from 'react';
+import type { ReactNode, CSSProperties } from 'react';
 
 
 export type BuyButton = {
@@ -9,7 +9,7 @@ export type BuyButton = {
 export interface TokenData {
   priceInUsd: string;
   volumeUsd: string;
-  maxMarketCap:string;
+  maxMarketCap: string;
 }
 
 export interface PieceState {
@@ -24,7 +24,7 @@ export interface MaxMarketCap {
   maxMarketCap: string;
 }
 
-export interface CoinDisplay  {
+export interface CoinDisplay {
   balance: number | null;
   logo: string | null;
 };
@@ -40,15 +40,17 @@ export interface CoinsBoughtDisplayProps {
 export interface QrBaseQrcodeItemsProps {
   partnerData: any;
   piecesState: PieceState[];
+  isCompleted: Boolean;
 }
 
 export type QrBaseCoinInfoProps = {
-  coinInfo: TokenData | null;
-  marketCap: any;
-  maxMarketCap: any;
-  partnerData: any;
-  isLoading: boolean;
-};
+    coinInfo: TokenData | null;
+    marketCap: any;
+    maxMarketCap: any;
+    partnerData: any;
+    isLoading: boolean;
+    isCompleted:boolean;
+  };
 
 export type QrBaseProviderProps = {
   children: ReactNode;
