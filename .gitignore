@@ -1,6 +1,8 @@
 .env
 node_modules
 .next
-.env
 .DS_Store
 .vercel
+.open-next
+.dev.vars
+cloudflare-env.d.ts

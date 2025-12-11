@@ -49,7 +49,7 @@
       "no-dupe-class-members":"off",
       "react/no-unknown-property":"off",
       "no-unused-vars":"off",
-      "eslint no-lone-blocks": "off",
-      "react/no-unescaped-entities": "off",
+      "no-lone-blocks": "off",
+      "react/no-unescaped-entities": "off"
   }
 }
