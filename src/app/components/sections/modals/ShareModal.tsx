@@ -17,7 +17,7 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const [preview, setPreview] = useState('');
-  const [shareNumber , setShareNumber] = useState(1)
+  const [shareNumber, setShareNumber] = useState({ number: 1, folder: "" })
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
   const shareTextTwitter = `Checkout $${partnerData?.title} on @ScanQRBase`;
   const shareTextWarpcast = `Checkout $${partnerData?.title} on @scanqrbase.eth`;
@@ -28,39 +28,56 @@ export default function ShareModal({ partnerData, onClose, isOpen }: ShareModalP
 
   const encodedLink = encodeURIComponent(currentUrl);
 
+  const config = {
+    API_KEY_CLOUD: process.env.NEXT_PUBLIC_API_KEY ?? "",
+    SHARE_SEO_ENDPOINT: `/api/shareImage`,
+  };
 
+  function extractInfoFromUrl(url: string) {
+    const decodedURL = decodeURIComponent(url); // Converts %20 to space
 
-function extractNumberBeforeWebp(url:string) {
-    const decodedURL = decodeURIComponent(url); // converts %20 to space
+    // Extract number before .webp
+    const numberMatch = decodedURL.match(/(\d+)\.webp/i);
+    const number = numberMatch ? parseFloat(numberMatch[1]) : Math.floor(Math.random() * 1000);
 
-  const match = decodedURL.match(/(\d+)\.webp/i);
-  return match ? parseFloat(match[1]) : Math.floor(Math.random() * 1000);
-}
+    // Extract folder that starts with R followed by a number
+    const folderMatch = decodedURL.match(/\/(R\d+)\//i);
+    const folder = folderMatch ? folderMatch[1] : null;
+
+    return { number, folder };
+  }
 
   useEffect(() => {
     if (!isOpen) return;
     setIsLoading(true)
-    fetch(`https://api.microlink.io/?url=${encodedLink}`)
-      .then((res) => res.json())
+
+    fetch(config.SHARE_SEO_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": config.API_KEY_CLOUD,
+      },
+      body: JSON.stringify({ pool: partnerData?.pool }),
+    }).then((res) => res.json())
       .then((data) => {
-        if (data.status === "success") {
-          const image = data.data.image?.url as string
-          const imageNumber = extractNumberBeforeWebp(image)
-          setShareNumber(imageNumber)
-          setPreview(
-            data.data.image?.url,
-          );
-        }
+        const image = data as string
+        const imageInfo: any = extractInfoFromUrl(image)
+        setShareNumber(imageInfo)
+        setPreview(
+          data
+        );
+
         setIsLoading(false)
       })
       .catch(() => setPreview(''));
-  }, [isOpen, currentUrl]);
+
+  }, []);
 
 
 
-    const twitterUrl = `https://x.com/intent/post?text=${encodedTextTwitter}%0A%0A${encodedLink}?ref=twitter_${shareNumber}`;
+  const twitterUrl = `https://x.com/intent/post?text=${encodedTextTwitter}%0A%0A${encodedLink}?ref=twitter_${shareNumber.number}${shareNumber.folder ? shareNumber.folder : "R1"}`;
   const warpcastUrl = `https://farcaster.xyz/~/compose?text=${encodedTextWarpcast}&embeds[]=${encodedLink}`;
-  
+
 
   const handleCopy = () => {
     navigator.clipboard.writeText(currentUrl);
@@ -119,7 +136,7 @@ function extractNumberBeforeWebp(url:string) {
             className="flex items-center justify-center gap-2 bg-gray-200 text-gray-900 px-4 py-1.5 rounded-2xl text-sm font-medium transition-colors duration-200 hover:bg-gray-300 w-full sm:w-[136px]"
           >
             <WarpcastIcon size={18} color={partnerData.PRIMARY_COLOR} />
-            Warpcast
+            Farcaster
           </button>
 
           {/* Copy Link Button */}
