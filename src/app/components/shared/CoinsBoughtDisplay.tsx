@@ -14,16 +14,25 @@ const formatCoins = (coins: any): string => {
 
   if (isNaN(value)) return '0';
 
-  if (value >= 1_000_000_000) 
-    return (value / 1_000_000_000).toFixed(2).replace(/\.0+$/, '') + 'B';
-  
-  if (value >= 1_000_000) 
-    return (value / 1_000_000).toFixed(2).replace(/\.0+$/, '') + 'M';
-  
-  if (value >= 1_000) 
-    return (value / 1_000).toFixed(2).replace(/\.0+$/, '') + 'K';
+  // Helper to avoid rounding up
+  const formatNoRound = (num: number, divisor: number, suffix: string) => {
+    const v = num / divisor;
+    const truncated = Math.floor(v * 100) / 100; // keep 2 decimals, no rounding
+    return truncated.toString().replace(/\.0+$/, '') + suffix;
+  };
 
-  return value.toFixed(1).replace(/\.0+$/, '');
+  if (value >= 1_000_000_000)
+    return formatNoRound(value, 1_000_000_000, 'B');
+
+  if (value >= 1_000_000)
+    return formatNoRound(value, 1_000_000, 'M');
+
+  if (value >= 1_000)
+    return formatNoRound(value, 1_000, 'K');
+
+  // For < 1000: just truncate, no rounding
+  const truncated = Math.floor(value * 10) / 10;
+  return truncated.toString().replace(/\.0+$/, '');
 };
 
 
