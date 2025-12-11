@@ -2,9 +2,10 @@ import Image from "next/image"; // Use Next.js Image
 import { FaTrophy } from "react-icons/fa";
 import scan from '@/src/app/images/svg/scan.svg';
 import { QrBaseQrcodeItemsProps } from "@/src/app/types";
+import WatcherIcon from "../../images/svg/socialMedia/WatcherIcon";
 
 
-export default function QrBaseQrcodeItems({ partnerData, piecesState, isCompleted }: QrBaseQrcodeItemsProps) {
+export default function QrBaseQrcodeItems({ partnerData, piecesState, isCompleted, countWatcher }: QrBaseQrcodeItemsProps) {
 
   const formatLargeValue = (value: number) => {
     if (value >= 1_000_000_000) {
@@ -93,7 +94,8 @@ export default function QrBaseQrcodeItems({ partnerData, piecesState, isComplete
               </div>
             ))}
           </div>
-          {isCompleted && <div className="flex flex items-center mt-4">
+
+          {isCompleted ? <div className="flex flex items-center mt-8">
             <Image
               src={scan}
               alt="logo"
@@ -101,11 +103,18 @@ export default function QrBaseQrcodeItems({ partnerData, piecesState, isComplete
               height={20}
               style={{
                 objectFit: 'cover',
-                marginLeft: "2px"
+                marginRight: "5px"
               }}
             />
             <p className="text-lg font-bold text-gray-800">SCAN to see winners</p>
-          </div>}
+          </div> :
+
+            <div className="flex items-center space-x-2 border border-gray-500/50 px-4 py-1 rounded-full mt-6 mb-2">
+              <WatcherIcon size={15} color={partnerData.PRIMARY_COLOR} />
+              <span className="text-bold"> {`${countWatcher ?? 0}`}</span>
+              <span className="text-gray-500">People watching</span>
+            </div>
+          }
         </div>
       </div>
       <style jsx>{`

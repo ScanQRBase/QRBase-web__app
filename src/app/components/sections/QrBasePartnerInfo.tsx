@@ -1,5 +1,5 @@
 import { ExternalLinkSvg } from '@/src/app/images/svg/utils/ExternalLinkSvg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tooltip } from '@mui/material';
 import InfoIcon from '@/src/app/images/svg/utils/InfoIcon';
 import XIcon from '@/src/app/images/svg/socialMedia/XIcon';
@@ -8,11 +8,26 @@ import ZoraIcon from '@/src/app/images/svg/socialMedia/ZoraIcon';
 import WebsiteIcon from '@/src/app/images/svg/socialMedia/WebsiteIcon';
 import ShareIcon from '@/src/app/images/svg/socialMedia/ShareIcon';
 import WarpcastIcon from '@/src/app/images/svg/socialMedia/WarpcastIcon';
+import DiscordIcon from '@/src/app/images/svg/socialMedia/DiscordIcon';
+
 
 import ShareModal from "./modals/ShareModal";
 
-export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, partnerBalance }: any) {
+export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, partnerBalance, currentRound }: any) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [prizes, setPrizes] = useState(partnerData.prizes)
+
+
+  useEffect(() => {
+    if (partnerData.title === "SCAN") {
+      const round : number = currentRound === 0 ? 2 : currentRound
+      const filteredPrizes = partnerData.prizes
+        .filter((prize: any) => prize.round === round) // filter by round
+        .map((prize: any) => prize.text); // keep only text
+
+      setPrizes(filteredPrizes[0]);
+    }
+  }, [partnerData, currentRound]);
 
 
   const StatusIcon = ({ status }: { status: 'unknown' | 'rejected' | 'accepted' }) => {
@@ -66,7 +81,7 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
   return (
     <div className="zoraClass flex flex-col justify-center border-gray-200 border-b p-4 py-8 pb-12 md:w-1/3 md:border-r md:border-b-0 md:py-22 lg:border-r lg:p-6 lg:pb-22 md:pt-8" style={{ marginTop: '50px' }}>
 
-      <div className="space-y-4 text-left">
+      <div className="space-y-4 text-left parTnerInfoHeight">
         <h2 className="font-bold text-2xl leading-tight"
           style={{
             fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
@@ -77,14 +92,14 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
             alignItems: "center"
           }}
         >
-          <div style={{display:'flex' , alignItems:'center'}}> <img
+          <div style={{ display: 'flex', alignItems: 'center' }}> <img
             src={partnerData.partnerLogo}
             alt="Logo"
             width={38}
             height={38}
           />
-          <span style={{fontWeight:'bold' , marginLeft:'6px' , fontSize : partnerData.title =='Base is for everyone' ? '18px' : ''}}>{partnerData.title.toUpperCase()}</span></div>
-         
+            <span style={{ fontWeight: 'bold', marginLeft: '6px', fontSize: partnerData.title == 'Base is for everyone' ? '18px' : '' }}>{partnerData.title.toUpperCase()}</span></div>
+
           <Tooltip title={`Share`}>
 
             <div onClick={() => setModalOpen(true)} className="relative group" style={{ border: '1px solid #D0E1FF', borderRadius: '50%', width: '30px', height: "30px", position: 'relative', cursor: 'pointer' }}>
@@ -121,9 +136,18 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
             </Tooltip>
           )}
           {partnerData.warpcast_link && (
-            <Tooltip title={`Warpcast`}>
+            <Tooltip title={`Farcaster`}>
               <a href={partnerData.warpcast_link} target="_blank" rel="noopener noreferrer" className="relative group" style={{ border: '1px solid #D0E1FF', borderRadius: '50%', width: '30px', height: "30px", position: 'relative' }}>
                 <WarpcastIcon size={20} color={partnerData.PRIMARY_COLOR} style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} />
+              </a>
+            </Tooltip>
+          )}
+
+
+           {partnerData.discord_link && (
+            <Tooltip title={`Discord`}>
+              <a href={partnerData.discord_link} target="_blank" rel="noopener noreferrer" className="relative group" style={{ border: '1px solid #D0E1FF', borderRadius: '50%', width: '30px', height: "30px", position: 'relative' }}>
+                <DiscordIcon size={20} color={partnerData.PRIMARY_COLOR} style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} />
               </a>
             </Tooltip>
           )}
@@ -182,7 +206,7 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
                   <div className="flex items-center space-x-2">
                     <StatusIcon status={getStatus(partnerBalance, partnerData.MIN_TOKEN_BALANCE)} />
                     <span className="font-bold">
-                      {formatLargeValue(partnerData.MIN_TOKEN_BALANCE)} ${partnerData.title.toUpperCase()}
+                      {formatLargeValue(partnerData.MIN_TOKEN_BALANCE)} ${partnerData.title.toUpperCase() !== "MINT CLUB" ? partnerData.title.toUpperCase() : "MT" }
                     </span>
                   </div>
                 )}
@@ -217,7 +241,7 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
 
           <div className="flex flex-col space-y-1">
             {/* ✅ Updated Content with New Text */}
-            <p className="text-[0.75rem] leading-relaxed mt-2" dangerouslySetInnerHTML={{ __html: partnerData.prizes }} />
+            <p className="text-[0.75rem] leading-relaxed mt-2" dangerouslySetInnerHTML={{ __html: prizes }} />
           </div>
         </div>
 
@@ -231,10 +255,11 @@ export default function QrBasePartnerInfo({ partnerData, scanData, scanBalance, 
           {/* ✅ Button for opening modal */}
           <button
             type="button"
-            onClick={() => alert('VIEW QRPAPER')}
+            onClick={() => window.open("https://listing.qrbase.xyz/submit-application", "_blank")}
+
             className="flex cursor-pointer items-center text-[0.75rem] leading-relaxed hover:underline"
           >
-            VIEW QRPAPER
+            LIST YOUR TOKEN
             <span className="pl-1">
               <ExternalLinkSvg />
             </span>

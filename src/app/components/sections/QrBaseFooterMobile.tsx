@@ -61,7 +61,7 @@ export default function Footer({
 
 
   return (
-    <div className="z-50 fixed right-0 bottom-0 w-full border-gray-200 border-t bg-[white]">
+    <div className="w-full border-gray-200 border-t bg-[white]">
       <div className="flex w-full justify-center py-2 qrNumberInfo" style={{ alignItems: 'center', flexDirection: 'column' }}>
         <h2 className="font-bold text-lg text-center">
           TOTAL PIECES UNLOCKED {ownedNFTCount}/9
@@ -93,12 +93,7 @@ export default function Footer({
       </div>
       <div className="mx-auto max-w-7xl " style={{ zIndex: 1, position: 'relative' }} >
         <div className="flex flex-col justify-between py-4 md:flex-row md:items-center">
-          <div className="mb-2 hidden flex-col px-4 text-xs md:flex md:mb-0 md:w-1/3 lg:px-6">
-            <span>Built on Base</span>
-            <a className="pt-1 text-[10px] text-gray-600 hover:text-gray-900">
-              ⓒ 2025 QRBase. All rights reserved
-            </a>
-          </div>
+  
 
           <div className="flex flex-col items-center justify-center gap-2 px-4 sm:flex-row sm:gap-0 md:w-auto lg:px-6 connectButtons">
             <div className="flex justify-center md:justify-start gap-4 w-[300px]">

@@ -13,20 +13,11 @@ function moveFirstItemToMiddle(partnerData: any) {
     if (partnerData.length <= 1) return partnerData;
 
     const firstItem = partnerData[0];
-    const rest = partnerData.slice(1);
+    const secondItem = partnerData[1]
+    const rest = partnerData.slice(2);
     const middleIndex = Math.floor((rest.length + 1) / 2);
 
-    return [...rest.slice(0, middleIndex), firstItem, ...rest.slice(middleIndex)];
-
-    // const firstItem = partnerData[0];
-    // const secondItem = partnerData[1]
-    // const rest = partnerData.slice(2);
-    // const middleIndex = Math.floor((rest.length + 1) / 2);
-
-    // return [secondItem, firstItem, ...rest];
-
-
-
+    return [secondItem, firstItem, ...rest];
 }
 
 export default function QrBasePartnerList({ allMarketCap }: any) {
@@ -35,8 +26,8 @@ export default function QrBasePartnerList({ allMarketCap }: any) {
     const address = params?.address ?? "";
     const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
     const [maxMarket, setMaxMarket] = useState<MaxMarketCap[]>([]);
-
-
+    
+    
     useEffect(() => {
         setMaxMarket(allMarketCap)
     }, [allMarketCap])
@@ -52,27 +43,21 @@ export default function QrBasePartnerList({ allMarketCap }: any) {
 
 
     function findMilestoneIndex(marketsCap: any, MILESTONES: any, pool: string) {
-
+        // Find the item in array1 that matches the given poolType
         const item = marketsCap.find((obj: any) => obj.pool === pool);
 
+
+
         if (!item || !Array.isArray(MILESTONES)) {
-            return 0;
+            return 0; // or handle error appropriately
         }
 
         const maxCap = parseFloat(item.maxMarketCap);
 
-
-
-
-        // If pool matches the special case, filter milestones
-        const effectiveMilestones =
-            pool === "0x2a0f410422951f53cd2f3e9f6d0f29fccb1426e9"
-                ? MILESTONES.filter((milestone: { round: number; milenstone: number[] }) => milestone.round == 2).flatMap((milestone: any) => milestone.milenstone)
-                : MILESTONES;
-
+        // Apply the formula
         const milestoneIndex = Math.max(
             0,
-            effectiveMilestones.filter((cap: number) => maxCap >= cap).length
+            MILESTONES.filter((cap: any) => maxCap >= cap).length
         );
 
         return milestoneIndex;
@@ -158,7 +143,7 @@ export default function QrBasePartnerList({ allMarketCap }: any) {
     return (
         <header
             className="fixed left-0 w-full border-b border-gray-200 bg-white z-50 top-[100px] md:top-[91px]"
-          
+           
         >
             <div className="container mx-auto px-4 py-2 lg:px-6">
                 <div
@@ -174,7 +159,6 @@ export default function QrBasePartnerList({ allMarketCap }: any) {
                     {cardData.map((card: any, index: any) => {
                         const isActive = activeCard === card.id;
                         const isTBA = card.title === "TBA";
-                        const isBaseEveryone = card.title === "Base is for everyone";
 
                         return (
                             <div
@@ -229,7 +213,7 @@ export default function QrBasePartnerList({ allMarketCap }: any) {
                                                     color: "#000",
                                                 }}
                                             >
-                                                {isBaseEveryone ? "Base" : card.title}
+                                                {card.title}
 
 
                                             </span>

@@ -18,10 +18,8 @@ import { styled } from '@mui/material/styles';
 import InfoIcon from '@/src/app/images/svg/utils/InfoIcon';
 import { QrBaseCoinInfoProps } from '@/src/app/types';
 
-
-
-export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, partnerData, isLoading, isCompleted }: QrBaseCoinInfoProps) {
-  const timelineItems = partnerData.timelineItems
+export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, partnerData, isLoading }: QrBaseCoinInfoProps) {
+  const timelineItems = partnerData.timelineItems;
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const lastReachedIndex = timelineItems.findIndex((item: any) => marketCap < item.value);
   const lastReached = lastReachedIndex === -1 ? timelineItems.length - 1 : lastReachedIndex - 1;
@@ -31,15 +29,13 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
     borderRadius: 5,
     marginTop: 5,
     [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor: partnerData.BACKGROUND, // Empty track color
+      backgroundColor: partnerData.BACKGROUND,
     },
     [`& .${linearProgressClasses.bar}`]: {
       borderRadius: 5,
-      backgroundImage: `linear-gradient(to right, ${partnerData.GRADIENT_START}, ${partnerData.GRADIENT_END})`, // Gradient
+      backgroundImage: `linear-gradient(to right, ${partnerData.GRADIENT_START}, ${partnerData.GRADIENT_END})`,
     },
   }));
-
-
 
   useEffect(() => {
     if (!isLoading) return;
@@ -50,18 +46,16 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
           return prev + 1;
         } else {
           clearInterval(interval);
-
           return prev;
         }
       });
-    }, 200); // Change color every 500ms
+    }, 200);
 
     return () => {
-      setHighlightedIndex(0)
+      setHighlightedIndex(0);
       clearInterval(interval);
-    }
+    };
   }, [isLoading]);
-
 
   const formatLargeValue = (coins: number): string => {
     if (coins) {
@@ -72,16 +66,55 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
     return '0';
   };
 
-
-
   const springPriceInUsd = useSpring({
     number: coinInfo?.priceInUsd,
     config: { tension: 120, friction: 20 },
   });
+
   const springVolumeUsd = useSpring({
     number: marketCap,
     config: { tension: 120, friction: 20 },
   });
+ const [progress, setProgress] = useState(0);
+  const progressPercentage = Math.min(((lastReached + 1) / (timelineItems.length - 1)) * 100, 100);
+  const animationRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
+
+   useEffect(() => {
+    const duration = 1000; 
+    const startProgress = progress;
+
+    const animate = (time: number) => {
+      if (startTimeRef.current === null) startTimeRef.current = time;
+      const elapsed = time - startTimeRef.current;
+
+      let newProgress =
+        startProgress + ((progressPercentage - startProgress) * elapsed) / duration;
+
+      // Clamp à la valeur cible
+      if (
+        (progressPercentage > startProgress && newProgress >= progressPercentage) ||
+        (progressPercentage < startProgress && newProgress <= progressPercentage)
+      ) {
+        newProgress = progressPercentage;
+        setProgress(newProgress);
+        if (animationRef.current !== null) cancelAnimationFrame(animationRef.current);
+        startTimeRef.current = null;
+        return;
+      }
+
+      setProgress(newProgress);
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current !== null) cancelAnimationFrame(animationRef.current);
+      startTimeRef.current = null;
+    };
+  }, [progressPercentage]);
+ 
 
   // Common styles with color variables
   const dotStyle = (isCurrent: boolean, isMaxReached: boolean) => ({
@@ -116,17 +149,17 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
   const DEXSCREENER_URL = 'https://dexscreener.com/base/';
 
   return (
-    <div className="qrRoad flex flex-col justify-center border-gray-200 border-b p-4 py-8 pb-12 md:w-1/3 md:border-l md:border-b-0 md:py-4 lg:border-l lg:p-6 lg:pb-22" style={{ marginTop: '75px' }}>
+    <div className="qrRoad flex flex-col justify-center border-gray-200 border-b p-4 py-8 pb-12 md:w-1/3 md:border-l md:border-b-0 md:py-4 lg:border-l lg:p-6 lg:pb-22" style={{ marginTop: '40px' }}>
       <div className="coinInfoBlock">
         <div className="flex justify-between items-start mb-6">
           <div className="coinInfoPrice flex flex-col items-start" style={{ background: partnerData.BACKGROUND }}>
             <a
-              href={`${DEXSCREENER_URL}${partnerData.pool}`}
+              href={`${DEXSCREENER_URL}${partnerData.id}`}
               className="flex cursor-pointer items-center text-[0.85rem]"
               target="_blank"
               rel="noreferrer"
             >
-              <p className="leading-relaxed text-[0.65rem]">${partnerData.title == 'Base is for everyone' ? 'Base' : partnerData.title == 'MINT CLUB' ? "MT" : partnerData.title.toUpperCase()} Price</p>
+              <p className="leading-relaxed text-[0.65rem]">${partnerData.title.toUpperCase()} Price</p>
               <div className="relative w-fit ms-1">
                 <div className="h-[8px] w-[8px] rounded-full" style={{ backgroundColor: partnerData.PRIMARY_COLOR }}></div>
                 <div
@@ -147,7 +180,7 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
           </div>
           <div className="coinInfoPrice flex flex-col items-start" style={{ background: partnerData.BACKGROUND }}>
             <a
-              href={`${DEXSCREENER_URL}${partnerData.pool}`}
+              href={`${DEXSCREENER_URL}${partnerData.id}`}
               className="flex cursor-pointer items-center text-[0.85rem]"
               target="_blank"
               rel="noreferrer"
@@ -194,7 +227,7 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
               </span>
             </Tooltip>
           </div>
-          <BorderLinearProgress variant="determinate" value={((lastReached + 1) / (timelineItems.length - 1) * 100) > 100 ? 100 : ((lastReached + 1) / (timelineItems.length - 1) * 100)} />
+          <BorderLinearProgress variant="determinate" value={progress} />
         </h2>
 
 
@@ -258,12 +291,17 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
                             filter: isSecondToLast && !isMaxReached ? 'grayscale(100%) brightness(1.2)' : undefined,
                             opacity: isSecondToLast && !isMaxReached ? 0.7 : 1,
                             margin: 'auto',
-                            marginTop: isLast ? '1px' : undefined
+                            marginTop: isLast ? '1px' : undefined,
+                            transition: 'filter 2s ease, opacity 2s ease',
                           }}
                         />
                       </div>
                     ) : (
-                      <div style={dotStyle(isCurrent, isMaxReached)}>
+                      <div style={{
+                        ...dotStyle(isCurrent, isMaxReached),
+                        transition: 'background-color 2s ease, border-color 2s ease',
+                        position: 'relative',
+                      }}>
                         {isMaxReached && !isCurrent ? (
                           <CheckIcon
                             style={{
@@ -275,7 +313,10 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
                         ) : (
                           <>
                             <TimelineDot
-                              sx={timelineDotStyle(isCurrent, isMaxReached)}
+                              sx={{
+                                ...timelineDotStyle(isCurrent, isMaxReached),
+                                transition: 'background-color 2s ease, border-color 2s ease',
+                              }}
 
                             />
                             {isCurrent && (
@@ -318,22 +359,20 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
                     <TimelineConnector
                       sx={{
                         height: 24,
-                        backgroundColor: isCompleted ? partnerData.PRIMARY_COLOR : partnerData.GRAY_LIGHT,
+                        backgroundColor: isSecondToLast ? partnerData.PRIMARY_COLOR : partnerData.GRAY_LIGHT,
                         borderRadius: 15,
                         color: isSecondToLast ? partnerData.WHITE : partnerData.BLACK,
                         display: isSecondToLast ? 'flex' : 'none',
-                        fontSize: 10,
+                        fontSize: 12,
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: 'bold',
-                        opacity: isCompleted ? 1 : 0.5
-
                       }}
                     >
                       {isSecondToLast && (
                         <Image src={gift} alt="Gift" width={20} height={20} style={{ objectFit: 'none', margin: '0 2px 2px 0' }} />
                       )}
-                      {partnerData.isClaimed ? 'Prize Claimed' : 'Scan QR'}
+                      {isSecondToLast ? 'Claim Prize' : 'Coming Soon'}
                     </TimelineConnector>
                   )}
                 </TimelineItem>

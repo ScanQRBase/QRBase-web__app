@@ -20,8 +20,19 @@ import { QrBaseCoinInfoProps } from '@/src/app/types';
 
 
 
-export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, partnerData, isLoading, isCompleted }: QrBaseCoinInfoProps) {
-  const timelineItems = partnerData.timelineItems
+export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, partnerData, isLoading, isCompleted, currentRound }: QrBaseCoinInfoProps) {
+  const [timelineItems, setTimelineItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (partnerData?.timelineItems) {
+      const filteredItems = partnerData.timelineItems.filter(
+        (item: { round: number }) => item.round === currentRound
+      );
+
+      setTimelineItems(filteredItems);
+    }
+  }, [currentRound]);
+
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const lastReachedIndex = timelineItems.findIndex((item: any) => marketCap < item.value);
   const lastReached = lastReachedIndex === -1 ? timelineItems.length - 1 : lastReachedIndex - 1;
@@ -126,7 +137,7 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
               target="_blank"
               rel="noreferrer"
             >
-              <p className="leading-relaxed text-[0.65rem]">${partnerData.title == 'Base is for everyone' ? 'Base' : partnerData.title == 'MINT CLUB' ? "MT" : partnerData.title.toUpperCase()} Price</p>
+              <p className="leading-relaxed text-[0.65rem]">${partnerData.title == 'Base is for everyone' ? 'Base' : partnerData.title.toUpperCase()} Price</p>
               <div className="relative w-fit ms-1">
                 <div className="h-[8px] w-[8px] rounded-full" style={{ backgroundColor: partnerData.PRIMARY_COLOR }}></div>
                 <div
@@ -182,7 +193,7 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex' }}>
-              {partnerData.round} Progress: {' '}
+              Round {currentRound} Progress: {' '}
               <span style={{ color: partnerData.PRIMARY_COLOR, marginLeft: '6px' }}>
                 {((lastReached + 1) / (timelineItems.length - 1) * 100) > 100 ? 100 : ((lastReached + 1) / (timelineItems.length - 1) * 100).toFixed(1)}%
 
@@ -318,7 +329,7 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
                     <TimelineConnector
                       sx={{
                         height: 24,
-                        backgroundColor: isCompleted ? partnerData.PRIMARY_COLOR : partnerData.GRAY_LIGHT,
+                        backgroundColor: item.isClaimed ? partnerData.PRIMARY_COLOR : partnerData.GRAY_LIGHT,
                         borderRadius: 15,
                         color: isSecondToLast ? partnerData.WHITE : partnerData.BLACK,
                         display: isSecondToLast ? 'flex' : 'none',
@@ -326,14 +337,14 @@ export default function QrBaseCoinInfo({ coinInfo, marketCap, maxMarketCap, part
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: 'bold',
-                        opacity: isCompleted ? 1 : 0.5
+                        opacity: item.isClaimed ? 1 : 0.5
 
                       }}
                     >
                       {isSecondToLast && (
                         <Image src={gift} alt="Gift" width={20} height={20} style={{ objectFit: 'none', margin: '0 2px 2px 0' }} />
                       )}
-                      {partnerData.isClaimed ? 'Prize Claimed' : 'Scan QR'}
+                      {item.isClaimed ? 'Prize Claimed' : 'Scan QR'}
                     </TimelineConnector>
                   )}
                 </TimelineItem>

@@ -158,7 +158,7 @@ export default function QrBasePartnerList({ allMarketCap }: any) {
     return (
         <header
             className="fixed left-0 w-full border-b border-gray-200 bg-white z-50 top-[100px] md:top-[91px]"
-          
+            
         >
             <div className="container mx-auto px-4 py-2 lg:px-6">
                 <div
