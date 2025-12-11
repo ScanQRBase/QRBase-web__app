@@ -1,45 +1,33 @@
-export const runtime = 'edge';
-
 import { notFound } from 'next/navigation';
 import QrBaseMain from '@/src/app/components/QrBaseMain';
 import partnerData from '@/src/app/data/partnerData.json';
 
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+export const revalidate = 0;
 
-export async function generateStaticParams() {
-  return partnerData.map((partner) => ({
-    address: partner.id,
-  }));
-}
+// Disabled to fix path.join error during build
+// export async function generateStaticParams() {
+//   return partnerData.map((partner) => ({
+//     address: partner.id,
+//   }));
+// }
 
 
-export async function generateMetadata({ params }: { params: { address: string } }) {
-  const address = params.address;
+export async function generateMetadata({ params }: { params: Promise<{ address: string }> }) {
+  const { address } = await params;
   const partner = partnerData.find((p) => p.id === address);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.qrbase.xyz';
-
-  const config = {
-    API_KEY_CLOUD: process.env.NEXT_PUBLIC_API_KEY ?? "",
-    SHARE_SEO_ENDPOINT: `${baseUrl}/api/shareImage`,
-  };
-
-  const response = await fetch(config.SHARE_SEO_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "api-key": config.API_KEY_CLOUD,
-    },
-    body: JSON.stringify({ pool: partner?.pool }),
-  });
-
-  const data = await response.json();
-
+  
   if (!partner) {
     return { title: 'Not Found', description: 'Partner not found' };
   }
 
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.qrbase.xyz';
   const title = `QRBase -$${partner.title.toUpperCase()}`;
   const description = partner.description;
-  const imageUrl = data;
+  
+  // Use static fallback image during build to avoid hanging
+  const imageUrl = 'https://www.qrbase.xyz/image.png';
 
   return {
     title,
@@ -68,30 +56,31 @@ export async function generateMetadata({ params }: { params: { address: string }
     },
 
     other: {
-      // "fc:frame": JSON.stringify({
-      //   version: "next",
-      //   imageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE,
-      //   button: {
-      //     title: `Launch ${process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME}`,
-      //     action: {
-      //       type: "launch_frame",
-      //       name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
-      //       url: URL,
-      //       splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE,
-      //       splashBackgroundColor:
-      //         process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
-      //     },
-      //   },
-      // }),
-      'fc:frame': 'vNext', 
-      'fc:frame:image': imageUrl,
-      'fc:frame:title': title,
+      "fc:miniapp": JSON.stringify({
+        version: "1",
+        imageUrl: "https://www.qrbase.xyz/image.png",
+        button: {
+          title: `Scan to win`,
+          action: {
+            type: "launch_frame",
+            name: "QRbase",
+            url: "https://www.qrbase.xyz",
+            splashImageUrl: process.env.NEXT_PUBLIC_APP_SPLASH_IMAGE,
+            splashBackgroundColor:
+              process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
+          },
+        },
+      }),
+      // 'fc:frame': 'vNext', 
+      // 'fc:frame:image': imageUrl,
+      // 'fc:frame:title': title,
     },
   };
 }
 
-export default function Page({ params }: { params: { address: string } }) {
-  const partner = partnerData.find((p) => p.id === params.address);
+export default async function Page({ params }: { params: Promise<{ address: string }> }) {
+  const { address } = await params;
+  const partner = partnerData.find((p) => p.id === address);
 
   if (!partner) {
     notFound();
