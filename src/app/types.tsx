@@ -41,16 +41,19 @@ export interface QrBaseQrcodeItemsProps {
   partnerData: any;
   piecesState: PieceState[];
   isCompleted: Boolean;
+  countWatcher?: number | null;
+  onRoundChange?: (round: number) => void;
 }
 
 export type QrBaseCoinInfoProps = {
-    coinInfo: TokenData | null;
-    marketCap: any;
-    maxMarketCap: any;
-    partnerData: any;
-    isLoading: boolean;
-    isCompleted:boolean;
-  };
+  coinInfo: TokenData | null;
+  marketCap: any;
+  maxMarketCap: any;
+  partnerData: any;
+  isLoading: boolean;
+  isCompleted: boolean;
+  currentRound? : number;
+};
 
 export type QrBaseProviderProps = {
   children: ReactNode;

@@ -19,6 +19,7 @@ export const viewport = {
 export const metadata: Metadata = {
   title: 'QRBase -$SCAN',
   description: '$SCAN',
+
 };
 
 export default function RootLayout({
@@ -41,9 +42,12 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-5F8ZHPK5');`,
           }}
         />
+
+        <meta property="fc:miniapp" content='{"version":"1","imageUrl":"https://www.qrbase.xyz/image.png","button":{"title":"Scan to win","action":{"type":"launch_frame","name":"QRBase!","url":"https://www.qrbase.xyz","splashImageUrl":"https://www.qrbase.xyz/splash.png","splashBackgroundColor":"#ffffff"}}}'></meta>
         {/* ✅ PWA Meta + Icons */}
-        <meta name="theme-color" content="#000000" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#0052FF" />
+        {/* <meta property="og:image" content="https://www.qrbase.xyz/icon.png" /> */}
+        <link rel="icon" type="image/x-icon" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/web-app-manifest-192x192.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/web-app-manifest-512x512.png" />

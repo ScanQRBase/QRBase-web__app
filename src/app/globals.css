@@ -40,6 +40,7 @@ body {
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  background: #fff;
 }
 
 a {
@@ -86,20 +87,82 @@ a {
 [data-testid="ockDraggable"] {
 
   position: unset;
+}
+
+@media (max-width: 1440px) {
+  .priceInfo {
+    scale: 0.9
   }
-  
-  @media (max-width: 1440px) {
-    .priceInfo {
-      scale:0.9
-    }
-    .connectButtons {
-      scale: 0.8;
-    }
+
+  .connectButtons {
+    scale: 0.8;
   }
+}
+
+
+.coinInfoPrice {
+  width: 135px;
+  height: 60px;
+  border-radius: 8px;
+  padding: 8px;
+  background-color: #EFF5FF;
+}
 
 
 
 @media (max-width: 768px) {
+
+  .progressMobile {
+    height: calc(100dvh - 155px);
+    width: 100vw;
+  }
+
+  .tabTitle {
+    font-family: Inter;
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    color: #6B7280;
+
+  }
+
+  .qrMobile {
+    overflow: auto;
+    margin-top: 100px;
+  }
+
+   .qrMobileFastMode {
+    overflow: auto;
+    margin-top: 70px;
+  }
+
+  .qrMobileHeight {
+    height: calc(100dvh - 280px);
+  }
+
+    .qrMobileHeightFastMode {
+    height: calc(100dvh - 180px);
+  }
+
+
+  .parTnerInfoHeight {
+    height: calc(100dvh - 50px);
+    margin-top: 20px;
+
+  }
+
+
+   .parTnerInfoHeightFastMode {
+    height: calc(100dvh - 50px);
+    margin-top: 90px;
+
+  }
+
+
 
 
   .zoraClass {
@@ -112,7 +175,7 @@ a {
   }
 
   .qrRoad {
-    padding-bottom: 11rem;
+    padding-bottom: 4rem;
   }
 
   .qrCube {
@@ -123,13 +186,17 @@ a {
 
 @media (max-width: 576px) {
 
-  
+
   .modal-style {
     height: 580px;
   }
 
   .modal-style-qr {
     height: 480px;
+  }
+
+  .coinInfoPrice {
+    width: 48%;
   }
 
 }
@@ -158,10 +225,16 @@ a {
 }
 
 @media (min-width: 768px) {
+
   /* Target small screens (Bootstrap's 'sm' breakpoint) */
   .containQrBase {
     margin: 100px 0 60px 0;
   }
+
+   .containQrBaseFastMode {
+    margin: 50px 0 60px 0;
+  }
+
   .coinInfoBlock {
     align-content: center;
   }
@@ -170,8 +243,12 @@ a {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50% , -50%);
+    transform: translate(-50%, -50%);
 
+  }
+
+      .qrRoad {
+    min-width: 330px;
   }
 }
 
@@ -180,13 +257,6 @@ a {
 
 
 
-.coinInfoPrice {
-  width: 135px;
-  height: 60px;
-  border-radius: 8px;
-  padding: 8px;
-  background-color: #EFF5FF;
-}
 
 
 @keyframes sunray {
@@ -261,9 +331,11 @@ a {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -274,9 +346,11 @@ a {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -284,55 +358,55 @@ a {
 
 
 [data-testid="ockDraggable"] {
-[data-testid="ockConnectWallet_Container"] {
+  [data-testid="ockConnectWallet_Container"] {
 
-  [data-testid="ockConnectWallet_Connected"] {
-    min-width: 40px !important;
-    width: 40px !important;
-    height: 40px;
-  }
+    [data-testid="ockConnectWallet_Connected"] {
+      min-width: 40px !important;
+      width: 40px !important;
+      height: 40px;
+    }
 
-  [data-testid="ock-defaultLoadingSVG"] {
-    min-width: 40px !important;
-    width: 40px !important;
-    height: 40px;
-    display: none;
-    
-  }
-      
-  
+    [data-testid="ock-defaultLoadingSVG"] {
+      min-width: 40px !important;
+      width: 40px !important;
+      height: 40px;
+      display: none;
+
+    }
+
+
     [data-testid="ockConnectButton"] {
       min-width: 40px !important;
       width: 40px !important;
       height: 40px;
-    
+
       /* background: linear-gradient(90deg, #E4EEFF, #0052FF, #E4EEFF); */
-       background: #0052FF;
+      background: #0052FF;
 
       background-size: 600% 100%;
       /* animation: shimmer 3s linear infinite; */
-  
-      
+
+
     }
-  
-  [data-testid="ockConnectAccountButtonInner"] {
-    min-width: 40px !important;
-    width: 40px !important;
 
-    height: 40px;
+    [data-testid="ockConnectAccountButtonInner"] {
+      min-width: 40px !important;
+      width: 40px !important;
+
+      height: 40px;
+
+    }
+
+    [data-testid="ockAvatar_ImageContainer"] {
+      min-width: 40px !important;
+      width: 40px !important;
+      height: 40px;
+
+    }
+
+
 
   }
-
-  [data-testid="ockAvatar_ImageContainer"] {
-    min-width: 40px !important;
-    width: 40px !important;
-    height: 40px;
-
-  }
-
- 
-
-}
 }
 
 [data-testid="ockWalletDropdownContent"] {
@@ -349,16 +423,19 @@ a {
 
 
 [data-testid="ock-defaultAvatarSVG"] {
-  border-color: transparent ;
+  border-color: transparent;
 }
 
 
 
 @keyframes pulseDot {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.6;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.2);
@@ -376,24 +453,27 @@ a {
     width: 100% !important;
     max-width: 100% !important;
   }
-  }
-
-  
-
-  [data-testid="ockTokenChip_Button"] {
-    font-size: 12px;
-  }
-
-
-  [data-testid="ockTokenChip_Button"] {
-    background-color: transparent;
-  }
+}
 
 
 
-  .ock-bg-default {
-    background-color:#f9fafb !important ;
-    
-  }
+[data-testid="ockTokenChip_Button"] {
+  font-size: 12px;
+}
 
 
+[data-testid="ockTokenChip_Button"] {
+  background-color: transparent;
+}
+
+
+
+.ock-bg-default {
+  background-color: #f9fafb !important;
+
+}
+
+
+#privy-modal-content {
+  background: #ffffff !important;
+}
