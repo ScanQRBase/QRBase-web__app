@@ -550,7 +550,6 @@
     "zora_link": "",
     "x_link": "https://x.com/basenjiofficial"
   },
-
   {
     "id": "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
     "pool": "0xc9034c3E7F58003E6ae0C8438e7c8f4598d5ACAA",
@@ -828,7 +827,7 @@
     "warpcast_link": "https://farcaster.xyz/~/channel/mintclub",
     "x_link": "https://x.com/MintClubPro"
   },
-    {
+  {
     "id": "0x50F88fe97f72CD3E75b9Eb4f747F59BcEBA80d59",
     "pool": "0xc39acb3ce11ebcd3e1c5d67cdfb8707ab12674449fdab859327a8aabee03cd10",
     "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/JESSE/RWEBP/Split%209.webp?updatedAt=null&ik-s=bc4fe890e0090651262776bc88198ae55de34ef2",
@@ -919,7 +918,7 @@
     "telegram_link": "https://t.me/jessexbt_basebot",
     "warpcast_link": "https://farcaster.xyz/jesse.base.eth",
     "zora_link": "https://zora.co/@jessepollak",
-    "discord_link":"",
+    "discord_link": "",
     "x_link": "https://x.com/jessepollak"
   },
   {
@@ -1106,7 +1105,7 @@
     "telegram_link": "",
     "warpcast_link": "",
     "zora_link": "https://zora.co/@kazonomics",
-    "discord_link":"https://discord.com/invite/WinternomicsTV",
+    "discord_link": "https://discord.com/invite/WinternomicsTV",
     "x_link": "https://x.com/TheRealNomics"
   },
   {
@@ -1479,7 +1478,7 @@
     "x_link": "https://x.com/i/communities/1900383544889",
     "zora_link": ""
   },
-    {
+  {
     "id": "0xAC1Bd2486aAf3B5C0fc3Fd868558b082a531B2B4",
     "pool": "0x4b0Aaf3EBb163dd45F663b38b6d93f6093EBC2d3",
     "FIRST_IMAGE_SRC": "https://ik.imagekit.io/cafu/TOSHI/RWEBP/Split-9.webp?updatedAt=1754953596815&ik-s=114fa1be1be6a73b5970c74e3492228fab95b42f",

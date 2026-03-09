@@ -1,0 +1,24 @@
+/* InfoCard — section container with header + optional tooltip */
+.card {
+    max-width: 280px;
+    min-width: 220px;
+    padding: 10px 5px 10px 10px;
+    border-radius: var(--border-radius-md, 8px);
+    margin-bottom: 20px;
+}
+
+.header {
+    font-family: var(--font-heading, 'Helvetica Neue', Helvetica, Arial, sans-serif);
+    font-weight: 700;
+    font-stretch: condensed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}

@@ -18,7 +18,12 @@ const NAV_LINKS = [
     name: "Fastmode", 
     path: "/fast-mode", 
     iconUrl: "https://ik.imagekit.io/cafu/lightMode.png?updatedAt=1760343533871&ik-s=4c6f29b570a56f610440ad2fcebb46dd976ac02d" 
-  }
+  },
+  { 
+    name: "Stake $SCAN", 
+    path: "https://staking.qrbase.xyz/", 
+    iconUrl: 'https://ik.imagekit.io/cafu/staking.svg?updatedAt=null&ik-s=b66154c412fa43e4130bd96dfe3aa9498542d292'
+  },
 ];
 
 
@@ -158,19 +163,34 @@ export default function QrBaseNavbar({ address }: any) {
 
             </div>
 
-            <div className="hidden md:flex w-[160px] max-[425px]:w-[200px] gap-4 justify-between" style={{ marginRight: '80px' }}>
+            <div className="hidden md:flex w-[260px] max-[425px]:w-[200px] gap-4 justify-between" style={{ marginRight: '80px' }}>
 
 
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.path}
-                  href={link.path}
-                  className="font-medium text-sm hover:text-blue-600 transition-colors"
-                  style={{ color: 'inherit' }} // Use style from old component
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {NAV_LINKS.map((link) => {
+  const isExternal = link.path.startsWith("http");
+
+  return isExternal ? (
+    <a
+      key={link.path}
+      href={link.path}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-medium text-sm hover:text-blue-600 transition-colors"
+      style={{ color: 'inherit' }}
+    >
+      {link.name}
+    </a>
+  ) : (
+    <Link
+      key={link.path}
+      href={link.path}
+      className="font-medium text-sm hover:text-blue-600 transition-colors"
+      style={{ color: 'inherit' }}
+    >
+      {link.name}
+    </Link>
+  );
+})}
 
             </div>
 

@@ -1,0 +1,16 @@
+/* Social link button — circular icon button used for social links */
+.button {
+    border: var(--border-social, 1px solid #D0E1FF);
+    border-radius: var(--border-radius-full, 9999px);
+    width: var(--social-btn-size, 30px);
+    height: var(--social-btn-size, 30px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.button:hover {
+    opacity: 0.8;
+}

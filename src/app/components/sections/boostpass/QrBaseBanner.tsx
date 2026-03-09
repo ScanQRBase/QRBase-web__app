@@ -1,5 +1,5 @@
 import { FaBullhorn } from 'react-icons/fa';
-import RevealModeSwitcher from '../RevealModeSwitcher';
+// import RevealModeSwitcher from '../shared/RevealModeSwitcher';
 
 
 export function QrBaseBanner() {
@@ -20,9 +20,9 @@ export function QrBaseBanner() {
       </div>
 
       {/* Right side with switcher */}
-      <div className="flex flex-1 justify-end">
+      {/* <div className="flex flex-1 justify-end">
         <RevealModeSwitcher />
-      </div>
+      </div> */}
     </div>
   );
 }

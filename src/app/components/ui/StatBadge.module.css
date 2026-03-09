@@ -1,0 +1,27 @@
+/* StatBadge — compact stat display card */
+.badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #EFF5FF;
+    border-radius: var(--border-radius-md, 8px);
+    padding: var(--space-sm, 8px);
+    min-width: 120px;
+    transition: background-color 0.2s ease;
+}
+
+:global(.dark) .badge {
+    background-color: var(--bg-secondary, #1f2937);
+}
+
+.label {
+    font-size: 0.65rem;
+    color: var(--text-muted, #6B7280);
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+
+.value {
+    font-size: 0.85rem;
+    font-weight: 700;
+}

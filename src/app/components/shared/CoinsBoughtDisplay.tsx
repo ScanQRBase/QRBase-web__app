@@ -39,6 +39,15 @@ const formatCoins = (coins: any): string => {
 
 
 const CoinsBoughtDisplay: React.FC<CoinsBoughtDisplayProps> = ({ coins, coinLogoUrl }) => {
+  if (coins === null || coins === undefined) {
+    return (
+      <div className={styles.container}>
+        <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />
+        <div className="w-10 h-3 rounded bg-gray-200 dark:bg-gray-700 animate-pulse" />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <Image

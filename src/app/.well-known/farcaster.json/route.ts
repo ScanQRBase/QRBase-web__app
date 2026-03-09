@@ -14,8 +14,15 @@ function withValidProperties(
 
 export async function GET() {
   const URL = process.env.NEXT_PUBLIC_URL;
+  const CLIENT_ID = process.env.NEXT_PUBLIC_NEYNAR_CLIENT_ID
 
   return Response.json({
+
+    // accountAssociation: {
+    //   header: "eyJmaWQiOjEwNzc1NDYsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0ZEZjNjU5MDY4MUM1MzQ0MDcxNDg2NjYzMTUxRDcwMDQ1NjRENDA1In0",
+    //   payload: "eyJkb21haW4iOiJwcml2eS1xci1iYXNlLnBhZ2VzLmRldiJ9",
+    //   signature: "MHgzYTFkMDBjODAxNmMyNDM5OGI4MjM0OTdiMjA1NDJjNjM3MWFhY2VkOTdjMTQyMGRmMDQzZTllOTQzYmIyMTg2NDQ1MzQ4MzM3YmQ1NjljZjM0N2ExYWUwMTBhZjE5Njg0OGZkYzYzYTk3OGExYjRhOGQzN2M0NTMzM2QwZjVmOTFj",
+    // },
     accountAssociation: {
       header: process.env.FARCASTER_HEADER,
       payload: process.env.FARCASTER_PAYLOAD,
@@ -26,27 +33,31 @@ export async function GET() {
       name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
       subtitle: process.env.NEXT_PUBLIC_APP_SUBTITLE,
       description: process.env.NEXT_PUBLIC_APP_DESCRIPTION,
-      screenshotUrls: [
-        "https://ik.imagekit.io/cafu/13e915a8-4b93-427a-b263-2b6b9d5e05af.jpeg?updatedAt=1752055002642&ik-s=2e7aacc703cf29fcc81c7b8dd0112f009505cac9",
-        "https://ik.imagekit.io/cafu/82094e87-9d8d-4973-9bd4-62255d197022.png?updatedAt=1752054989020&ik-s=85d00016963b39b7cedc5c06c039c933eb2a09dd",
-        "https://ik.imagekit.io/cafu/d07b6431-556a-4eca-8e01-e3d555b186c1.png?updatedAt=1752054983765&ik-s=d3ea5417ed8a2986f1d0ed3544fdec42e1d6110f"],
-      iconUrl: process.env.NEXT_PUBLIC_APP_ICON,
-      splashImageUrl: process.env.NEXT_PUBLIC_APP_SPLASH_IMAGE,
+      screenshotUrls: [],
+      iconUrl: "https://www.qrbase.xyz/icon.png",
+      splashImageUrl: "https://www.qrbase.xyz/splash.png",
       splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
       homeUrl: URL,
-      webhookUrl: `${URL}/api/webhook`,
+      webhookUrl: `https://api.neynar.com/f/app/${CLIENT_ID}/event`,
       primaryCategory: process.env.NEXT_PUBLIC_APP_PRIMARY_CATEGORY,
+      buttonTitle:"Start Hunt Prizes",
+      imageUrl:"https://www.qrbase.xyz/image.png",
+      castShareUrl:"https://www.qrbase.xyz",
+
       tags: [
         "rewards",
         "leaderboard",
         "warpcast",
         "earn"
       ],
-      heroImageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE,
+      heroImageUrl: "https://www.qrbase.xyz/icon.png",
       tagline: process.env.NEXT_PUBLIC_APP_TAGLINE,
       ogTitle: process.env.NEXT_PUBLIC_APP_OG_TITLE,
       ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION,
-      ogImageUrl: process.env.NEXT_PUBLIC_APP_OG_IMAGE,
+      ogImageUrl: "https://www.qrbase.xyz/og-image.png",
     }),
+    baseBuilder: {
+      allowedAddresses: ["0x45B36890159DED0d8388C7E0ce0E4FA10d75D9a1"]
+    }
   });
 }
