@@ -38,6 +38,8 @@ export interface PrizeEntry {
     usdValue: string;
     wins: number;
     maxWins: number;
+    scanMode?: boolean;
+    scanModePrizes?: string | null; // Scan Mode USDC prize pool (e.g. "$50 USDC")
 }
 
 export interface ActiveBoost {

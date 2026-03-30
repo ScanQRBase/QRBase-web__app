@@ -1,0 +1,148 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Animations — All @keyframes definitions
+   Extracted from globals.css to keep the main stylesheet lean.
+   Import this file in globals.css.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Typing cursor ── */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+.animate-typing {
+    display: inline-block;
+    animation: typing 2s steps(12, end) infinite alternate;
+}
+
+/* ── Shine sweep (boost tag) ── */
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    50%,
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ── Sunray glow ── */
+@keyframes sunray {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 204, 0.6), 0 0 0 0 rgba(0, 102, 204, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 12px 12px rgba(0, 102, 204, 0), 0 0 8px 8px rgba(0, 102, 204, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 102, 204, 0), 0 0 0 0 rgba(0, 102, 204, 0);
+    }
+}
+
+.sunray-effect {
+    animation: sunray 1.2s infinite;
+}
+
+/* ── Ping pulse ── */
+@keyframes ping {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    75% {
+        transform: scale(2);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+/* ── Shake ── */
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
+.shake-effect {
+    animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+}
+
+/* ── Gradient movement ── */
+@keyframes moveGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ── Shimmer ── */
+@keyframes shimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ── Pulse dot (timeline) ── */
+@keyframes pulseDot {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.pulse-dot {
+    animation: pulseDot 1.2s infinite;
+}

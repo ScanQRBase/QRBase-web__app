@@ -1,0 +1,84 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Vendor Overrides — Targeting MUI, OnchainKit, and Privy
+   via data-testid selectors.
+   Extracted from globals.css.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── OnchainKit Buy Button ── */
+[data-testid="ockBuyButton_Button"]+div {
+    transform: translateY(-20%) !important;
+}
+
+[data-testid="ockModalOverlay"] h2 {
+    display: none;
+}
+
+[data-testid="ockDraggable"] {
+    position: unset;
+}
+
+[data-testid="ockDraggable"] {
+    [data-testid="ockConnectWallet_Container"] {
+
+        [data-testid="ockConnectWallet_Connected"] {
+            min-width: 40px !important;
+            width: 40px !important;
+            height: 40px;
+        }
+
+        [data-testid="ock-defaultLoadingSVG"] {
+            min-width: 40px !important;
+            width: 40px !important;
+            height: 40px;
+            display: none;
+        }
+
+        [data-testid="ockConnectButton"] {
+            min-width: 40px !important;
+            width: 40px !important;
+            height: 40px;
+            background: #0052FF;
+            background-size: 600% 100%;
+        }
+
+        [data-testid="ockConnectAccountButtonInner"] {
+            min-width: 40px !important;
+            width: 40px !important;
+            height: 40px;
+        }
+
+        [data-testid="ockAvatar_ImageContainer"] {
+            min-width: 40px !important;
+            width: 40px !important;
+            height: 40px;
+        }
+    }
+}
+
+[data-testid="ockWalletDropdownContent"] {
+    z-index: 51;
+    top: 8vh;
+    position: relative;
+}
+
+[data-testid="ockBottomSheet"] {
+    z-index: 50;
+}
+
+[data-testid="ock-defaultAvatarSVG"] {
+    border-color: transparent;
+}
+
+[data-testid="ockTokenChip_Button"] {
+    font-size: 12px;
+    background-color: transparent;
+}
+
+.ock-bg-default {
+    background-color: #f9fafb !important;
+}
+
+/* ── Privy Modal ── */
+#privy-modal-content {
+    background: #ffffff !important;
+}

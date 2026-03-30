@@ -34,6 +34,7 @@ export interface GameStatus {
     // Level system
     level?: number;
     timerSeconds?: number;
+    attemptPrice?: number;
     winRate?: number;
     progressToNextLevel?: number;
 }
@@ -78,6 +79,7 @@ export interface UseGameChancesReturn {
     // Level system
     level: number;
     timerSeconds: number;
+    attemptPrice: number;
 }
 
 // ============================================================================
@@ -92,7 +94,7 @@ export function useGameChances(options: UseGameChancesOptions): UseGameChancesRe
     const [isPlaying, setIsPlaying] = useState(false);
     const [isRecordingWin, setIsRecordingWin] = useState(false);
     const [isGeneratingQr, setIsGeneratingQr] = useState(false);
-    const [currentPrize, setCurrentPrize] = useState(10000);
+    const [currentPrize, setCurrentPrize] = useState(2000); // QUICK ROUND (was 10000)
     const [currentPartnerLogo, setCurrentPartnerLogo] = useState<string | null>(null);
     const [isBuying, setIsBuying] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -199,8 +201,8 @@ export function useGameChances(options: UseGameChancesOptions): UseGameChancesRe
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     userId,
-                    moves: moves || null,
-                    timeMs: timeMs || null,
+                    moves: moves != null ? moves : null,
+                    timeMs: timeMs != null ? timeMs : null,
                     walletAddress: walletAddress || null,
                 }),
             });
@@ -240,8 +242,8 @@ export function useGameChances(options: UseGameChancesOptions): UseGameChancesRe
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     userId,
-                    moves: moves || null,
-                    timeMs: timeMs || null,
+                    moves: moves != null ? moves : null,
+                    timeMs: timeMs != null ? timeMs : null,
                 }),
             });
 
@@ -298,7 +300,7 @@ export function useGameChances(options: UseGameChancesOptions): UseGameChancesRe
             }
 
             // Set prize and logo from partner data
-            const prize = data.data.partner?.prize || 10000;
+            const prize = data.data.partner?.prize || 2000; // QUICK ROUND (was 10000)
             const logo = data.data.partner?.logo || null;
             setCurrentPrize(prize);
             setCurrentPartnerLogo(logo);
@@ -470,7 +472,8 @@ export function useGameChances(options: UseGameChancesOptions): UseGameChancesRe
         totalBoughtAttemptsDay: gameStatus?.totalBoughtAttemptsDay ?? 0,
         // Level system
         level: gameStatus?.level ?? 0,
-        timerSeconds: gameStatus?.timerSeconds ?? 60,
+        timerSeconds: gameStatus?.timerSeconds ?? 120,
+        attemptPrice: gameStatus?.attemptPrice ?? 1000,
     };
 }
 

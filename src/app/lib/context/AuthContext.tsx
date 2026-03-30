@@ -7,6 +7,7 @@ import { useFarcasterAuth } from '../../hooks/useFarcasterAuth';
 import { useWalletAddress } from '../../hooks/useWalletAddress';
 import { useXWalletPrompt } from '../../hooks/useXWalletPrompt';
 import { useFarcasterWagmiConnect } from '../../hooks/useFarcasterWagmiConnect';
+import { getCachedIsFarcaster } from '../../QrBaseProvidersLayout';
 
 /**
  * Centralised auth state shared across /puzzle and /scanMode.
@@ -47,10 +48,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { isFarcasterApp } = useFarcasterAuth();
 
     // ── 2. Resolve Farcaster SDK address (mini-app only) ──
+    // Start eagerly using cached detection to avoid waiting for useFarcasterAuth state
     const [sdkAddress, setSdkAddress] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!isFarcasterApp || sdkAddress) return;
+        // Use isFarcasterApp from hook state, but also check cached value for early start
+        const isMiniApp = isFarcasterApp || getCachedIsFarcaster() === true;
+        if (!isMiniApp || sdkAddress) return;
         (async () => {
             try {
                 const provider = sdk.wallet.ethProvider;

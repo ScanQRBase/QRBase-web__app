@@ -1,0 +1,159 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Shared Component Styles
+   Reusable classes used across multiple pages and components.
+   Extracted from globals.css.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Coin info price badge ── */
+.coinInfoPrice {
+    width: 135px;
+    height: 60px;
+    border-radius: var(--border-radius-md, 8px);
+    padding: var(--space-sm, 8px);
+    background-color: #EFF5FF;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Responsive — Mobile (< 768px)
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .progressMobile {
+        height: calc(100dvh - 155px);
+        width: 100vw;
+    }
+
+    .tabTitle {
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: center;
+        vertical-align: middle;
+        color: var(--text-muted, #6B7280);
+    }
+
+    .qrMobile {
+        overflow: auto;
+        margin-top: 100px;
+    }
+
+    .qrMobileFastMode {
+        overflow: auto;
+        margin-top: 70px;
+    }
+
+    .qrMobileHeight {
+        height: calc(100dvh - 280px);
+    }
+
+    .qrMobileHeightFastMode {
+        height: calc(100dvh - 180px);
+    }
+
+    .parTnerInfoHeight {
+        height: calc(100dvh - 50px);
+        margin-top: 20px;
+    }
+
+    .parTnerInfoHeightFastMode {
+        height: calc(100dvh - 50px);
+        margin-top: 90px;
+    }
+
+    .zoraClass {
+        padding-top: 8rem;
+    }
+
+    .qrClass {
+        min-height: 70vh;
+        padding-inline: 1rem;
+    }
+
+    .qrRoad {
+        padding-bottom: 4rem;
+    }
+
+    .qrCube {
+        width: 320px;
+        height: 320px;
+    }
+}
+
+/* ── Small screens (< 576px) ── */
+@media (max-width: 576px) {
+    .modal-style {
+        height: 580px;
+    }
+
+    .modal-style-qr {
+        height: 480px;
+    }
+
+    .coinInfoPrice {
+        width: 48%;
+    }
+
+    .text-mobile-sm {
+        font-size: 8px !important;
+    }
+
+    .text-mobile-xs {
+        font-size: 6px !important;
+    }
+
+    .div-mobile {
+        margin-top: 0;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Responsive — Tablet/Desktop (≥ 768px)
+   ═══════════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) and (max-height: 750px) {
+    .qrScale {
+        scale: 0.8;
+    }
+}
+
+@media (min-width: 768px) {
+    .containQrBase {
+        margin: 100px 0 60px 0;
+    }
+
+    .containQrBaseFastMode {
+        margin: 50px 0 60px 0;
+    }
+
+    .coinInfoBlock {
+        align-content: center;
+    }
+
+    .qrNumberInfo {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .qrRoad {
+        min-width: 330px;
+    }
+}
+
+/* ── Large scale factor ── */
+@media (max-width: 1440px) {
+    .priceInfo {
+        scale: 0.9;
+    }
+
+    .connectButtons {
+        scale: 0.8;
+    }
+}
+
+@media (max-width: 1300px) {
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}

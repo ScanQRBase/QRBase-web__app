@@ -11,6 +11,7 @@ type RealtimeEventType =
     | 'BOOST_CHANGE'
     | 'PRIZES_UPDATE'
     | 'ADMIN_UPDATE'
+    | 'TASK_UPDATE'
     | 'ERROR';
 
 interface RealtimeEvent {
@@ -20,7 +21,7 @@ interface RealtimeEvent {
     timestamp: string;
 }
 
-type RealtimeRoom = 'leaderboard' | 'boost' | 'prizes' | 'stats' | 'admin';
+type RealtimeRoom = 'leaderboard' | 'boost' | 'prizes' | 'stats' | 'admin' | 'tasks';
 
 interface LeaderboardPlayer {
     userId: string;
@@ -52,6 +53,32 @@ interface StatsData {
     tokenWins?: Record<string, number>;
 }
 
+interface TaskUpdateData {
+    type: 'TASK_COMPLETED' | 'TASK_CREATED' | 'TASK_EXPIRED' | 'TASK_RENEWED';
+    taskId: string;
+    completionsCount?: number;
+    maxCompletions?: number;
+    completedByUserId?: string;
+    expiresAt?: string;
+    task?: {
+        id: string;
+        platform: string;
+        taskType: string;
+        label: string;
+        actionsBundled: string;
+        targetLink: string;
+        price: number;
+        maxCompletions: number;
+        completionsCount: number;
+        durationHours: number;
+        expiresAt: string;
+        createdAt: string;
+        promoterName: string | null;
+        promoterPhoto: string | null;
+    };
+    timestamp: string;
+}
+
 interface AdminData {
     type: 'win' | 'loss' | 'buy';
     delta: {
@@ -78,6 +105,7 @@ interface RealtimeData {
     prizes: PrizesData | null;
     stats: StatsData | null;
     admin: AdminData | null;
+    taskUpdate: TaskUpdateData | null;
 }
 
 interface UseRealtimeDataOptions {
@@ -87,7 +115,9 @@ interface UseRealtimeDataOptions {
     maxReconnectAttempts?: number;
 }
 
-const DEFAULT_WORKER_URL = 'wss://puzzlegame.bitgrass-crypto.workers.dev';
+const DEFAULT_WORKER_URL = (process.env.NEXT_PUBLIC_GAME_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev')
+    .replace('https://', 'wss://')
+    .replace('http://', 'ws://');
 
 /**
  * Hook for consuming real-time WebSocket updates
@@ -115,6 +145,7 @@ export function useRealtimeData(options: UseRealtimeDataOptions = {}): RealtimeD
     const [prizes, setPrizes] = useState<PrizesData | null>(null);
     const [stats, setStats] = useState<StatsData | null>(null);
     const [admin, setAdmin] = useState<AdminData | null>(null);
+    const [taskUpdate, setTaskUpdate] = useState<TaskUpdateData | null>(null);
 
     const wsRef = useRef<WebSocket | null>(null);
     const reconnectAttemptsRef = useRef(0);
@@ -170,6 +201,11 @@ export function useRealtimeData(options: UseRealtimeDataOptions = {}): RealtimeD
             case 'ADMIN_UPDATE':
                 console.log('[Realtime] Admin update:', event.data);
                 setAdmin(event.data as AdminData);
+                break;
+
+            case 'TASK_UPDATE':
+                console.log('[Realtime] Task update:', event.data);
+                setTaskUpdate(event.data as TaskUpdateData);
                 break;
 
             case 'ERROR':
@@ -276,8 +312,9 @@ export function useRealtimeData(options: UseRealtimeDataOptions = {}): RealtimeD
         prizes,
         stats,
         admin,
+        taskUpdate,
         reconnect,
     };
 }
 
-export type { RealtimeEvent, RealtimeData, LeaderboardPlayer, BoostData, PrizesData, StatsData, AdminData, RealtimeRoom };
+export type { RealtimeEvent, RealtimeData, LeaderboardPlayer, BoostData, PrizesData, StatsData, AdminData, TaskUpdateData, RealtimeRoom };
