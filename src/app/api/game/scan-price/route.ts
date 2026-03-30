@@ -3,11 +3,12 @@
  * Fetches the current SCAN token price from Moralis
  */
 
+import { SCAN_TOKEN_ADDRESS } from '@/src/app/lib/config';
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 const MORALIS_API_KEY = process.env.MORALIS_API_KEY_BACK;
-const SCAN_TOKEN_ADDRESS = "0x20429F731096e359910921994A267d32ef576720";
 
 export async function GET() {
     try {

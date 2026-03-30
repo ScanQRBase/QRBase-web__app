@@ -6,13 +6,15 @@
 
 // Note: Using Node.js runtime for OpenNext/Cloudflare compatibility
 
+import { GAME_WORKER_URL, GAME_API_KEY, BASE_URL, DEFAULT_PRIZE_AMOUNT } from '@/src/app/lib/config';
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const WORKER_URL = process.env.GAME_WORKER_URL;
-const API_KEY = process.env.GAME_API_KEY;
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
 const QRFY_API_URL = "https://api.qrfy.com/api/public/qrs/png";
-const REDIRECT_URL = "https://www.qrbase.xyz";
+const REDIRECT_URL = BASE_URL;
 // Default logo as fallback
 const DEFAULT_LOGO_URL = "https://ik.imagekit.io/cafu/$SCAN/scan.png?updatedAt=1746620925756&ik-s=83f8422add9570195a66cd510d3f1c5e884a50d1";
 // Folder ID for PUZZLE folder in QRFY (828227)
@@ -302,7 +304,7 @@ export async function POST(request: Request) {
                 imageUrl: base64Image,
                 isExisting: false,
                 message: "New image generated",
-                partner: partner ? { name: partner.name, logo: partner.logo, ca: partner.ca, prize: partner.prize || 10000 } : null,
+                partner: partner ? { name: partner.name, logo: partner.logo, ca: partner.ca, prize: partner.prize || DEFAULT_PRIZE_AMOUNT } : null,
             },
         });
 

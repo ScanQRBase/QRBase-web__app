@@ -3,11 +3,13 @@
  * Fetches wallet balance for each partner to verify boost eligibility
  */
 
+import { GAME_WORKER_URL, GAME_API_KEY, DEFAULT_PRIZE_AMOUNT } from '@/src/app/lib/config';
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const WORKER_URL = process.env.GAME_WORKER_URL;
-const API_KEY = process.env.GAME_API_KEY;
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
 const MORALIS_API_KEY = process.env.MORALIS_API_KEY_BACK;
 const PRIZE_POOL_WALLET = process.env.PRIZE_POOL_WALLET;
 
@@ -100,7 +102,7 @@ export async function GET() {
         // Fetch balances in parallel
         const balancePromises = partners.map(async (partner): Promise<PartnerBalance> => {
             const balance = await getTokenBalance(partner.ca);
-            const prize = partner.prize || 10000;
+            const prize = partner.prize || DEFAULT_PRIZE_AMOUNT;
 
             return {
                 ca: partner.ca,

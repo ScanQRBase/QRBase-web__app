@@ -11,23 +11,52 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { privateKeyToAccount } from 'thirdweb/wallets';
-import { createThirdwebClient, getContract, sendTransaction, prepareContractCall } from 'thirdweb';
-import { base } from 'thirdweb/chains';
+import {
+    createWalletClient,
+    http,
+    fallback,
+    encodeFunctionData,
+    type Address,
+} from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
+import { base } from 'viem/chains';
+import { BUILDER_DATA_SUFFIX } from '@/src/app/lib/builder-code';
+
+import { GAME_WORKER_URL, GAME_API_KEY, SCAN_TOKEN_ADDRESS, TOKEN_DECIMALS } from '@/src/app/lib/config';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const WORKER_URL = process.env.GAME_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev';
-const API_KEY = process.env.GAME_API_KEY || '';
-const SCAN_TOKEN_ADDRESS = '0x20429F731096e359910921994A267d32ef576720';
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
+// SCAN_TOKEN_ADDRESS is imported from config
 const SERVER_WALLET_PRIVATE_KEY = process.env.SERVER_WALLET_PRIVATE_KEY || '';
-const THIRDWEB_SECRET_KEY = process.env.THIRDWEB_SECRET_KEY || '';
 const MINIMUM_CLAIM = 10000; // 10,000 raw units = 10 $SCAN
 
-const client = createThirdwebClient({
-    secretKey: THIRDWEB_SECRET_KEY,
-});
+// Moralis RPC fallback transport (site1 primary, site2 backup)
+const moralisTransport = fallback([
+    http(process.env.NEXT_PUBLIC_RPC_SITE1_URL),
+    http(process.env.NEXT_PUBLIC_RPC_SITE2_URL),
+]);
+
+const serverAccount = SERVER_WALLET_PRIVATE_KEY
+    ? privateKeyToAccount(`0x${SERVER_WALLET_PRIVATE_KEY.replace(/^0x/, '')}` as `0x${string}`)
+    : null;
+
+const walletClient = serverAccount
+    ? createWalletClient({ account: serverAccount, chain: base, transport: moralisTransport, dataSuffix: BUILDER_DATA_SUFFIX })
+    : null;
+
+const ERC20_TRANSFER_ABI = [{
+    name: 'transfer',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+        { name: 'to', type: 'address' },
+        { name: 'amount', type: 'uint256' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
+}] as const;
 
 export async function POST(request: NextRequest) {
     try {
@@ -43,8 +72,8 @@ export async function POST(request: NextRequest) {
         }
 
         // Validate server config
-        if (!SERVER_WALLET_PRIVATE_KEY || !THIRDWEB_SECRET_KEY) {
-            console.error('[referral-payout] Missing SERVER_WALLET_PRIVATE_KEY or THIRDWEB_SECRET_KEY');
+        if (!serverAccount || !walletClient) {
+            console.error('[referral-payout] Missing SERVER_WALLET_PRIVATE_KEY');
             return NextResponse.json({ success: false, error: 'Server configuration error' }, { status: 500 });
         }
 
@@ -80,31 +109,20 @@ export async function POST(request: NextRequest) {
         // Convert raw amount to token amount (18 decimals)
         // pendingAmount is in raw units (e.g. 10000 = 10,000 $SCAN)
         // Token has 18 decimals, so multiply by 10^18
-        const tokenAmount = BigInt(pendingAmount) * BigInt('1000000000000000000');
+        const tokenAmount = BigInt(pendingAmount) * TOKEN_DECIMALS;
 
-        const account = privateKeyToAccount({
-            client,
-            privateKey: SERVER_WALLET_PRIVATE_KEY,
+        const callData = encodeFunctionData({
+            abi: ERC20_TRANSFER_ABI,
+            functionName: 'transfer',
+            args: [recipientAddress as Address, tokenAmount],
         });
 
-        const scanContract = getContract({
-            client,
+        const txHash = await walletClient.sendTransaction({
+            to: SCAN_TOKEN_ADDRESS,
+            data: callData,
             chain: base,
-            address: SCAN_TOKEN_ADDRESS,
         });
 
-        const transferTx = prepareContractCall({
-            contract: scanContract,
-            method: 'function transfer(address to, uint256 amount) returns (bool)',
-            params: [recipientAddress, tokenAmount],
-        });
-
-        const result = await sendTransaction({
-            transaction: transferTx,
-            account,
-        });
-
-        const txHash = result.transactionHash;
         console.log(`[referral-payout] ✅ Sent ${pendingAmount} $SCAN to ${recipientAddress} | tx: ${txHash}`);
 
         // ──────────────────────────────────────────────
@@ -168,3 +186,4 @@ export async function POST(request: NextRequest) {
         );
     }
 }
+

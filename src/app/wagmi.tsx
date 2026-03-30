@@ -1,12 +1,18 @@
 'use client';
 
 import { useMemo } from 'react';
-import { http, createConfig as createVanillaConfig } from 'wagmi';
+import { http, fallback, createConfig as createVanillaConfig } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { NEXT_PUBLIC_WC_PROJECT_ID } from './config';
 import { farcasterFrame } from '@farcaster/miniapp-wagmi-connector';
 import { baseAccount } from 'wagmi/connectors';
 import { createConfig as createPrivyConfig } from '@privy-io/wagmi';
+
+// Moralis RPC fallback transport (site1 primary, site2 backup)
+const moralisTransport = fallback([
+  http(process.env.NEXT_PUBLIC_RPC_SITE1_URL),
+  http(process.env.NEXT_PUBLIC_RPC_SITE2_URL),
+]);
 
 // Only import RainbowKit connectors lazily — importing them at the top level
 // triggers WalletConnect API calls that violate mini-app CSP.
@@ -78,7 +84,7 @@ export function useWagmiConfig(isMiniApp: boolean = false) {
         storage: null,
         ssr: true,
         transports: {
-          [base.id]: http(),
+          [base.id]: moralisTransport,
         },
       });
     }
@@ -101,7 +107,7 @@ export function useWagmiConfig(isMiniApp: boolean = false) {
         multiInjectedProviderDiscovery: false,
         ssr: true,
         transports: {
-          [base.id]: http(),
+          [base.id]: moralisTransport,
         },
       });
     } catch (e) {
@@ -112,7 +118,7 @@ export function useWagmiConfig(isMiniApp: boolean = false) {
         multiInjectedProviderDiscovery: false,
         ssr: true,
         transports: {
-          [base.id]: http(),
+          [base.id]: moralisTransport,
         },
       });
     }

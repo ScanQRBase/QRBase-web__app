@@ -4,31 +4,26 @@
  * 
  * SECURITY: Verifies on-chain ERC-20 transfer before forwarding to worker.
  * Flow: Frontend sends txHash → API verifies receipt on Base → Worker adds chances.
+ * 
+ * Defense-in-depth: The amount forwarded to the worker is derived from the
+ * on-chain Transfer value, NOT from the frontend request body.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createPublicClient, http, parseAbi, decodeEventLog } from 'viem';
-import { base } from 'viem/chains';
+import { waitForReceipt, verifyERC20Transfer } from '@/src/app/lib/verify-tx';
+import { GAME_WORKER_URL, GAME_API_KEY, SCAN_TOKEN_ADDRESS, TOKEN_DECIMALS } from '@/src/app/lib/config';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const WORKER_URL = process.env.GAME_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev';
-const API_KEY = process.env.GAME_API_KEY || '';
-const SCAN_TOKEN_ADDRESS = '0x20429F731096e359910921994A267d32ef576720';
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
 const ADMIN_WALLET = (process.env.NEXT_PUBLIC_PAYMENT_RECIPIENT_GAME_ADDRESS || '').toLowerCase();
-const SCAN_PRICE_PER_ATTEMPT = BigInt('5000000000000000000000'); // 5000 * 10^18 (18 decimals)
 
-// viem public client for Base mainnet
-const publicClient = createPublicClient({
-    chain: base,
-    transport: http(),
-});
-
-// ERC-20 Transfer event ABI
-const erc20TransferAbi = parseAbi([
-    'event Transfer(address indexed from, address indexed to, uint256 value)',
-]);
+// Valid attempt prices per level (in raw token units with 18 decimals)
+// Level 1: 1,000 $SCAN, Level 2: 2,000, Level 3: 3,000, Level 4: 4,000, Level 5-10: 5,000
+const VALID_ATTEMPT_PRICES = [1000, 2000, 3000, 4000, 5000];
+const SCAN_DECIMALS = TOKEN_DECIMALS;
 
 export async function POST(request: NextRequest) {
     try {
@@ -61,30 +56,19 @@ export async function POST(request: NextRequest) {
 
         // ──────────────────────────────────────────────
         // 1. Verify transaction receipt on Base mainnet
-        //    Poll up to 10 times (20s) for the tx to be mined
+        //    Polls up to 10 times (20s) via shared utility
         // ──────────────────────────────────────────────
         let receipt;
-        const maxAttempts = 10;
-        for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-            try {
-                receipt = await publicClient.getTransactionReceipt({ hash: txHash as `0x${string}` });
-                console.log(`[buy] Receipt found on attempt ${attempt}`);
-                break;
-            } catch (err: any) {
-                console.log(`[buy] Receipt not yet available (attempt ${attempt}/${maxAttempts})`);
-                if (attempt === maxAttempts) {
-                    console.error('[buy] Failed to get tx receipt after all attempts:', err.message);
-                    return NextResponse.json(
-                        { success: false, error: 'Transaction not found on Base after 20s. It may still be pending — please try again.' },
-                        { status: 400 }
-                    );
-                }
-                // Wait 2 seconds before retrying
-                await new Promise(resolve => setTimeout(resolve, 2000));
-            }
+        try {
+            receipt = await waitForReceipt(txHash);
+        } catch (err: any) {
+            return NextResponse.json(
+                { success: false, error: err.message || 'Transaction not found on Base after 20s.' },
+                { status: 400 }
+            );
         }
 
-        if (!receipt || receipt.status !== 'success') {
+        if (receipt.status !== 'success') {
             return NextResponse.json(
                 { success: false, error: 'Transaction failed on chain' },
                 { status: 400 }
@@ -92,45 +76,15 @@ export async function POST(request: NextRequest) {
         }
 
         // ──────────────────────────────────────────────
-        // 2. Find and validate ERC-20 Transfer event
+        // 2. Verify ERC-20 Transfer event via shared utility
+        //    Use the minimum valid price (1000 $SCAN) × quantity as the minimum expected value.
+        //    The actual price depends on user level and is verified server-side by the worker.
         // ──────────────────────────────────────────────
-        const expectedValue = SCAN_PRICE_PER_ATTEMPT * BigInt(amount);
-        let verified = false;
-        let buyerWalletAddress: string | null = null;
+        const minPricePerAttempt = BigInt(VALID_ATTEMPT_PRICES[0]) * SCAN_DECIMALS;
+        const expectedMinValue = minPricePerAttempt * BigInt(amount);
+        const transfer = verifyERC20Transfer(receipt, SCAN_TOKEN_ADDRESS, ADMIN_WALLET, expectedMinValue);
 
-        for (const log of receipt.logs) {
-            // Only look at logs from the $SCAN token contract
-            if (log.address.toLowerCase() !== SCAN_TOKEN_ADDRESS.toLowerCase()) continue;
-
-            try {
-                const decoded = decodeEventLog({
-                    abi: erc20TransferAbi,
-                    data: log.data,
-                    topics: log.topics,
-                });
-
-                if (decoded.eventName === 'Transfer') {
-                    const { from, to, value } = decoded.args as { from: string, to: string, value: bigint };
-
-                    // Verify recipient is admin wallet
-                    if (to.toLowerCase() !== ADMIN_WALLET) {
-                        continue;
-                    }
-
-                    // Verify amount is sufficient
-                    if (value >= expectedValue) {
-                        verified = true;
-                        buyerWalletAddress = from;
-                        break;
-                    }
-                }
-            } catch {
-                // Not a Transfer event from this log, skip
-                continue;
-            }
-        }
-
-        if (!verified) {
+        if (!transfer) {
             return NextResponse.json(
                 { success: false, error: 'Transaction does not contain a valid $SCAN transfer to the admin wallet with sufficient amount' },
                 { status: 400 }
@@ -138,16 +92,45 @@ export async function POST(request: NextRequest) {
         }
 
         // ──────────────────────────────────────────────
-        // 3. Forward verified purchase to worker
+        // 3. Derive verified amount from on-chain value
+        //    Try each valid price tier to find the best match for the transfer value.
+        //    (defense-in-depth: don't trust frontend amount)
         // ──────────────────────────────────────────────
-        console.log('[buy] Forwarding to worker:', { userId, amount, txHash: txHash.substring(0, 10) + '...', walletAddress: buyerWalletAddress });
+        const transferredTokens = transfer.value / SCAN_DECIMALS;
+        let verifiedAmount = 0;
+        // Find the valid price that matches: transferValue / price = requested amount
+        for (const price of [...VALID_ATTEMPT_PRICES].reverse()) {
+            const derived = Number(transferredTokens / BigInt(price));
+            if (derived >= amount && transferredTokens === BigInt(price) * BigInt(derived)) {
+                verifiedAmount = derived;
+                break;
+            }
+        }
+        // Fallback: at minimum, use the lowest price tier
+        if (verifiedAmount === 0) {
+            verifiedAmount = Number(transferredTokens / BigInt(VALID_ATTEMPT_PRICES[0]));
+        }
+        const buyerWalletAddress = transfer.from;
+
+        console.log('[buy] On-chain verified:', {
+            requestedAmount: amount,
+            verifiedAmount,
+            transferredTokens: Number(transferredTokens),
+            match: amount === verifiedAmount,
+            wallet: buyerWalletAddress,
+        });
+
+        // ──────────────────────────────────────────────
+        // 4. Forward verified purchase to worker
+        // ──────────────────────────────────────────────
+        console.log('[buy] Forwarding to worker:', { userId, amount: verifiedAmount, txHash: txHash.substring(0, 10) + '...', walletAddress: buyerWalletAddress });
         const response = await fetch(`${WORKER_URL}/user/buy`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${API_KEY}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userId, amount, txHash, walletAddress: buyerWalletAddress }),
+            body: JSON.stringify({ userId, amount: verifiedAmount, txHash, walletAddress: buyerWalletAddress }),
         });
 
         const data = await response.json();

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
+import { GAME_WORKER_URL, GAME_API_KEY } from '@/src/app/lib/config';
 
-const WORKER_URL = process.env.NEXT_PUBLIC_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev';
+const WORKER_URL = GAME_WORKER_URL;
 
 export async function GET() {
     try {

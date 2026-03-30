@@ -1,3 +1,4 @@
+import { GAME_WORKER_URL, GAME_API_KEY } from '@/src/app/lib/config';
 /**
  * GET /api/game/status
  * Proxy to Worker - Get user game status
@@ -13,8 +14,8 @@ export const revalidate = 0;
 // Note: Using Node.js runtime for OpenNext/Cloudflare compatibility
 
 // Server-side only env vars (NO NEXT_PUBLIC_ prefix)
-const WORKER_URL = process.env.GAME_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev';
-const API_KEY = process.env.GAME_API_KEY || '';
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
 
 export async function GET(request: NextRequest) {
     try {

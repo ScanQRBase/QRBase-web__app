@@ -1,7 +1,7 @@
 import { GAME_WORKER_URL, GAME_API_KEY } from '@/src/app/lib/config';
 /**
- * Boost Queue API Route
- * GET /api/game/boost/queue - Get boost queue
+ * Admin Task Stats API Route
+ * GET /api/game/admin/task-stats - Get task promotion statistics
  */
 
 import { NextResponse } from "next/server";
@@ -14,7 +14,7 @@ const API_KEY = GAME_API_KEY;
 
 export async function GET() {
     try {
-        const response = await fetch(`${WORKER_URL}/boost/queue`, {
+        const response = await fetch(`${WORKER_URL}/admin/task-stats`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export async function GET() {
             }
         });
     } catch (error) {
-        console.error("Boost queue API error:", error);
+        console.error("Admin task stats API error:", error);
         return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 });
     }
 }

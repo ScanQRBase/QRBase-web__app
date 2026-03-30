@@ -40,9 +40,9 @@ export async function GET() {
       homeUrl: URL,
       webhookUrl: `https://api.neynar.com/f/app/${CLIENT_ID}/event`,
       primaryCategory: process.env.NEXT_PUBLIC_APP_PRIMARY_CATEGORY,
-      buttonTitle:"Start Hunt Prizes",
-      imageUrl:"https://www.qrbase.xyz/image.png",
-      castShareUrl:"https://www.qrbase.xyz",
+      buttonTitle: "Start Hunt Prizes",
+      imageUrl: "https://www.qrbase.xyz/images/puzzle/share/Thumbnail.jpg",
+      castShareUrl: "https://www.qrbase.xyz",
 
       tags: [
         "rewards",
@@ -54,7 +54,7 @@ export async function GET() {
       tagline: process.env.NEXT_PUBLIC_APP_TAGLINE,
       ogTitle: process.env.NEXT_PUBLIC_APP_OG_TITLE,
       ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION,
-      ogImageUrl: "https://www.qrbase.xyz/og-image.png",
+      ogImageUrl: "https://www.qrbase.xyz/images/puzzle/share/Thumbnail.jpg",
     }),
     baseBuilder: {
       allowedAddresses: ["0x45B36890159DED0d8388C7E0ce0E4FA10d75D9a1"]

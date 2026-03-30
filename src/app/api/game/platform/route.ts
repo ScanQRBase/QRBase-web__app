@@ -1,3 +1,4 @@
+import { GAME_WORKER_URL, GAME_API_KEY } from '@/src/app/lib/config';
 /**
  * Unified Platform Data Endpoint
  * Proxies to the Worker's single /platform endpoint.
@@ -6,7 +7,7 @@
 
 import { NextResponse } from 'next/server';
 
-const WORKER_URL = process.env.GAME_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev';
+const WORKER_URL = GAME_WORKER_URL;
 const API_KEY = process.env.GAME_API_KEY;
 
 export const dynamic = 'force-dynamic';

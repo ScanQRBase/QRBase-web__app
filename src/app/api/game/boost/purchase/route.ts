@@ -1,19 +1,21 @@
+import { GAME_WORKER_URL, GAME_API_KEY } from '@/src/app/lib/config';
 /**
  * POST /api/game/boost/purchase
  * Boost Purchase API Route with USDC on-chain verification
  * 
  * Flow: Frontend sends txHash (USDC transfer) → API verifies receipt → Worker processes boost
+ * 
+ * Uses shared verify-tx.ts utility for polling receipt + ERC-20 Transfer verification.
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { createPublicClient, http, parseAbi, decodeEventLog } from 'viem';
-import { base } from 'viem/chains';
+import { waitForReceipt, verifyERC20Transfer } from '@/src/app/lib/verify-tx';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const WORKER_URL = process.env.GAME_WORKER_URL || "https://puzzlegame.bitgrass-crypto.workers.dev";
-const API_KEY = process.env.GAME_API_KEY || "";
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
 const USDC_ADDRESS = (process.env.NEXT_PUBLIC_USDC_ADDRESS || '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913').toLowerCase();
 const ADMIN_WALLET = (process.env.NEXT_PUBLIC_PAYMENT_RECIPIENT_GAME_ADDRESS || '').toLowerCase();
 
@@ -39,17 +41,6 @@ async function getBoostPriceFromDB(durationHours: number): Promise<bigint | null
         return null;
     }
 }
-
-// viem public client for Base mainnet
-const publicClient = createPublicClient({
-    chain: base,
-    transport: http(),
-});
-
-// ERC-20 Transfer event ABI
-const erc20TransferAbi = parseAbi([
-    'event Transfer(address indexed from, address indexed to, uint256 value)',
-]);
 
 export async function POST(request: NextRequest) {
     try {
@@ -83,14 +74,15 @@ export async function POST(request: NextRequest) {
 
         // ──────────────────────────────────────────────
         // 2. Verify transaction receipt on Base
+        //    Polls up to 10 times (20s) via shared utility
         // ──────────────────────────────────────────────
         let receipt;
         try {
-            receipt = await publicClient.getTransactionReceipt({ hash: txHash as `0x${string}` });
+            receipt = await waitForReceipt(txHash);
         } catch (err: any) {
             console.error('[boost/purchase] FAIL: Receipt not found:', err.message);
             return NextResponse.json(
-                { success: false, error: 'Transaction not found on Base. It may still be pending.' },
+                { success: false, error: err.message || 'Transaction not found on Base. It may still be pending.' },
                 { status: 400 }
             );
         }
@@ -106,45 +98,25 @@ export async function POST(request: NextRequest) {
         }
 
         // ──────────────────────────────────────────────
-        // 3. Validate USDC Transfer event
+        // 3. Validate USDC Transfer event via shared utility
         // ──────────────────────────────────────────────
-        // expectedAmount already fetched from DB above (step 1)
-        let verified = false;
-
         console.log('[boost/purchase] Checking logs for USDC transfer. Expected USDC addr:', USDC_ADDRESS, 'expected amount:', expectedAmount.toString());
 
-        for (const log of receipt.logs) {
-            console.log('[boost/purchase] Log address:', log.address.toLowerCase(), 'matches USDC?', log.address.toLowerCase() === USDC_ADDRESS);
-            if (log.address.toLowerCase() !== USDC_ADDRESS) continue;
+        const transfer = verifyERC20Transfer(receipt, USDC_ADDRESS, ADMIN_WALLET, expectedAmount);
 
-            try {
-                const decoded = decodeEventLog({
-                    abi: erc20TransferAbi,
-                    data: log.data,
-                    topics: log.topics,
-                });
-
-                if (decoded.eventName === 'Transfer') {
-                    const { to, value } = decoded.args;
-                    console.log('[boost/purchase] Transfer event: to=', to.toLowerCase(), 'value=', value.toString(), 'admin=', ADMIN_WALLET);
-
-                    if (to.toLowerCase() === ADMIN_WALLET && value >= expectedAmount) {
-                        verified = true;
-                        break;
-                    }
-                }
-            } catch {
-                continue;
-            }
-        }
-
-        if (!verified) {
+        if (!transfer) {
             console.error('[boost/purchase] FAIL: No valid USDC Transfer found in', receipt.logs.length, 'logs');
             return NextResponse.json(
                 { success: false, error: 'Transaction does not contain a valid USDC transfer to the admin wallet with sufficient amount' },
                 { status: 400 }
             );
         }
+
+        console.log('[boost/purchase] Verified on-chain USDC transfer:', {
+            from: transfer.from,
+            value: transfer.value.toString(),
+            expectedAmount: expectedAmount.toString(),
+        });
 
         // ──────────────────────────────────────────────
         // 4. Forward verified boost to worker

@@ -1,13 +1,26 @@
 /**
  * User's $SCAN token balance API
- * Fetches the user's balance of the $SCAN token using Moralis
+ * Fetches the user's balance directly from the Base chain via RPC (no Moralis indexer lag)
+ * Uses non-Moralis public RPCs as primary to avoid cached eth_call results
  */
+
+import { createPublicClient, http, fallback, formatUnits, type Address } from 'viem';
+import { base } from 'viem/chains';
+import { SCAN_TOKEN_ADDRESS } from '@/src/app/lib/config';
 
 export const dynamic = 'force-dynamic';
 
-const MORALIS_API_KEY = process.env.MORALIS_API_KEY_BACK;
-// $SCAN token contract address on Base
-const SCAN_TOKEN_CA = '0x20429F731096e359910921994A267d32ef576720';
+// $SCAN token contract address on Base — from config
+
+const ERC20_BALANCE_ABI = [
+    {
+        name: 'balanceOf',
+        type: 'function',
+        stateMutability: 'view',
+        inputs: [{ name: 'account', type: 'address' }],
+        outputs: [{ name: '', type: 'uint256' }],
+    },
+] as const;
 
 export async function GET(request: Request) {
     const url = new URL(request.url);
@@ -17,58 +30,37 @@ export async function GET(request: Request) {
         return Response.json({ success: false, error: 'Missing address' }, { status: 400 });
     }
 
-    if (!MORALIS_API_KEY) {
-        return Response.json({ success: false, error: 'Server config error' }, { status: 500 });
-    }
-
-    // Add address to moralis stream if configured
-    const streamId = process.env.MORALIS_STREAM_ID;
-    if (streamId) {
-        try {
-            await fetch(`https://api.moralis-streams.com/streams/evm/${streamId}/address`, {
-                method: 'POST',
-                headers: {
-                    'accept': 'application/json',
-                    'x-api-key': MORALIS_API_KEY,
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ address })
-            });
-            // We ignore the response. If it's already added, Moralis returns an error we can safely ignore
-            // or we might successfully add it. Either way, we don't want to block the balance check.
-        } catch (e) {
-            console.error('[Moralis Stream] Failed to add address:', e);
-        }
-    }
-
     try {
-        const moralisUrl = `https://deep-index.moralis.io/api/v2.2/wallets/${address}/tokens?chain=base&token_addresses[]=${SCAN_TOKEN_CA}`;
-        const res = await fetch(moralisUrl, {
-            headers: {
-                'Accept': 'application/json',
-                'X-API-Key': MORALIS_API_KEY,
-            },
-            cache: 'no-store',
+        // Fresh client per request — non-Moralis public RPCs first to avoid stale eth_call caching
+        const client = createPublicClient({
+            chain: base,
+            cacheTime: 0,
+            transport: fallback([
+                http('https://mainnet.base.org', { fetchOptions: { cache: 'no-store' } }),
+                http('https://base.publicnode.com', { fetchOptions: { cache: 'no-store' } }),
+                http(process.env.NEXT_PUBLIC_RPC_SITE1_URL, { fetchOptions: { cache: 'no-store' } }),
+                http(process.env.NEXT_PUBLIC_RPC_SITE2_URL, { fetchOptions: { cache: 'no-store' } }),
+            ]),
         });
 
-        if (!res.ok) {
-            return Response.json({ success: true, balance: 0 });
-        }
+        // Direct on-chain balanceOf — real-time, no indexer lag
+        const rawBalance = await client.readContract({
+            address: SCAN_TOKEN_ADDRESS,
+            abi: ERC20_BALANCE_ABI,
+            functionName: 'balanceOf',
+            args: [address as Address],
+            blockTag: 'latest',
+        });
 
-        const data = await res.json() as any;
-        const tokens = Array.isArray(data) ? data : (data.result ?? []);
-
-        let balance = 0;
-        if (tokens.length > 0) {
-            balance = parseFloat(tokens[0].balance_formatted) || 0;
-        }
+        const balance = parseFloat(formatUnits(rawBalance, 18));
+        console.log('[user-scan-balance] RPC balance for', address, ':', balance);
 
         return Response.json(
             { success: true, balance },
             { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' } }
         );
     } catch (error) {
-        console.error('[user-scan-balance] Error:', error);
+        console.error('[user-scan-balance] RPC error:', error);
         return Response.json({ success: true, balance: 0 });
     }
 }

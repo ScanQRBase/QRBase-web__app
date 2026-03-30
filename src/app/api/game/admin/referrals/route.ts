@@ -1,11 +1,12 @@
+import { GAME_WORKER_URL, GAME_API_KEY } from '@/src/app/lib/config';
 /**
  * GET /api/game/admin/referrals - Get all referrers for admin dashboard
  */
 
 import { NextResponse } from 'next/server';
 
-const WORKER_URL = process.env.GAME_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev';
-const API_KEY = process.env.GAME_API_KEY || '';
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
 
 export async function GET() {
     try {

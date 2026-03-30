@@ -1,3 +1,4 @@
+import { GAME_WORKER_URL, GAME_API_KEY } from '@/src/app/lib/config';
 /**
  * POST /api/game/tasks/create
  * Proxy to Worker - Create a promoted task
@@ -7,21 +8,24 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createPublicClient, http, parseAbi, decodeEventLog } from 'viem';
+import { createPublicClient, http, fallback, parseAbi, decodeEventLog } from 'viem';
 import { base } from 'viem/chains';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const WORKER_URL = process.env.GAME_WORKER_URL || 'https://puzzlegame.bitgrass-crypto.workers.dev';
-const API_KEY = process.env.GAME_API_KEY || '';
+const WORKER_URL = GAME_WORKER_URL;
+const API_KEY = GAME_API_KEY;
 const USDC_ADDRESS = (process.env.NEXT_PUBLIC_USDC_ADDRESS || '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913').toLowerCase();
 const ADMIN_WALLET = (process.env.NEXT_PUBLIC_PAYMENT_RECIPIENT_GAME_ADDRESS || '').toLowerCase();
 
 // viem public client for Base mainnet
 const publicClient = createPublicClient({
     chain: base,
-    transport: http(),
+    transport: fallback([
+        http(process.env.NEXT_PUBLIC_RPC_SITE1_URL),
+        http(process.env.NEXT_PUBLIC_RPC_SITE2_URL),
+    ]),
 });
 
 // ERC-20 Transfer event ABI
