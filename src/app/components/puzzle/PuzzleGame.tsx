@@ -2,14 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
 import { Maximize2, X } from "lucide-react";
-
-// Dynamic import for Confetti to avoid SSR issues
-const Confetti = dynamic(() => import("react-confetti-boom").then(mod => mod.default), {
-    ssr: false,
-    loading: () => null
-});
 
 interface PuzzleGameProps {
     imageSrc: string;
@@ -21,6 +14,9 @@ interface PuzzleGameProps {
     isUnlocked?: boolean;
     isFullscreenMode?: boolean;
     isBoosted?: boolean;
+    level?: number;
+    /** Piece index numbers are shown while level <= this value (hidden above it). Defaults to 5. */
+    showIndexMaxLevel?: number;
 }
 
 // Generate a solvable shuffle
@@ -72,11 +68,13 @@ const tileVariants = {
     }
 };
 
-export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onShuffle, isSolved: externalIsSolved, isUnlocked = true, isFullscreenMode = false, isBoosted = false }: PuzzleGameProps) {
+const ENV_INDEX_MAX_LEVEL = parseInt(process.env.NEXT_PUBLIC_PUZZLE_INDEX_MAX_LEVEL ?? '5', 10);
+
+export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onShuffle, isSolved: externalIsSolved, isUnlocked = true, isFullscreenMode = false, isBoosted = false, level = 1, showIndexMaxLevel = ENV_INDEX_MAX_LEVEL }: PuzzleGameProps) {
     const [tiles, setTiles] = useState<number[]>([]);
     const [solved, setSolved] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [showConfetti, setShowConfetti] = useState(false);
+
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [animatingTile, setAnimatingTile] = useState<number | null>(null);
     const [shakeIndex, setShakeIndex] = useState<number | null>(null);
@@ -108,10 +106,7 @@ export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onSh
         if (tiles.length === 9 && isSolvedCheck(tiles) && imageLoaded && !hasNotifiedSolve.current) {
             hasNotifiedSolve.current = true;  // Prevent duplicate calls
             setSolved(true);
-            setShowConfetti(true);
             onSolved?.();
-            // Hide confetti after some time
-            setTimeout(() => setShowConfetti(false), 5000);
         }
     }, [tiles, imageLoaded, onSolved]);
 
@@ -386,7 +381,7 @@ export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onSh
                     }
                 }}
                 className={`
-                    aspect-square overflow-hidden select-none
+                    relative aspect-square overflow-hidden select-none
                     ${isEmpty ? "" : "rounded-sm"}
                     ${isMovable && !isEmpty ? "cursor-pointer" : "cursor-default"}
                     ${!isEmpty ? "shadow-lg" : ""}
@@ -411,6 +406,12 @@ export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onSh
                     })
                 }}
             >
+                {/* Tile number indicator - only show while level <= showIndexMaxLevel */}
+                {!isEmpty && !solved && level <= showIndexMaxLevel && (
+                    <div className="absolute top-1 left-1 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center" style={{ zIndex: 2 }}>
+                        <span className="text-white text-[10px] font-bold">{tileValue + 1}</span>
+                    </div>
+                )}
                 {isEmpty && !solved && (
                     <div className={`
                         w-full h-full flex items-center justify-center
@@ -437,23 +438,6 @@ export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onSh
     if (isFullscreen) {
         return (
             <div id="puzzle-fullscreen-container" className="fixed inset-0 z-[100] bg-gray-900 flex flex-col items-center justify-center touch-none">
-                {showConfetti && (
-                    <>
-                        <Confetti
-                            mode="fall"
-                            particleCount={100}
-                            colors={["#0052FF", "#50DEF5", "#AE80FF", "#FFD700", "#FF6B6B"]}
-                        />
-                        <Confetti
-                            mode="boom"
-                            particleCount={50}
-                            effectCount={3}
-                            effectInterval={500}
-                            colors={["#0052FF", "#50DEF5", "#AE80FF", "#FFD700"]}
-                        />
-                    </>
-                )}
-
                 {/* Close button */}
                 <motion.button
                     whileHover={{ scale: 1.1 }}
@@ -592,8 +576,8 @@ export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onSh
                                     })(),
                                 }}
                             >
-                                {/* Tile number indicator */}
-                                {!isEmpty && !solved && (
+                                {/* Tile number indicator - only show while level <= showIndexMaxLevel */}
+                                {!isEmpty && !solved && level <= showIndexMaxLevel && (
                                     <div className="absolute top-1 left-1 w-5 h-5 bg-black/60 rounded-full flex items-center justify-center">
                                         <span className="text-white text-[10px] font-bold">{tileValue + 1}</span>
                                     </div>
@@ -617,23 +601,6 @@ export default function PuzzleGame({ imageSrc, onMove, onSolved, moves = 0, onSh
     // Normal mode
     return (
         <div className="relative flex flex-col items-center">
-            {showConfetti && (
-                <>
-                    <Confetti
-                        mode="fall"
-                        particleCount={100}
-                        colors={["#0052FF", "#50DEF5", "#AE80FF", "#FFD700", "#FF6B6B"]}
-                    />
-                    <Confetti
-                        mode="boom"
-                        particleCount={50}
-                        effectCount={3}
-                        effectInterval={500}
-                        colors={["#0052FF", "#50DEF5", "#AE80FF", "#FFD700"]}
-                    />
-                </>
-            )}
-
             <AnimatePresence>
                 {solved && (
                     <motion.div

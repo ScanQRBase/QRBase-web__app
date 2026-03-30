@@ -6,12 +6,14 @@ import type { ReactNode } from 'react';
 import { base } from 'viem/chains';
 import { NEXT_PUBLIC_ONCHAINKIT_API_KEY, NEXT_PUBLIC_PRIVY_APP_ID, NEXT_PUBLIC_PRIVY_APP_X_ID } from './config';
 import { WagmiProvider } from '@privy-io/wagmi';
-import { PrivyProvider } from '@privy-io/react-auth';
+import { PrivyProvider, dataSuffix } from '@privy-io/react-auth';
+import { BUILDER_DATA_SUFFIX } from './lib/builder-code';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { useWagmiConfig } from './wagmi';
 import { sdk } from '@farcaster/miniapp-sdk';
 import { ThemeProvider } from './components/providers/ThemeProvider';
 import { AuthProvider } from './lib/context/AuthContext';
+import OnboardingProvider from './components/providers/OnboardingProvider';
 
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
@@ -20,6 +22,13 @@ type Props = { children: ReactNode };
 
 const queryClient = new QueryClient();
 
+// ── Cached mini-app detection (shared with useFarcasterAuth) ──
+let _cachedIsFarcaster: boolean | null = null;
+
+/** Returns the cached isInMiniApp() result, or null if not yet resolved. */
+export function getCachedIsFarcaster(): boolean | null {
+  return _cachedIsFarcaster;
+}
 
 function QrBaseProviders({ children }: Props) {
   const [isFarcaster, setIsFarcaster] = useState<boolean | null>(null);
@@ -31,6 +40,8 @@ function QrBaseProviders({ children }: Props) {
     const init = async () => {
       const isMiniApp = await sdk.isInMiniApp();
 
+      // Cache for reuse by other hooks (avoids duplicate SDK calls)
+      _cachedIsFarcaster = isMiniApp;
       setIsFarcaster(isMiniApp);
 
       if (isMiniApp) {
@@ -79,6 +90,7 @@ function QrBaseProviders({ children }: Props) {
             ethereum: { createOnLogin: "off" },
             solana: { createOnLogin: "off" },
           },
+          plugins: [dataSuffix(BUILDER_DATA_SUFFIX)],
         }}
       >
         <InnerProviders isMiniApp={isFarcaster}>
@@ -111,13 +123,15 @@ function InnerProviders({ children, isMiniApp }: { children: ReactNode; isMiniAp
           projectId={process.env.NEXT_PUBLIC_PROJECT_ID}
         >
           <AuthProvider>
-            {isMiniApp ? (
-              children
-            ) : (
-              <RainbowKitProvider modalSize="compact">
-                {children}
-              </RainbowKitProvider>
-            )}
+            <OnboardingProvider>
+              {isMiniApp ? (
+                children
+              ) : (
+                <RainbowKitProvider modalSize="compact">
+                  {children}
+                </RainbowKitProvider>
+              )}
+            </OnboardingProvider>
           </AuthProvider>
         </MiniKitProvider>
       </WagmiProvider>

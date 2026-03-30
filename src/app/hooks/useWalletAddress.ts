@@ -50,6 +50,14 @@ export function useWalletAddress({
             const isXUser = authenticated && user?.twitter && !user?.farcaster;
             const hasPrivyWallet = !!user?.wallet;
 
+            // X user with no linked wallet → resolve immediately (no address)
+            // so the page shows the "Connect Wallet" prompt instead of skeleton
+            if (isXUser && !hasPrivyWallet) {
+                setAddress(null); // Clear stale address from previously-linked wallet
+                setIsResolved(true);
+                return;
+            }
+
             // ── Path 2: wagmi connected address ──
             if (connectedAddress && connectedAddress !== address && (!isXUser || hasPrivyWallet)) {
                 setAddress(connectedAddress);
@@ -103,6 +111,16 @@ export function useWalletAddress({
             setIsResolved(false);
         }
     }, [authenticated]);
+
+    // Safety timeout: prevent infinite skeleton if auth state gets stuck
+    useEffect(() => {
+        if (isResolved) return;
+        const timer = setTimeout(() => {
+            console.warn('[useWalletAddress] Safety timeout (3s) — forcing isResolved to prevent infinite skeleton');
+            setIsResolved(true);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [isResolved]);
 
     return { address, isResolved, loading, error };
 }

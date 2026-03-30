@@ -1,5 +1,6 @@
 /* Social link button — circular icon button used for social links */
 .button {
+    background-color: white;
     border: var(--border-social, 1px solid #D0E1FF);
     border-radius: var(--border-radius-full, 9999px);
     width: var(--social-btn-size, 30px);

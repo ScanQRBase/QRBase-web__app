@@ -34,13 +34,14 @@ interface ScanModeCoinInfoProps {
     };
     isLoading?: boolean;
     isCompleted?: boolean;
+    id?: string;
 }
 
 /**
  * Right sidebar: community puzzle wins timeline,
  * MUI Timeline matching QrBaseCoinInfo format exactly.
  */
-export default function ScanModeCoinInfo({ progress, isLoading = false, isCompleted = false }: ScanModeCoinInfoProps) {
+export default function ScanModeCoinInfo({ progress, isLoading = false, isCompleted = false, id }: ScanModeCoinInfoProps) {
     const {
         totalWins,
         milestones,
@@ -154,11 +155,11 @@ export default function ScanModeCoinInfo({ progress, isLoading = false, isComple
             : partnerName.toUpperCase();
 
     return (
-        <div className="qrRoad flex flex-col justify-start md:justify-center border-gray-200 dark:border-gray-700 border-b p-4 py-8 pb-12 w-full md:w-1/3 md:border-l md:border-b-0 md:py-4 md:pt-[75px] lg:border-l lg:p-6 lg:pb-22 lg:pt-[75px] transition-colors duration-200">
+        <div id={id} className="qrRoad flex flex-col justify-start md:justify-center border-gray-200 dark:border-gray-700 border-b p-4 py-8 pb-12 w-full md:w-1/3 md:border-l md:border-b-0 md:py-4 md:pt-[75px] lg:border-l lg:p-6 lg:pb-22 lg:pt-[75px] transition-colors duration-200">
             <div className="coinInfoBlock w-full">
                 {/* Header: $TOKEN Price + MARKET CAP (matching base mode QrBaseCoinInfo) */}
                 <div className="flex justify-between items-start mb-6">
-                    <div className="coinInfoPrice flex flex-col items-start bg-gray-100 dark:bg-gray-800 rounded-lg p-2 transition-colors duration-200">
+                    <div className="coinInfoPrice flex flex-col items-start bg-white dark:bg-gray-800 rounded-lg p-2 transition-colors duration-200">
                         <div className="flex cursor-pointer items-center text-[0.85rem]">
                             <p className="leading-relaxed text-[0.65rem] text-gray-700 dark:text-gray-300">Total Wins</p>
                             <div className="relative w-fit ms-1">
@@ -177,7 +178,7 @@ export default function ScanModeCoinInfo({ progress, isLoading = false, isComple
                             </p>
                         </Tooltip>
                     </div>
-                    <div className="coinInfoPrice flex flex-col items-start bg-gray-100 dark:bg-gray-800 rounded-lg p-2 transition-colors duration-200">
+                    <div className="coinInfoPrice flex flex-col items-start bg-white dark:bg-gray-800 rounded-lg p-2 transition-colors duration-200">
                         <div className="flex cursor-pointer items-center text-[0.85rem]">
                             <p className="leading-relaxed text-[0.65rem] text-gray-700 dark:text-gray-300">PIECES UNLOCKED</p>
                             <span className="pl-1">
@@ -243,7 +244,7 @@ export default function ScanModeCoinInfo({ progress, isLoading = false, isComple
                                                 backgroundColor:
                                                     index < highlightedIndex ? primaryColor : GRAY_LIGHT,
                                             }}
-                                            className="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center pulse-dot"
+                                            className="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center pulse-dot"
                                         />
                                         {index !== timelineItems.length - 1 && (
                                             <TimelineConnector sx={{ height: 25, backgroundColor: index < highlightedIndex ? primaryColor : GRAY_LIGHT }} />
@@ -267,7 +268,7 @@ export default function ScanModeCoinInfo({ progress, isLoading = false, isComple
                                     <TimelineSeparator>
                                         {(isLast || isSecondToLast) ? (
                                             <div
-                                                className={`w-5 h-5 rounded-full overflow-hidden border-2 ${isMaxReached ? `border-[${primaryColor}]` : `border-[${GRAY_LIGHT}]`
+                                                className={`w-5 h-5 rounded-full overflow-hidden border ${isMaxReached ? `border-[${primaryColor}]` : `border-[${GRAY_LIGHT}]`
                                                     } ${isMaxReached ? 'shake-effect' : ''}`}
                                             >
                                                 <Image

@@ -7,11 +7,14 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ChevronDown, Users, Copy, Check, Info, ExternalLink, AlertTriangle } from 'lucide-react';
+import { ChevronDown, Users, Copy, Check, Info, ExternalLink, AlertTriangle, X } from 'lucide-react';
 import { useUserProfile, ReferralDetail } from '@/src/app/hooks/useUserProfile';
 import { usePuzzleData } from '@/src/app/lib/context/PuzzleDataContext';
 import { useRealtimeData } from '@/src/app/lib/realtime';
 import { formatNumber } from '@/src/app/lib/formatNumber';
+import XIcon from '@/src/app/images/svg/socialMedia/XIcon';
+import WarpcastIcon from '@/src/app/images/svg/socialMedia/WarpcastIcon';
+import BaseIcon from '@/src/app/images/svg/socialMedia/BaseIcon';
 
 interface ProfilePopupModalProps {
     isOpen: boolean;
@@ -39,11 +42,12 @@ export default function ProfilePopupModal({
     isFarcaster = false,
 }: ProfilePopupModalProps) {
     const [showReferralDetails, setShowReferralDetails] = useState(false);
-    const [copied, setCopied] = useState(false);
     const [addressCopied, setAddressCopied] = useState(false);
     const [claiming, setClaiming] = useState(false);
     const [showClaimWarning, setShowClaimWarning] = useState(false);
     const [claimError, setClaimError] = useState<string | null>(null);
+    const [showCopyLinkPopup, setShowCopyLinkPopup] = useState(false);
+    const [copiedPlatform, setCopiedPlatform] = useState<string | null>(null);
     const [claimSuccess, setClaimSuccess] = useState<{ txHash: string; amount: number } | null>(null);
 
     const { profile, loading, refresh: refreshProfile } = useUserProfile(userId);
@@ -87,11 +91,22 @@ export default function ProfilePopupModal({
 
     if (!isOpen) return null;
 
-    const handleCopyLink = () => {
-        const referralLink = `${window.location.origin}/puzzle?ref=${userId}`;
+    const handleCopyPlatformLink = (platform: 'x' | 'farcaster' | 'base') => {
+        let referralLink = '';
+        switch (platform) {
+            case 'x':
+                referralLink = `https://www.qrbase.xyz/puzzle?ref=${userId}`;
+                break;
+            case 'farcaster':
+                referralLink = `https://farcaster.xyz/miniapps/pSTSE9GDxQA7/qrbase?path=/puzzle&ref=${userId}`;
+                break;
+            case 'base':
+                referralLink = `https://base.app/app/www.qrbase.xyz/puzzle?ref=${userId}`;
+                break;
+        }
         navigator.clipboard.writeText(referralLink);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setCopiedPlatform(platform);
+        setTimeout(() => setCopiedPlatform(null), 2000);
     };
 
     const handleCopyAddress = () => {
@@ -137,8 +152,8 @@ export default function ProfilePopupModal({
                     amount: data.data.claimedAmount,
                 });
                 refreshProfile();
-                // Trigger balance refresh in navbar
-                window.dispatchEvent(new Event('balance-refresh'));
+                // Optimistic balance update: add claimed amount
+                window.dispatchEvent(new CustomEvent('balance-refresh', { detail: { delta: data.data.claimedAmount } }));
             } else {
                 setClaimError(data.error || 'Failed to claim rewards');
             }
@@ -213,7 +228,7 @@ export default function ProfilePopupModal({
                     {loading && (
                         <div className="absolute inset-0 bg-white/80 dark:bg-gray-900/80 flex items-center justify-center z-10 rounded-2xl">
                             <div className="flex flex-col items-center gap-2">
-                                <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-8 h-8 border border-blue-500 border-t-transparent rounded-full animate-spin"></div>
                                 <span className="text-sm text-gray-500">Loading...</span>
                             </div>
                         </div>
@@ -270,7 +285,7 @@ export default function ProfilePopupModal({
                             ) : (
                                 <button
                                     onClick={onWalletConnect}
-                                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all hover:shadow-lg hover:shadow-blue-500/25"
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#0052FF] hover:opacity-90 text-white rounded-lg text-sm font-medium transition-all"
                                     style={{ fontFamily: '"Noto Sans Mono", monospace' }}
                                 >
                                     Connect Wallet
@@ -540,7 +555,7 @@ export default function ProfilePopupModal({
                                         whiteSpace: 'nowrap',
                                     }}
                                 >
-                                    {formatNumber((profile?.winsAllTime ?? 0) * 10000)}
+                                    {formatNumber(profile?.scanRewarded ?? 0)}
                                 </span>
                             </div>
                         </div>
@@ -588,13 +603,13 @@ export default function ProfilePopupModal({
                                             margin: 0,
                                         }}
                                     >
-                                        Earn 500 $SCAN of each time your refferal buys an attempt
+                                        Earn 10% each time your referral buys an attempt
                                     </p>
                                 </div>
                                 <button
                                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex-shrink-0"
                                     aria-label="Referral info"
-                                    title="Earn 500 $SCAN each time your referral buys an attempt"
+                                    title="Earn 10% each time your referral buys an attempt"
                                 >
                                     <Info size={16} />
                                 </button>
@@ -686,7 +701,7 @@ export default function ProfilePopupModal({
 
                                     {/* Copy Link Button */}
                                     <button
-                                        onClick={handleCopyLink}
+                                        onClick={() => setShowCopyLinkPopup(true)}
                                         className="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200"
                                         style={{
                                             width: '83px',
@@ -704,8 +719,7 @@ export default function ProfilePopupModal({
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        {copied ? <Check size={10} className="text-green-500" style={{ marginRight: '2px' }} /> : null}
-                                        {copied ? 'Copied!' : 'Copy Link'}
+                                        Copy Link
                                     </button>
                                 </div>
                             </div>
@@ -735,6 +749,127 @@ export default function ProfilePopupModal({
                             </div>
                         </div>
                     </div>
+                    {/* Copy Link Platform Picker Popup */}
+                    {showCopyLinkPopup && (
+                        <div
+                            className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-[250]"
+                            onClick={() => setShowCopyLinkPopup(false)}
+                        >
+                            <div
+                                className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-[320px] max-w-[90vw] overflow-hidden animate-scaleIn"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {/* Header */}
+                                <div className="flex items-center justify-between px-5 pt-5 pb-3">
+                                    <h3
+                                        className="text-gray-900 dark:text-white"
+                                        style={{
+                                            fontFamily: '"Noto Sans Mono", monospace',
+                                            fontWeight: 700,
+                                            fontSize: '14px',
+                                        }}
+                                    >
+                                        Copy Referral Link
+                                    </h3>
+                                    <button
+                                        className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+                                        onClick={() => setShowCopyLinkPopup(false)}
+                                    >
+                                        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                                            <path d="M1 1L13 13M1 13L13 1" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {/* Platform Options */}
+                                <div className="px-5 pb-5 flex flex-col" style={{ gap: '8px' }}>
+                                    {/* X (Twitter) */}
+                                    <button
+                                        onClick={() => handleCopyPlatformLink('x')}
+                                        className="flex items-center w-full border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                        style={{ padding: '12px 14px', gap: '12px' }}
+                                    >
+                                        <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+                                            <XIcon size={14} color="#FFFFFF" />
+                                        </div>
+                                        <span
+                                            className="flex-1 text-left text-gray-900 dark:text-white"
+                                            style={{
+                                                fontFamily: '"Noto Sans Mono", monospace',
+                                                fontWeight: 600,
+                                                fontSize: '13px',
+                                            }}
+                                        >
+                                            X (Twitter)
+                                        </span>
+                                        {copiedPlatform === 'x' ? (
+                                            <span className="flex items-center gap-1 text-green-500" style={{ fontFamily: '"Noto Sans Mono", monospace', fontSize: '11px', fontWeight: 600 }}>
+                                                <Check size={14} /> Copied!
+                                            </span>
+                                        ) : (
+                                            <Copy size={16} className="text-gray-400 dark:text-gray-500" />
+                                        )}
+                                    </button>
+
+                                    {/* Farcaster */}
+                                    <button
+                                        onClick={() => handleCopyPlatformLink('farcaster')}
+                                        className="flex items-center w-full border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                        style={{ padding: '12px 14px', gap: '12px' }}
+                                    >
+                                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#8A63D2' }}>
+                                            <WarpcastIcon size={16} color="#FFFFFF" />
+                                        </div>
+                                        <span
+                                            className="flex-1 text-left text-gray-900 dark:text-white"
+                                            style={{
+                                                fontFamily: '"Noto Sans Mono", monospace',
+                                                fontWeight: 600,
+                                                fontSize: '13px',
+                                            }}
+                                        >
+                                            Farcaster
+                                        </span>
+                                        {copiedPlatform === 'farcaster' ? (
+                                            <span className="flex items-center gap-1 text-green-500" style={{ fontFamily: '"Noto Sans Mono", monospace', fontSize: '11px', fontWeight: 600 }}>
+                                                <Check size={14} /> Copied!
+                                            </span>
+                                        ) : (
+                                            <Copy size={16} className="text-gray-400 dark:text-gray-500" />
+                                        )}
+                                    </button>
+
+                                    {/* Base App */}
+                                    <button
+                                        onClick={() => handleCopyPlatformLink('base')}
+                                        className="flex items-center w-full border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                                        style={{ padding: '12px 14px', gap: '12px' }}
+                                    >
+                                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#0052FF' }}>
+                                            <BaseIcon size={18} color="#FFFFFF" />
+                                        </div>
+                                        <span
+                                            className="flex-1 text-left text-gray-900 dark:text-white"
+                                            style={{
+                                                fontFamily: '"Noto Sans Mono", monospace',
+                                                fontWeight: 600,
+                                                fontSize: '13px',
+                                            }}
+                                        >
+                                            Base App
+                                        </span>
+                                        {copiedPlatform === 'base' ? (
+                                            <span className="flex items-center gap-1 text-green-500" style={{ fontFamily: '"Noto Sans Mono", monospace', fontSize: '11px', fontWeight: 600 }}>
+                                                <Check size={14} /> Copied!
+                                            </span>
+                                        ) : (
+                                            <Copy size={16} className="text-gray-400 dark:text-gray-500" />
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {/* Referral Details Popup Modal */}
                     {showReferralDetails && (
                         <div
@@ -854,7 +989,7 @@ export default function ProfilePopupModal({
                                                             {/* User Column */}
                                                             <td className="px-3 py-3">
                                                                 <div className="flex items-center gap-2">
-                                                                    <div className="w-7 h-7 overflow-hidden border-2 border-white dark:border-gray-600 shadow-sm flex-shrink-0 rounded-full bg-blue-100">
+                                                                    <div className="w-7 h-7 overflow-hidden border border-white dark:border-gray-600 shadow-sm flex-shrink-0 rounded-full bg-blue-100">
                                                                         <img
                                                                             src={user.profilePhoto || "/web-app-manifest-192x192.png"}
                                                                             alt=""
@@ -934,7 +1069,7 @@ export default function ProfilePopupModal({
                                     .map(([partnerName, wins]) => (
                                         <div
                                             key={partnerName}
-                                            className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl group"
+                                            className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-xl group"
                                         >
                                             <div className="flex items-center gap-2">
                                                 <img
@@ -978,7 +1113,7 @@ export default function ProfilePopupModal({
                         {!address && (
                             <button
                                 onClick={onWalletConnect}
-                                className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-all hover:shadow-lg hover:shadow-blue-500/25"
+                                className="w-full h-[48px] bg-[#0052FF] hover:opacity-90 text-white rounded-xl font-medium transition-all"
                             >
                                 Connect Wallet
                             </button>
@@ -986,7 +1121,7 @@ export default function ProfilePopupModal({
                         {!isFarcaster && (
                             <button
                                 onClick={onLogout}
-                                className="w-full py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-medium transition-colors"
+                                className="w-full h-[48px] bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-medium transition-colors"
                             >
                                 Sign out
                             </button>

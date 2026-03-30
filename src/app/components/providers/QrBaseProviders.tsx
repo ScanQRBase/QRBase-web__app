@@ -7,7 +7,8 @@ import { base } from 'viem/chains';
 import { NEXT_PUBLIC_ONCHAINKIT_API_KEY, NEXT_PUBLIC_PRIVY_APP_ID, NEXT_PUBLIC_PRIVY_APP_X_ID } from '../../config';
 import { WagmiProvider as PrivyWagmiProvider } from '@privy-io/wagmi';
 import { WagmiProvider as VanillaWagmiProvider } from 'wagmi';
-import { PrivyProvider } from '@privy-io/react-auth';
+import { PrivyProvider, dataSuffix } from '@privy-io/react-auth';
+import { BUILDER_DATA_SUFFIX } from '../../lib/builder-code';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { useWagmiConfig } from '../../wagmi';
 import { sdk } from '@farcaster/miniapp-sdk';
@@ -91,6 +92,7 @@ function QrBaseProviders({ children }: Props) {
           ethereum: { createOnLogin: "off" },
           solana: { createOnLogin: "off" },
         },
+        plugins: [dataSuffix(BUILDER_DATA_SUFFIX)],
       }}
     >
       <InnerProviders isMiniApp={isFarcaster}>

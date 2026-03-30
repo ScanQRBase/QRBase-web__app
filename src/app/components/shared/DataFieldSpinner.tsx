@@ -80,7 +80,7 @@ export default function DataFieldSpinner({
 
     const spinnerSizeClass = spinnerSize === 'sm'
         ? 'w-3 h-3 border-[1.5px]'
-        : 'w-4 h-4 border-2';
+        : 'w-4 h-4 border';
 
     return (
         <div className={`inline-flex items-center ${className}`}>

@@ -48,6 +48,7 @@ interface ScanModePartnerInfoProps {
     piecesUnlocked?: number;
     totalPieces?: number;
     totalWins?: number;
+    id?: string;
 }
 
 /**
@@ -62,6 +63,7 @@ export default function ScanModePartnerInfo({
     piecesUnlocked = 0,
     totalPieces = 9,
     totalWins = 0,
+    id,
 }: ScanModePartnerInfoProps) {
     const {
         partnerName,
@@ -96,7 +98,7 @@ export default function ScanModePartnerInfo({
 
     return (
         <>
-            <div className="zoraClass flex flex-col justify-center border-gray-200 dark:border-gray-700 border-b p-4 py-8 pb-12 md:w-1/3 md:border-r md:border-b-0 md:py-22 md:pt-[50px] lg:border-r lg:p-6 lg:pb-22 lg:pt-[50px] transition-colors duration-200">
+            <div id={id} className="zoraClass flex flex-col justify-center border-gray-200 dark:border-gray-700 border-b p-4 py-8 pb-12 md:w-1/3 md:border-r md:border-b-0 md:py-22 md:pt-[50px] lg:border-r lg:p-6 lg:pb-22 lg:pt-[50px] transition-colors duration-200">
                 <div className="space-y-4 text-left">
 
                     {/* ── Header: Logo + Name + Share ── */}

@@ -43,7 +43,7 @@ export default function RootLayout({
           }}
         />
 
-        <meta property="fc:miniapp" content='{"version":"1","imageUrl":"https://www.qrbase.xyz/image.png","button":{"title":"Scan to win","action":{"type":"launch_frame","name":"QRBase!","url":"https://www.qrbase.xyz","splashImageUrl":"https://www.qrbase.xyz/splash.png","splashBackgroundColor":"#ffffff"}}}'></meta>
+        <meta property="fc:miniapp" content='{"version":"1","imageUrl":"https://www.qrbase.xyz/images/puzzle/share/Thumbnail.jpg","button":{"title":"Scan to win","action":{"type":"launch_frame","name":"QRBase!","url":"https://www.qrbase.xyz","splashImageUrl":"https://www.qrbase.xyz/splash.png","splashBackgroundColor":"#ffffff"}}}'></meta>
         {/* ✅ PWA Meta + Icons */}
         <meta name="theme-color" content="#0052FF" />
         {/* <meta property="og:image" content="https://www.qrbase.xyz/icon.png" /> */}

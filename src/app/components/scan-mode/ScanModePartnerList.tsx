@@ -30,7 +30,7 @@ function moveFirstItemToMiddle(partnerData: any) {
 
 }
 
-export default function QrBasePartnerList({ allMarketCap, partners }: any) {
+export default function QrBasePartnerList({ allMarketCap, partners, id }: any) {
     const router = useRouter();
     const params = useParams();
     const address = params?.address ?? "";
@@ -137,6 +137,7 @@ export default function QrBasePartnerList({ allMarketCap, partners }: any) {
 
     return (
         <header
+            id={id}
             className="fixed left-0 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 z-50 top-[100px] md:top-[91px] transition-colors duration-200"
 
         >

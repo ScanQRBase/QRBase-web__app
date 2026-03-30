@@ -46,6 +46,7 @@ export default function PuzzleFooter() {
                             <Link
                                 key={tab.id}
                                 href={tab.href}
+                                id={`onboarding-nav-${tab.id}`}
                                 className="relative flex flex-col items-center justify-center w-full h-full select-none"
                                 style={{
                                     WebkitTapHighlightColor: "transparent",

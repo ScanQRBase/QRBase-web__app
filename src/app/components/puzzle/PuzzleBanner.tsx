@@ -1,6 +1,7 @@
 import { FaBullhorn } from 'react-icons/fa';
 import ThemeToggle from '../shared/ThemeToggle';
 import RevealModeSwitcher from '../shared/RevealModeSwitcher';
+import SoundToggle from '../shared/SoundToggle';
 
 interface QrBaseBannerProps {
     round: string;
@@ -24,8 +25,9 @@ export function QrBaseBanner({ round, isCompleted }: QrBaseBannerProps) {
                 </span>
             </div>
 
-            {/* Right side with switcher and theme toggle */}
+            {/* Right side with sound toggle, switcher and theme toggle */}
             <div className="flex flex-1 justify-end items-center gap-2">
+                <SoundToggle />
                 <RevealModeSwitcher />
                 <ThemeToggle />
             </div>

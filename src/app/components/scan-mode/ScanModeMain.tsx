@@ -11,8 +11,9 @@ import { usePrivy } from '@privy-io/react-auth';
 import { getUserIdFromPrivyUser } from '../../lib/game/use-game-chances';
 import { PieceState } from '../../types';
 import { lockedImages, unlockedImages } from '../../types/imageAssets';
+import { motion } from 'framer-motion';
 import Confetti from 'react-confetti-boom';
-import PuzzleLogo from '../../images/puzzle/navbar/Puzzle.svg';
+import PuzzlePiece from '../../images/puzzle/PuzzlePiece.svg';
 import ScanModeQrcodeItems from './ScanModeQrcodeItems';
 import ScanModeCoinInfo from './ScanModeCoinInfo';
 import ScanModePartnerInfo from './ScanModePartnerInfo';
@@ -172,12 +173,13 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
     // Handle real-time win updates from scan-mode WebSocket
     useEffect(() => {
         if (liveWins !== null && progress && liveWins !== progress.totalWins) {
-            // Optimistic update for totalWins + piecesUnlocked
-            const newPiecesUnlocked = progress.milestones.filter(m => liveWins >= m).length;
+            // Optimistic update for totalWins + piecesUnlocked — never regress
+            const effectiveWins = Math.max(liveWins, progress.totalWins);
+            const newPiecesUnlocked = progress.milestones.filter(m => effectiveWins >= m).length;
             setProgress(prev => prev ? ({
                 ...prev,
-                totalWins: liveWins,
-                piecesUnlocked: newPiecesUnlocked
+                totalWins: effectiveWins,
+                piecesUnlocked: Math.max(newPiecesUnlocked, prev.piecesUnlocked)
             }) : null);
             // Also refetch full data to update userPartnerWins, etc.
             fetchProgress(true);
@@ -203,6 +205,8 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
     }, [needsWalletConnection]);
 
     // Fetch user's $SCAN token balance — reactive to address changes
+    // SECURITY: No sessionStorage caching here — this balance is used for access control (minScanBalance check).
+    // Users could tamper with sessionStorage to bypass the 100K $SCAN requirement.
     useEffect(() => {
         if (!address || !authenticated) {
             setScanBalance(null);
@@ -210,7 +214,6 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
             return;
         }
         let cancelled = false;
-        const cacheKey = `scan_balance_${address.toLowerCase()}`;
 
         async function fetchBalance() {
             try {
@@ -218,7 +221,6 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
                 const data = await res.json();
                 if (!cancelled && data.success) {
                     setScanBalance(data.balance);
-                    try { sessionStorage.setItem(cacheKey, String(data.balance)); } catch { }
                 }
             } catch (err) {
                 console.error('[ScanMode] Error fetching user balance:', err);
@@ -226,17 +228,12 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
             }
         }
 
-        // On mount: use cached value if available (survives route changes), else fetch (hard refresh)
-        const cached = sessionStorage.getItem(cacheKey);
-        if (cached !== null) {
-            setScanBalance(Number(cached));
-        } else {
-            fetchBalance();
-        }
+        // Always fetch fresh — never use cached values for access control
+        fetchBalance();
 
-        // Listen for balance-refresh events (win, buy, referral claim) — always fetch fresh
+        // Listen for balance-refresh events — always re-fetch from RPC (ignore optimistic deltas)
         const handleBalanceRefresh = () => {
-            console.log('[ScanMode] balance-refresh event received, re-fetching...');
+            console.log('[ScanMode] balance-refresh event received, re-fetching from RPC...');
             fetchBalance();
         };
         window.addEventListener('balance-refresh', handleBalanceRefresh);
@@ -282,14 +279,14 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
         const placementOrder = [8, 7, 6, 5, 4, 3, 2, 1, 0];
         for (let i = 0; i < Math.min(progress.piecesUnlocked, placementOrder.length); i++) {
             const index = placementOrder[i];
-            if (index === 8 && hasAccess) {
-                // Slot 8 uses fake image from DB — ONLY if user has access
-                const slot8Image = (progress.fakeImages && progress.fakeImages[0])
-                    ? progress.fakeImages[0]
-                    : (progress.firstImage || '');
-                updatedPieces[8] = { image: slot8Image, reached: true };
+            if (hasAccess && progress.fakeImages && progress.fakeImages[i]) {
+                // Use fake image from DB for this piece — ONLY if user has access
+                updatedPieces[index] = { image: progress.fakeImages[i], reached: true };
+            } else if (i === 0 && hasAccess && progress.firstImage) {
+                // Fallback for first piece: use firstImage if no fakeImages[0]
+                updatedPieces[index] = { image: progress.firstImage, reached: true };
             } else {
-                // All other slots (or slot 8 without access) use local unlocked images
+                // No access or no fake image available — use local unlocked images
                 updatedPieces[index] = {
                     image: filteredUnlockedImages[0]?.images[index]?.src || '',
                     reached: true
@@ -322,7 +319,7 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
         // Tag 1: $SCAN balance
         items.push({ logo: SCAN_LOGO_URL, balance: scanBalance });
         // Tag 2: Solved puzzles count
-        items.push({ logo: PuzzleLogo.src || PuzzleLogo, balance: userPartnerWins });
+        items.push({ logo: PuzzlePiece.src || PuzzlePiece, balance: userPartnerWins });
         return items;
     }, [authenticated, address, scanBalance, userPartnerWins]);
 
@@ -428,7 +425,7 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
 
                     {/* Mobile layout with tab navigation */}
                     {activeSection !== null && (
-                        <main className="mx-auto flex max-w-7xl grow flex-col">
+                        <main className="mx-auto flex max-w-7xl grow flex-col pb-32">
                             <div className="flex grow flex-col md:flex-row containQrBase">
                                 <div className="flex grow flex-col md:flex-row">
                                     {activeSection === 'token' && (
@@ -468,39 +465,78 @@ export default function ScanModeMain({ partnerAddress }: { partnerAddress: strin
                                     )}
                                 </div>
                             </div>
+
+                            {/* Footer scrolls with content on mobile */}
+                            <ScanModeFooter
+                                progress={progress}
+                                address={address}
+                                authenticated={authenticated}
+                                hasAccess={!!hasAccess}
+                                scanBalance={scanBalance}
+                                userPartnerWins={userPartnerWins ?? 0}
+                            />
                         </main>
                     )}
 
-                    {/* Footer — scrolls with page on mobile, fixed on desktop */}
-                    <ScanModeFooter
-                        progress={progress}
-                        address={address}
-                        authenticated={authenticated}
-                        hasAccess={!!hasAccess}
-                        scanBalance={scanBalance}
-                        userPartnerWins={userPartnerWins ?? 0}
-                    />
+                    {/* Footer — fixed on desktop only (mobile footer is inside mobile layout above) */}
+                    <div className="hidden md:block">
+                        <ScanModeFooter
+                            progress={progress}
+                            address={address}
+                            authenticated={authenticated}
+                            hasAccess={!!hasAccess}
+                            scanBalance={scanBalance}
+                            userPartnerWins={userPartnerWins ?? 0}
+                        />
+                    </div>
 
-                    {/* Mobile tab bar — scrolls with page on mobile */}
-                    <div className="w-full bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 md:hidden flex justify-around items-center p-2 transition-colors duration-200">
-                        <button className="flex flex-col items-center" onClick={() => setActiveSection('token')}>
-                            <span className="text-blue-500">
-                                <TokenIcon size={20} color={activeSection === 'token' ? primaryColor : '#6B7280'} />
-                            </span>
-                            <span className="tabTitle" style={{ color: activeSection === 'token' ? primaryColor : '#6B7280' }}>Token Info</span>
-                        </button>
-                        <button className="flex flex-col items-center" onClick={() => setActiveSection('qr')}>
-                            <span>
-                                <QrIcon size={20} color={activeSection === 'qr' ? primaryColor : '#6B7280'} />
-                            </span>
-                            <span style={{ color: activeSection === 'qr' ? primaryColor : '#6B7280' }} className="tabTitle">Qrcode</span>
-                        </button>
-                        <button className="flex flex-col items-center" onClick={() => setActiveSection('progress')}>
-                            <span>
-                                <ProgressIcon size={20} color={activeSection === 'progress' ? primaryColor : '#6B7280'} />
-                            </span>
-                            <span style={{ color: activeSection === 'progress' ? primaryColor : '#6B7280' }} className="tabTitle">Progress</span>
-                        </button>
+                    {/* Mobile tab bar — floating pill style matching PuzzleFooter */}
+                    <div className="md:hidden fixed bottom-6 left-4 right-4 z-[60]">
+                        <div
+                            className="shadow-lg"
+                            style={{
+                                borderRadius: '52px',
+                                backgroundColor: '#F9FAFC66',
+                                border: '1px solid #E5E7EB',
+                                backdropFilter: 'blur(12px)',
+                                WebkitBackdropFilter: 'blur(12px)',
+                            }}
+                        >
+                            <div className="flex justify-around items-center h-[72px] px-2">
+                                {[
+                                    { id: 'token', label: 'Token Info', icon: TokenIcon },
+                                    { id: 'qr', label: 'Qrcode', icon: QrIcon },
+                                    { id: 'progress', label: 'Progress', icon: ProgressIcon },
+                                ].map((tab) => {
+                                    const isActive = activeSection === tab.id;
+                                    const IconComponent = tab.icon;
+                                    return (
+                                        <button
+                                            key={tab.id}
+                                            onClick={() => setActiveSection(tab.id as 'token' | 'qr' | 'progress')}
+                                            className="relative flex flex-col items-center justify-center w-full h-full select-none"
+                                            style={{ WebkitTapHighlightColor: 'transparent' }}
+                                        >
+                                            <motion.div
+                                                whileTap={{ scale: 0.9 }}
+                                                transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                                                className="flex flex-col items-center gap-1"
+                                            >
+                                                <div className="relative w-6 h-6 flex items-center justify-center">
+                                                    <IconComponent
+                                                        size={24}
+                                                        color={isActive ? '#3B82F6' : '#6B7280'}
+                                                    />
+                                                </div>
+                                                <span className={`text-[10px] font-medium tracking-tight ${isActive ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'}`}>
+                                                    {tab.label}
+                                                </span>
+                                            </motion.div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </PuzzleDataProvider>

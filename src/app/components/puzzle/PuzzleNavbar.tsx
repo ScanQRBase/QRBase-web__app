@@ -163,6 +163,7 @@ export default function QrBaseNavbar({ address: propAddress }: any) {
             {/* 3. FULLY AUTHENTICATED (Show Image) */}
             {authenticated && ((user?.twitter && user?.wallet) || user?.farcaster) && (
                 <div
+                    id="onboarding-profile"
                     className="flex items-center gap-2 cursor-pointer"
                     onClick={() => setShowModal(true)}
                 >
@@ -237,6 +238,7 @@ export default function QrBaseNavbar({ address: propAddress }: any) {
                                     <Link
                                         key={link.path}
                                         href={link.path}
+                                        id={`desktop-nav-${link.name.toLowerCase()}`}
                                         className={linkClasses}
                                     >
                                         <img src={link.iconUrl} alt="" className="w-4 h-4" style={iconStyle} />
@@ -252,7 +254,9 @@ export default function QrBaseNavbar({ address: propAddress }: any) {
                             style={{ justifyContent: "end" }}
                         >
                             {/* $SCAN Balance - only show when authenticated */}
-                            <ScanCoinBalance walletAddress={authenticated ? address : null} />
+                            <div id="onboarding-scan-balance">
+                                <ScanCoinBalance walletAddress={authenticated ? address : null} />
+                            </div>
                             {/* Desktop Auth */}
                             <div className="hidden md:block">
                                 <AuthButton isMobile={false} />

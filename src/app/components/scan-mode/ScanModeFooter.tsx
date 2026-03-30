@@ -80,7 +80,7 @@ export default function ScanModeFooter({ progress, address, authenticated, hasAc
     const status = getStatus();
 
     return (
-        <div className="z-50 relative md:fixed right-0 md:bottom-0 w-full border-gray-200 dark:border-gray-700 border-t bg-white dark:bg-gray-900 transition-colors duration-200">
+        <div className="z-50 relative md:fixed right-0 md:bottom-0 w-full border-gray-200 dark:border-gray-700 border-t bg-[#F7F8FD] md:bg-white dark:bg-gray-900 transition-colors duration-200">
             <div className="flex w-full justify-center py-1 md:py-2 qrNumberInfo" style={{ alignItems: 'center', flexDirection: 'column' }}>
                 <h2 className="font-bold text-sm md:text-lg text-center text-gray-900 dark:text-white">
                     TOTAL PIECES UNLOCKED {piecesUnlocked}/{totalPieces}

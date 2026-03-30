@@ -106,7 +106,7 @@ export default function ScanModePageSkeleton() {
                                 </div>
 
                                 {/* 3×3 Grid */}
-                                <div className="relative w-[440px] h-[440px] border-2 border-gray-300 dark:border-gray-600 rounded-lg grid grid-cols-3 grid-rows-3">
+                                <div className="relative w-[440px] h-[440px] border border-gray-300 dark:border-gray-600 rounded-lg grid grid-cols-3 grid-rows-3">
                                     {[...Array(9)].map((_, i) => (
                                         <div key={i} className="border border-gray-300 dark:border-gray-600">
                                             <div className="w-full h-full bg-gray-200 dark:bg-gray-700 animate-pulse rounded-md" />

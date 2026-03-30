@@ -47,6 +47,8 @@ export interface UserProfile {
     referralStats: ReferrerStats;
     // Token wins per partner
     tokenWins?: Record<string, number>;
+    // Total $SCAN rewarded (computed from actual partner prize amounts)
+    scanRewarded?: number;
 }
 
 export function useUserProfile(userId: string | null) {

@@ -322,7 +322,7 @@ export default function QrBaseNavbar({ address }: any) {
                 {!address ? (
                   <button
                     onClick={handleWalletConnect}
-                    className="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg w-full"
+                    className="bg-[#0052FF] hover:opacity-90 text-white h-[48px] rounded-lg w-full"
                   >
                     Connect Wallet
                   </button>
@@ -331,7 +331,7 @@ export default function QrBaseNavbar({ address }: any) {
                 {!user?.farcaster && (
                   <button
                     onClick={handleLogout}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 rounded-lg w-full"
+                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 h-[48px] rounded-lg w-full"
                   >
                     Sign out
                   </button>

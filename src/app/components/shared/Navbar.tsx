@@ -196,11 +196,21 @@ export default function QrBaseNavbar({ coinsBoughtDisplay, address, loading, sca
 
             </div>
 
-            <div className="hidden md:flex flex-1 gap-6 items-center justify-center">
-
-
+            <div className="hidden md:flex flex-1 gap-2 items-center justify-center">
               {NAV_LINKS.map((link) => {
                 const isExternal = link.path.startsWith("http");
+                const isActive = pathname === link.path;
+
+                const linkClasses = `flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-sm transition-all duration-150 ${isActive
+                  ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                  : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600'
+                  }`;
+
+                const iconStyle = {
+                  filter: isActive
+                    ? 'invert(22%) sepia(99%) saturate(4700%) hue-rotate(213deg) brightness(100%) contrast(101%)'
+                    : undefined
+                };
 
                 return isExternal ? (
                   <a
@@ -208,26 +218,25 @@ export default function QrBaseNavbar({ coinsBoughtDisplay, address, loading, sca
                     href={link.path}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-medium text-sm hover:text-blue-600 transition-colors"
-                    style={{ color: 'inherit' }}
+                    className={linkClasses}
                   >
+                    <img src={link.iconUrl} alt="" className="w-4 h-4" style={iconStyle} />
                     {link.name}
                   </a>
                 ) : (
                   <Link
                     key={link.path}
                     href={link.path}
-                    className="font-medium text-sm hover:text-blue-600 transition-colors"
-                    style={{ color: 'inherit' }}
+                    className={linkClasses}
                   >
+                    <img src={link.iconUrl} alt="" className="w-4 h-4" style={iconStyle} />
                     {link.name}
                   </Link>
                 );
               })}
               <button
                 onClick={() => setShowHowItWorks(true)}
-                className="font-medium text-sm hover:text-blue-600 transition-colors flex items-center gap-1"
-                style={{ color: 'inherit' }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-sm transition-all duration-150 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600"
               >
                 <HelpCircle size={16} />
                 How it Works
@@ -265,32 +274,66 @@ export default function QrBaseNavbar({ coinsBoughtDisplay, address, loading, sca
     ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
   `}
         >
-          <div className="flex flex-col p-4 space-y-4 text-left">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.path}
-                href={link.path}
-                className="flex items-center space-x-3 text-lg font-medium text-gray-800 dark:text-gray-100 hover:text-blue-600 py-3 px-2 rounded-lg transition-colors duration-150 group hover:bg-blue-50 dark:hover:bg-gray-800"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <img
-                  src={link.iconUrl}
-                  alt={`${link.name} Icon`}
-                  // Fixed size, object-contain for aspect ratio, and rounded corners
-                  className="w-6 h-6 object-contain rounded-md flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
-                />
-                {/* Link Name */}
-                <span className="truncate">
-                  {link.name}
-                </span>
-              </Link>
-            ))}
+          <div className="flex flex-col p-4 space-y-1 text-left overflow-y-auto">
+            {/* Section Label */}
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 py-2">
+              Scan Mode
+            </div>
+
+            {NAV_LINKS.map((link) => {
+              const isExternal = link.path.startsWith('http');
+              const isActive = !isExternal && pathname === link.path;
+              const LinkComponent = isExternal ? 'a' : Link;
+              const linkProps = isExternal
+                ? { href: link.path, target: '_blank', rel: 'noopener noreferrer' }
+                : { href: link.path };
+
+              return (
+                <LinkComponent
+                  key={link.path}
+                  {...linkProps}
+                  className={`flex items-center space-x-3 text-base font-medium py-2.5 px-3 rounded-lg transition-all duration-150 group
+                    ${isActive
+                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+                    }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <img
+                    src={link.iconUrl}
+                    alt={`${link.name} Icon`}
+                    className="w-5 h-5 object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
+                    style={{
+                      filter: isActive
+                        ? 'invert(22%) sepia(99%) saturate(4700%) hue-rotate(213deg) brightness(100%) contrast(101%)'
+                        : undefined
+                    }}
+                  />
+                  <span>{link.name}</span>
+                  {isExternal && (
+                    <svg className="w-3 h-3 text-gray-400 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  )}
+                </LinkComponent>
+              );
+            })}
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 dark:border-gray-700 my-3" />
+
+            {/* More Section Label */}
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-2 py-2">
+              More
+            </div>
+
+            {/* How it Works */}
             <button
               onClick={() => { setShowHowItWorks(true); setIsMenuOpen(false); }}
-              className="flex items-center space-x-3 text-lg font-medium text-gray-800 dark:text-gray-100 hover:text-blue-600 py-3 px-2 rounded-lg transition-colors duration-150 group hover:bg-blue-50 dark:hover:bg-gray-800"
+              className="flex items-center space-x-3 text-base font-medium py-2.5 px-3 rounded-lg transition-all duration-150 group text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
-              <HelpCircle size={24} className="flex-shrink-0 group-hover:scale-105 transition-transform duration-200" />
-              <span className="truncate">How it Works</span>
+              <HelpCircle size={20} className="flex-shrink-0 group-hover:scale-105 transition-transform duration-200" />
+              <span>How it Works</span>
             </button>
           </div>
         </div>

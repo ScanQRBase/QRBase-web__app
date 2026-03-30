@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import XIcon from '@/src/app/images/svg/socialMedia/XIcon';
+import WarpcastIcon from '@/src/app/images/svg/socialMedia/WarpcastIcon';
 
 // ============================================================================
 // Shared Modal Wrapper
@@ -77,7 +79,7 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
         {
             icon: "/images/puzzle/howWorkModal/PuzzlePiece.svg",
             title: "Need more attempts?",
-            description: "Complete tasks for free attempts or buy +1 for 5,000 $SCAN.",
+            description: "Complete tasks for free attempts or buy more with $SCAN.",
         },
         {
             icon: "/images/puzzle/howWorkModal/HandHeart.svg",
@@ -200,7 +202,7 @@ export function ReferenceImageModal({ isOpen, onClose, imageSrc }: ReferenceImag
                 </h2>
 
                 {/* QR Image */}
-                <div className="mx-auto w-48 h-48 mb-4 rounded-xl border-2 border-blue-200 dark:border-blue-800 overflow-hidden">
+                <div className="mx-auto w-48 h-48 mb-4 rounded-xl border border-blue-200 dark:border-blue-800 overflow-hidden">
                     <img
                         src={imageSrc}
                         alt="Reference"
@@ -273,7 +275,7 @@ export function WinnersLeaderboardModal({ isOpen, onClose, winners, isLoading }:
                 <div className="max-h-64 overflow-y-auto space-y-2">
                     {isLoading ? (
                         <div className="flex justify-center py-8">
-                            <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                            <div className="w-6 h-6 border border-blue-500 border-t-transparent rounded-full animate-spin" />
                         </div>
                     ) : winners.length === 0 ? (
                         <p className="text-center text-gray-500 py-8">No winners yet</p>
@@ -432,7 +434,7 @@ export function PrizesPoolModal({ isOpen, onClose, prizes, isLoading, activeBoos
                 <div className="space-y-2 max-h-60 overflow-y-auto mb-4">
                     {isLoading ? (
                         <div className="flex justify-center py-8">
-                            <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                            <div className="w-6 h-6 border border-blue-500 border-t-transparent rounded-full animate-spin" />
                         </div>
                     ) : prizes.length === 0 ? (
                         <p className="text-center text-gray-500 py-8 font-mono">No prizes available</p>
@@ -473,7 +475,7 @@ export function PrizesPoolModal({ isOpen, onClose, prizes, isLoading, activeBoos
                     onBoostClick && (
                         <button
                             onClick={onBoostClick}
-                            className="w-full py-3 rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2 hover:opacity-90"
+                            className="w-full h-[48px] rounded-xl font-bold text-lg transition-colors flex items-center justify-center gap-2 hover:opacity-90"
                             style={{ backgroundColor: '#FFDA57', color: '#8F7000' }}
                         >
                             <img src="/images/puzzle/boost/boost.svg" alt="" className="w-5 h-5" /> Boost Token
@@ -526,7 +528,7 @@ export function TimesUpModal({ isOpen, onClose, chancesLeft, totalChances, onPla
 
                 <button
                     onClick={() => { onPlayAgain(); onClose(); }}
-                    className="w-full py-3 bg-gradient-to-r from-[#0052FF] to-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono"
+                    className="w-full h-[48px] bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono"
                 >
                     Play Again !
                 </button>
@@ -546,9 +548,10 @@ interface GameOverModalProps {
     onBuyAttempt: () => void;
     isLoading?: boolean;
     moves?: number;
+    attemptPrice?: number; // $SCAN per attempt (from level system)
 }
 
-export function GameOverModal({ isOpen, onClose, totalChances, onBuyAttempt, isLoading, moves }: GameOverModalProps) {
+export function GameOverModal({ isOpen, onClose, totalChances, onBuyAttempt, isLoading, moves, attemptPrice = 1000 }: GameOverModalProps) {
     const [scanPriceUsd, setScanPriceUsd] = useState<string>("~$0.30");
     const [isLoadingPrice, setIsLoadingPrice] = useState(false);
 
@@ -602,7 +605,7 @@ export function GameOverModal({ isOpen, onClose, totalChances, onBuyAttempt, isL
                     </span>
                     <div className="flex items-center gap-1">
                         <img src="https://ik.imagekit.io/cafu/$SCAN/scan.png?updatedAt=1746620925756&ik-s=83f8422add9570195a66cd510d3f1c5e884a50d1" alt="SCAN" className="w-5 h-5" />
-                        <span className="font-bold text-gray-900 dark:text-white">5K</span>
+                        <span className="font-bold text-gray-900 dark:text-white">{attemptPrice >= 1000 ? `${(attemptPrice / 1000).toFixed(0)}K` : attemptPrice}</span>
                         <span className="text-xs text-gray-500">
                             {isLoadingPrice ? "..." : scanPriceUsd}
                         </span>
@@ -612,11 +615,11 @@ export function GameOverModal({ isOpen, onClose, totalChances, onBuyAttempt, isL
                 <button
                     onClick={() => { onBuyAttempt(); }}
                     disabled={isLoading}
-                    className="w-full py-3 bg-gradient-to-r from-[#0052FF] to-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full h-[48px] bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                     {isLoading ? (
                         <>
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            <div className="w-4 h-4 border border-white border-t-transparent rounded-full animate-spin" />
                             Processing...
                         </>
                     ) : (
@@ -637,9 +640,10 @@ interface BuyAttemptModalProps {
     onClose: () => void;
     onBuy: (quantity: number) => void;
     isLoading?: boolean;
+    attemptPrice?: number; // $SCAN per attempt (from level system)
 }
 
-export function BuyAttemptModal({ isOpen, onClose, onBuy, isLoading }: BuyAttemptModalProps) {
+export function BuyAttemptModal({ isOpen, onClose, onBuy, isLoading, attemptPrice = 1000 }: BuyAttemptModalProps) {
     const [quantity, setQuantity] = useState(1);
     const [pricePerAttemptUsd, setPricePerAttemptUsd] = useState<number>(0);
     const [isLoadingPrice, setIsLoadingPrice] = useState(false);
@@ -664,10 +668,11 @@ export function BuyAttemptModal({ isOpen, onClose, onBuy, isLoading }: BuyAttemp
         }
     }, [isOpen]);
 
-    const totalScan = quantity * 5000;
+    const totalScan = quantity * attemptPrice;
     const totalScanDisplay = totalScan >= 1000 ? `${(totalScan / 1000).toFixed(0)}K` : totalScan.toString();
-    const totalUsdDisplay = pricePerAttemptUsd > 0
-        ? `~$${(pricePerAttemptUsd * quantity).toFixed(2)}`
+    const pricePerUnit = pricePerAttemptUsd > 0 ? pricePerAttemptUsd * (attemptPrice / 5000) : 0;
+    const totalUsdDisplay = pricePerUnit > 0
+        ? `~$${(pricePerUnit * quantity).toFixed(2)}`
         : '...';
 
     return (
@@ -718,11 +723,11 @@ export function BuyAttemptModal({ isOpen, onClose, onBuy, isLoading }: BuyAttemp
                 <button
                     onClick={() => onBuy(quantity)}
                     disabled={isLoading}
-                    className="w-full py-3 bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono disabled:opacity-50"
+                    className="w-full h-[48px] bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono disabled:opacity-50"
                 >
                     {isLoading ? (
                         <span className="flex items-center justify-center gap-2">
-                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            <div className="w-4 h-4 border border-white border-t-transparent rounded-full animate-spin" />
                             Processing...
                         </span>
                     ) : (
@@ -784,7 +789,7 @@ export function PurchaseSuccessfulModal({ isOpen, onClose, onContinue, txHash, q
 
                 <button
                     onClick={() => { onContinue(); onClose(); }}
-                    className="w-full py-3 bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono"
+                    className="w-full h-[48px] bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono"
                 >
                     Continue Playing
                 </button>
@@ -807,9 +812,10 @@ interface YouWonModalProps {
     moves?: number;
     timeSpent?: number;  // Time spent to solve (in seconds)
     txHash?: string;  // Payout transaction hash
+    prizeAmount?: number; // Dynamic prize value shown during reward processing
 }
 
-export function YouWonModal({ isOpen, onClose, qrImageSrc, onShareFarcaster, onShareX, isProcessing, moves, timeSpent, txHash }: YouWonModalProps) {
+export function YouWonModal({ isOpen, onClose, qrImageSrc, onShareFarcaster, onShareX, isProcessing, moves, timeSpent, txHash, prizeAmount }: YouWonModalProps) {
     // Format time as mm:ss
     const formatTime = (seconds: number): string => {
         const mins = Math.floor(seconds / 60);
@@ -823,35 +829,52 @@ export function YouWonModal({ isOpen, onClose, qrImageSrc, onShareFarcaster, onS
                     You Won !
                 </h2>
 
-                {isProcessing && (
-                    <div className="flex items-center justify-center gap-2 text-blue-500 mb-4">
-                        <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="32" strokeDashoffset="12" />
-                        </svg>
-                        <span className="text-sm font-mono">Processing Reward...</span>
-                    </div>
-                )}
+                {/* Reward Status - fixed height to prevent layout shift */}
+                <div className="h-[40px] flex items-center justify-center mb-4">
+                    {txHash ? (
+                        <div className="px-3 py-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center gap-2">
+                            <span className="text-xs text-gray-500 dark:text-gray-400">Reward Tx: </span>
+                            <a
+                                href={`https://basescan.org/tx/${txHash}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-green-600 dark:text-green-400 hover:text-green-700 font-mono underline"
+                            >
+                                {txHash.slice(0, 6)}...{txHash.slice(-4)}
+                            </a>
+                        </div>
+                    ) : isProcessing ? (
+                        <div className="flex items-center justify-center gap-2 text-blue-500">
+                            <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="32" strokeDashoffset="12" />
+                            </svg>
+                            <img src="https://ik.imagekit.io/cafu/$SCAN/scan.png?updatedAt=1746620925756&ik-s=83f8422add9570195a66cd510d3f1c5e884a50d1" alt="SCAN" className="w-5 h-5 rounded-full" />
+                            <span className="font-bold text-gray-900 dark:text-white text-sm">{(prizeAmount ?? 10000) >= 1000 ? `${(prizeAmount ?? 10000) / 1000}K` : prizeAmount ?? 10000}</span>
+                            <span className="text-sm font-mono">Processing Reward...</span>
+                        </div>
+                    ) : null}
+                </div>
 
                 {/* Stats Display */}
                 {(moves !== undefined || timeSpent !== undefined) && (
                     <div className="flex justify-center gap-4 mb-4">
                         {moves !== undefined && (
-                            <div className="px-3 py-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                            <div className="flex-1 max-w-[80px] px-3 py-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-center">
                                 <span className="text-green-600 dark:text-green-400 font-bold text-lg">{moves}</span>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">Moves</p>
                             </div>
                         )}
                         {timeSpent !== undefined && (
-                            <div className="px-3 py-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                            <div className="flex-1 max-w-[80px] px-3 py-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl text-center">
                                 <span className="text-blue-600 dark:text-blue-400 font-bold text-lg">{formatTime(timeSpent)}</span>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">Time</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">Timer</p>
                             </div>
                         )}
                     </div>
                 )}
 
                 {/* QR/Win Image */}
-                <div className="mx-auto w-40 h-40 mb-4 rounded-xl border-2 border-blue-200 dark:border-blue-800 overflow-hidden flex items-center justify-center bg-white">
+                <div className="mx-auto w-40 h-40 mb-4 rounded-xl border border-blue-200 dark:border-blue-800 overflow-hidden flex items-center justify-center bg-white">
                     <img
                         src={qrImageSrc || "/images/puzzle/YouWonIMG.svg"}
                         alt="You Won"
@@ -863,30 +886,13 @@ export function YouWonModal({ isOpen, onClose, qrImageSrc, onShareFarcaster, onS
                     Share on...
                 </p>
 
-                {/* Payout Tx Hash */}
-                {txHash && (
-                    <div className="mb-3 px-3 py-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">Reward Tx: </span>
-                        <a
-                            href={`https://basescan.org/tx/${txHash}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs text-green-600 dark:text-green-400 hover:text-green-700 font-mono underline"
-                        >
-                            {txHash.slice(0, 6)}...{txHash.slice(-4)}
-                        </a>
-                    </div>
-                )}
-
                 {/* Share Buttons */}
                 <div className="flex gap-3 justify-center">
                     <button
                         onClick={onShareFarcaster}
                         className="flex items-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                     >
-                        <svg className="w-5 h-5 text-purple-600" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.24 1.92H5.76a3.84 3.84 0 00-3.84 3.84v12.48a3.84 3.84 0 003.84 3.84h12.48a3.84 3.84 0 003.84-3.84V5.76a3.84 3.84 0 00-3.84-3.84zm-2.4 15.36h-1.92v-4.8a1.92 1.92 0 00-3.84 0v4.8H8.16v-4.8a3.84 3.84 0 117.68 0v4.8z" />
-                        </svg>
+                        <WarpcastIcon size={20} color="#0052FF" />
                         <span className="font-medium text-gray-900 dark:text-white">Farcaster</span>
                     </button>
 
@@ -894,9 +900,7 @@ export function YouWonModal({ isOpen, onClose, qrImageSrc, onShareFarcaster, onS
                         onClick={onShareX}
                         className="flex items-center gap-2 px-6 py-2.5 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
                     >
-                        <svg className="w-5 h-5 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
+                        <XIcon size={18} color="#000000" />
                         <span className="font-medium text-gray-900 dark:text-white">X.com</span>
                     </button>
                 </div>
@@ -915,12 +919,48 @@ interface ResetOverlayProps {
     onBuyAttempt: () => void;
     isConnected?: boolean;
     onSignIn?: () => void;
+    needsWalletConnection?: boolean;
+    onLinkWallet?: () => void;
 }
 
-export function ResetOverlay({ isVisible, resetTime, onBuyAttempt, isConnected = true, onSignIn }: ResetOverlayProps) {
+export function ResetOverlay({ isVisible, resetTime, onBuyAttempt, isConnected = true, onSignIn, needsWalletConnection, onLinkWallet }: ResetOverlayProps) {
     if (!isVisible) return null;
 
-    // Show "Connect to Play" when user is not connected
+    // Show "Wallet Required" when user is authenticated but wallet is missing
+    if (!isConnected && needsWalletConnection) {
+        return (
+            <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 rounded-xl">
+                <div className="text-center p-6">
+                    <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-gradient-to-r from-[#50DEF5]/20 to-[#0052FF]/20 flex items-center justify-center">
+                        <svg className="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                    </div>
+
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 font-mono">
+                        Wallet Required
+                    </h3>
+
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        Connect your wallet to start<br />
+                        playing and earn rewards
+                    </p>
+
+                    {onLinkWallet && (
+                        <button
+                            onClick={onLinkWallet}
+                            className="px-6 h-[48px] text-white font-bold rounded-xl hover:opacity-90 transition-opacity font-mono"
+                            style={{ background: 'linear-gradient(to right, #50DEF5, #0052FF, #AE80FF)' }}
+                        >
+                            Connect Wallet
+                        </button>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+    // Show "Connect to Play" when user is not authenticated at all
     if (!isConnected) {
         return (
             <div className="absolute inset-0 z-10 flex items-center justify-center backdrop-blur-sm bg-white/80 dark:bg-gray-900/80 rounded-xl">
@@ -944,7 +984,7 @@ export function ResetOverlay({ isVisible, resetTime, onBuyAttempt, isConnected =
                     {onSignIn && (
                         <button
                             onClick={onSignIn}
-                            className="px-6 py-2.5 bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono"
+                            className="px-6 h-[48px] bg-[#0052FF] text-white font-semibold rounded-xl hover:opacity-90 transition-opacity font-mono"
                         >
                             Sign In
                         </button>
@@ -1112,7 +1152,7 @@ export function BoostTokenModal({
                                 <div className="p-3 text-sm text-gray-500">Loading...</div>
                             ) : isLoadingBalances ? (
                                 <div className="p-3 text-sm text-gray-500 flex items-center gap-2">
-                                    <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border border-blue-500 border-t-transparent rounded-full animate-spin" />
                                     Checking funds...
                                 </div>
                             ) : partners.map((partner) => {
@@ -1171,13 +1211,13 @@ export function BoostTokenModal({
                                 type="button"
                                 key={d.hours}
                                 onClick={() => setSelectedDuration(d.hours)}
-                                className={`relative p-3 rounded-xl border-2 transition-all text-left ${isSelected
+                                className={`relative p-3 rounded-xl border transition-all text-left ${isSelected
                                     ? 'border-blue-500 bg-white dark:bg-gray-800'
                                     : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
                                     }`}
                             >
                                 {/* Radio in top-right */}
-                                <div className={`absolute top-2 right-2 w-4 h-4 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-blue-500' : 'border-gray-300 dark:border-gray-600'
+                                <div className={`absolute top-2 right-2 w-4 h-4 rounded-full border flex items-center justify-center ${isSelected ? 'border-blue-500' : 'border-gray-300 dark:border-gray-600'
                                     }`}>
                                     {isSelected && <div className="w-2 h-2 rounded-full bg-blue-500" />}
                                 </div>
@@ -1218,13 +1258,13 @@ export function BoostTokenModal({
                             <button
                                 type="button"
                                 onClick={() => setSelectedDuration(d.hours)}
-                                className={`relative w-full p-3 rounded-xl border-2 transition-all text-center ${isSelected
+                                className={`relative w-full p-3 rounded-xl border transition-all text-center ${isSelected
                                     ? 'border-blue-500 bg-white dark:bg-gray-800'
                                     : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
                                     }`}
                             >
                                 {/* Radio in top-right */}
-                                <div className={`absolute top-2 right-2 w-4 h-4 rounded-full border-2 flex items-center justify-center ${isSelected ? 'border-blue-500' : 'border-gray-300 dark:border-gray-600'
+                                <div className={`absolute top-2 right-2 w-4 h-4 rounded-full border flex items-center justify-center ${isSelected ? 'border-blue-500' : 'border-gray-300 dark:border-gray-600'
                                     }`}>
                                     {isSelected && <div className="w-2 h-2 rounded-full bg-blue-500" />}
                                 </div>
@@ -1260,10 +1300,10 @@ export function BoostTokenModal({
                     type="button"
                     onClick={handlePurchase}
                     disabled={!selectedPartner || isLoading}
-                    className="w-full py-2.5 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                    className="w-full h-[48px] bg-[#0052FF] text-white rounded-lg font-bold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                 >
                     {isLoading ? (
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="w-4 h-4 border border-white border-t-transparent rounded-full animate-spin" />
                     ) : (
                         <>Buy Boost Pack</>
                     )}
@@ -1315,14 +1355,14 @@ export function TokenBoostedModal({ isOpen, onClose, onBoostToken, boostDuration
                 <div className="flex flex-col sm:flex-row gap-3">
                     <button
                         onClick={onClose}
-                        className="flex-1 py-3 bg-[#0052FF] text-white font-bold rounded-xl hover:opacity-90 transition-opacity font-mono"
+                        className="flex-1 h-[48px] bg-[#0052FF] text-white font-bold rounded-xl hover:opacity-90 transition-opacity font-mono"
                     >
                         Got It
                     </button>
                     <Link
                         href="/puzzle/boost"
                         onClick={onClose}
-                        className="flex-1 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 hover:opacity-90"
+                        className="flex-1 h-[48px] rounded-xl font-bold transition-colors flex items-center justify-center gap-2 hover:opacity-90"
                         style={{ backgroundColor: '#FFDA57', color: '#8F7000' }}
                     >
                         <img src="/images/puzzle/boost/boost.svg" alt="" className="w-5 h-5" />
